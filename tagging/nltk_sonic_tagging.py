@@ -5,6 +5,7 @@ import argparse
 import urllib.request
 import json
 from bs4 import BeautifulSoup
+import string
 
 
 '''
@@ -30,13 +31,26 @@ def get_character_text(play, character):
 
     data_from_server = urllib.request.urlopen(url).read()
     string_from_server = data_from_server.decode('utf-8')
+    string_from_server.encode('ascii', 'replace')
     initial_text = BeautifulSoup(string_from_server, 'html.parser')
     for tag in initial_text.findAll('br'):
         tag.replace_with('\n')
 
     with open ('res/{}.txt'.format(character_tag), 'w') as res_file:
         for line in initial_text.find_all('body'):
-            res_file.write(line.text)
+            write_string = line.text
+            #TODO try to fix this mapping
+            # punctuation_string = string.punctuation.replace("'", "")
+            # punctuation_string = string.punctuation.replace("-", "")
+            # write_string.translate(str.maketrans("\u2019", "'", punctuation_string))
+            new_string = ""
+            for character in write_string: #a pretty inefficient loop that only preserves readable text
+                if character.lower() in "abcdefghijklmnopqrstuvwxyz \n-":
+                    new_string += character
+                if character == "\u2019":
+                    new_string += "'"
+            res_file.write(new_string)
+
 
 
 def get_character_list(play):

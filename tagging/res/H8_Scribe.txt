@@ -1,11 +1,11 @@
 
 
-
-Say “Henry King of England, come into the
-
-court.”
-
-Say “Katherine Queen of England, come into
-
-the court.”
+
+Say Henry King of England come into the
+
+court
+
+Say Katherine Queen of England come into
+
+the court
 
