@@ -1,4 +1,24 @@
-{AA:[]}
+{'AA':[]}
+{'AE':[]}
+{'AH':[]}
+{'AO':[]}
+{'AW':[]}
+{'AY':[]}
+{'B':[stop, bilabial, voiced]}
+{'CH':[affricate, alveolar, voiceless]}
+{'D':[stop, alveolar, voiced]}
+{'DH':[fricative, dental, voiced]}
+{'EH':[]}
+{'ER':[]}
+{'EY':[]}
+{'F':[fricative, labio-dental, voiceless]}
+{'G':[stop, lingua-velar, voiced]}
+{'HH':[fricative, glottal, voiceless]}
+{'IH':[]}
+{'IY':[]}
+{'JH':[affricate, alveolar, voiced]}
+{'K':[stop, velar, voiceless]}
+{'L'[liquid, alveolar, voiced]}
 {‘M’:[voiced,nasal, bilabial]}
 {’N’:[voiced, nasal, linguaaleveolar]}
 {’NG’:[nasal, linguavelar, voiced]}
@@ -17,4 +37,3 @@
 {‘Y’:[semivowel, glide, linguapalatal, voiced]}
 {‘Z’:[fricative, voiced, linguaaleveolar]}
 {‘ZH’:[fricative, voiced, linguapalatal]}
-
