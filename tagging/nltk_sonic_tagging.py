@@ -89,8 +89,8 @@ def phonetic_transcript(file_name):
                     phonetic_list = transcr[word][0]
                     phonetic_string=""
                     for sound in phonetic_list: #this is inefficient
-                        phonetic_string = phonetic_string+sound
-                    dest_file.write(phonetic_string+" ")
+                        phonetic_string = phonetic_string+sound+" "
+                    dest_file.write(phonetic_string+", ")
 
 
 def get_all_character_texts():
@@ -113,7 +113,8 @@ def get_all_character_texts():
 
 
 def main():
-    get_all_character_texts()
+    # get_all_character_texts()
+    phonetic_transcript('Cym_Cymbeline')
 
 if __name__ == "__main__":
     main()
