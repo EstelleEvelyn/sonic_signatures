@@ -81,7 +81,6 @@ def phonetic_transcript(file_name):
     '''
     root = nltk.data.find('/')
     transcr = cmudict.dict() #import cmudict
-    #TODO add try-catch block for res file
     with open('res/{}.txt'.format(file_name), 'r') as corpus: #source file
         with open('dest/{}.txt'.format(file_name), 'w') as dest_file: #destination
             corpus_text = corpus.read().lower().split() #normalize
