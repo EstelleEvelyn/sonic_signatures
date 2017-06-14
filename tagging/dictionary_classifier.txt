@@ -1,1 +1,20 @@
 {AA:[]}
+{‘M’:[voiced,nasal, bilabial]}
+{’N’:[voiced, nasal, linguaaleveolar]}
+{’NG’:[nasal, linguavelar, voiced]}
+{‘OW’:[dipthong]}
+{‘OY’:[dipthong]}
+{‘P’:[stop,bilabial,voiceless]}
+{‘R’:[liquid,linguapalatal,voiced]}
+{’S’:[fricative, voiceless, linguaaleveolar]}
+{‘SH’:[fricative,voiceless,linguapalatal]}
+{’T’:[stop,linguaaleveolar,voiceless]}
+{’TH’:[fricative, voiceless, linguadental]}
+{‘UH’:[monopthong]}
+{‘UW’:[monopthong]}
+{‘V’:[fricative, voiced, labiodental]}
+{‘W’:[semivowel, glide, bilabial, voiced]}
+{‘Y’:[semivowel, glide, linguapalatal, voiced]}
+{‘Z’:[fricative, voiced, linguaaleveolar]}
+{‘ZH’:[fricative, voiced, linguapalatal]}
+
