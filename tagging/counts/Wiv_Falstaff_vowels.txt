@@ -1,5 +1,5 @@
+monophthong , 3430
+central , 1190
 back , 705
 front , 1535
-central , 1190
-monophthong , 3430
 diphthong , 838

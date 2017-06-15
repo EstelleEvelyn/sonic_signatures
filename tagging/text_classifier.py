@@ -10,30 +10,30 @@ class Tagger:
     def __init__(self):
         #a dictionary with rudimentary classifications of every phoneme in our source files
         self.consonant_classifier_dictionary = {
-            'B':['stop', 'bilabial', 'voiced', 'nonsibilant'],
-            'CH':['affricate', 'linguaalveolar', 'voiceless', 'nonsibilant'],
-            'D':['stop', 'linguaalveolar', 'voiced', 'nonsibilant'],
-            'DH':['fricative', 'linguadental', 'voiced', 'nonsibilant'],
-            'F':['fricative', 'labiodental', 'voiceless', 'nonsibilant'],
-            'G':['stop', 'linguavelar', 'voiced', 'nonsibilant'],
-            'HH':['fricative', 'glottal', 'voiceless', 'nonsibilant'],
-            'JH':['affricate', 'linguaalveolar', 'voiced', 'nonsibilant'],
-            'K':['stop', 'linguavelar', 'voiceless', 'nonsibilant'],
-            'L':['liquid', 'linguaalveolar', 'voiced', 'nonsibilant'],
-            'M':['nasal', 'bilabial', 'voiced', 'nonsibilant'],
-            'N':['nasal', 'linguaalveolar', 'voiced', 'nonsibilant'],
-            'NG':['nasal', 'linguavelar', 'voiced', 'nonsibilant'],
-            'P':['stop', 'bilabial', 'voiceless', 'nonsibilant'],
-            'R':['liquid', 'linguapalatal', 'voiced', 'nonsibilant'],
-            'S':['fricative', 'linguaalveolar', 'voiceless', 'sibilant'],
-            'SH':['fricative', 'linguapalatal', 'voiceless', 'sibilant'],
-            'T':['stop', 'linguaalveolar', 'voiceless', 'nonsibilant'],
-            'TH':['fricative', 'linguadental', 'voiceless', 'nonsibilant'],
-            'V':['fricative', 'labiodental', 'voiced', 'nonsibilant'],
-            'W':['glide', 'bilabial', 'voiced', 'nonsibilant'],
-            'Y':['glide', 'linguapalatal', 'voiced', 'nonsibilant'],
-            'Z':['fricative', 'linguaalveolar', 'voiced', 'sibilant'],
-            'ZH':['fricative', 'linguapalatal', 'voiced', 'sibilant']
+            'B':['stop', 'bilabial', 'voiced', 'nonsibilant', 'nonsonorant'],
+            'CH':['affricate', 'linguaalveolar', 'voiceless', 'nonsibilant', 'nonsonorant'],
+            'D':['stop', 'linguaalveolar', 'voiced', 'nonsibilant', 'nonsonorant', 'coronal'],
+            'DH':['fricative', 'linguadental', 'voiced', 'nonsibilant', 'nonsonorant', 'coronal'],
+            'F':['fricative', 'labiodental', 'voiceless', 'nonsibilant', 'nonsonorant'],
+            'G':['stop', 'linguavelar', 'voiced', 'nonsibilant', 'nonsonorant'],
+            'HH':['fricative', 'glottal', 'voiceless', 'nonsibilant', 'nonsonorant'],
+            'JH':['affricate', 'linguaalveolar', 'voiced', 'nonsibilant', 'nonsonorant'],
+            'K':['stop', 'linguavelar', 'voiceless', 'nonsibilant', 'nonsonorant'],
+            'L':['liquid', 'linguaalveolar', 'voiced', 'nonsibilant', 'sonorant', 'coronal'],
+            'M':['nasal', 'bilabial', 'voiced', 'nonsibilant', 'sonorant'],
+            'N':['nasal', 'linguaalveolar', 'voiced', 'nonsibilant', 'sonorant'],
+            'NG':['nasal', 'linguavelar', 'voiced', 'nonsibilant', 'sonorant', 'coronal'],
+            'P':['stop', 'bilabial', 'voiceless', 'nonsibilant', 'nonsonorant'],
+            'R':['liquid', 'linguapalatal', 'voiced', 'nonsibilant', 'sonorant'],
+            'S':['fricative', 'linguaalveolar', 'voiceless', 'sibilant', 'nonsonorant', 'coronal'],
+            'SH':['fricative', 'linguapalatal', 'voiceless', 'sibilant', 'nonsonorant', 'coronal'],
+            'T':['stop', 'linguaalveolar', 'voiceless', 'nonsibilant', 'nonsonorant', 'coronal'],
+            'TH':['fricative', 'linguadental', 'voiceless', 'nonsibilant', 'nonsonorant', 'coronal'],
+            'V':['fricative', 'labiodental', 'voiced', 'nonsibilant', 'nonsonorant'],
+            'W':['glide', 'bilabial', 'voiced', 'nonsibilant', 'sonorant'],
+            'Y':['glide', 'linguapalatal', 'voiced', 'nonsibilant', 'sonorant'],
+            'Z':['fricative', 'linguaalveolar', 'voiced', 'sibilant', 'nonsonorant', 'coronal'],
+            'ZH':['fricative', 'linguapalatal', 'voiced', 'sibilant', 'nonsonorant', 'coronal']
             }
         self.vowel_classifier_dictionary = {
             'AA':['monophthong', 'back'],
@@ -62,7 +62,8 @@ class Tagger:
         return_dict = {'fricative':0, 'affricate':0, 'glide':0, 'nasal':0, 'liquid':0,
                         'stop':0, 'glottal':0, 'linguaalveolar':0, 'linguapalatal':0,
                         'labiodental':0, 'bilabial':0, 'linguavelar':0,'linguadental':0,
-                        'voiced':0, 'voiceless':0, 'sibilant':0, 'nonsibilant':0}
+                        'voiced':0, 'voiceless':0, 'sibilant':0, 'nonsibilant':0,
+                        'sonorant':0, 'nonsonorant':0}
         text = read_file.read().split()
         for phoneme in text:
             if phoneme in self.consonant_classifier_dictionary:
@@ -104,6 +105,7 @@ class Tagger:
                         vowel_count_dict = self.vowel_counts(source)
                         for item in vowel_count_dict:
                             result.write(item+" , "+str(vowel_count_dict[item])+"\n")
+                with open ("dest/{}.txt".format(filename), 'r') as source:
                     with open("counts/{}_consonants.txt".format(filename), 'w') as result:
                         consonant_count_dict = self.consonant_counts(source)
                         for item in consonant_count_dict:

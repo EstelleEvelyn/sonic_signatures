@@ -1,5 +1,5 @@
+monophthong , 1080
+central , 354
 back , 223
 front , 503
-central , 354
-monophthong , 1080
 diphthong , 222

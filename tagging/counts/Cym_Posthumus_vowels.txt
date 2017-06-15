@@ -1,5 +1,5 @@
-back , 702
 front , 1451
 central , 1070
-monophthong , 3223
 diphthong , 772
+monophthong , 3223
+back , 702

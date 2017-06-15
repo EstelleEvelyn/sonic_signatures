@@ -1,5 +1,5 @@
-back , 2259
 front , 5069
 central , 3925
-monophthong , 11253
 diphthong , 2414
+monophthong , 11253
+back , 2259

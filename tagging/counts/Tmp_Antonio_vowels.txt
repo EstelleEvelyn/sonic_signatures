@@ -1,5 +1,5 @@
+monophthong , 949
+central , 303
 back , 202
 front , 444
-central , 303
-monophthong , 949
 diphthong , 222

@@ -1,5 +1,5 @@
+monophthong , 1965
+central , 577
 back , 472
 front , 916
-central , 577
-monophthong , 1965
 diphthong , 451

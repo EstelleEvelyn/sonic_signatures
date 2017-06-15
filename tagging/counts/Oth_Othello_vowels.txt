@@ -1,5 +1,5 @@
+monophthong , 5887
+central , 2019
 back , 1204
 front , 2664
-central , 2019
-monophthong , 5887
 diphthong , 1436
