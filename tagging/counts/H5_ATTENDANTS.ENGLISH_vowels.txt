@@ -1,5 +1,5 @@
-back , 0
-central , 0
-diphthong , 1
-front , 1
 monophthong , 1
+back , 0
+front , 1
+diphthong , 1
+central , 0

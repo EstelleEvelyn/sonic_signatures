@@ -1,5 +1,5 @@
-front , 970
 monophthong , 2175
-diphthong , 431
 back , 456
+front , 970
+diphthong , 431
 central , 749

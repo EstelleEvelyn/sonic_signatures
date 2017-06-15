@@ -1,5 +1,5 @@
 monophthong , 1901
-central , 667
 back , 362
 front , 872
 diphthong , 443
+central , 667

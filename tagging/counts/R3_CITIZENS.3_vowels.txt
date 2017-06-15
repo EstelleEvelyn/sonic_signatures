@@ -1,5 +1,5 @@
 monophthong , 228
-central , 69
 back , 63
 front , 96
 diphthong , 45
+central , 69

@@ -1,5 +1,5 @@
-front , 1265
 monophthong , 2750
-diphthong , 657
 back , 556
+front , 1265
+diphthong , 657
 central , 929

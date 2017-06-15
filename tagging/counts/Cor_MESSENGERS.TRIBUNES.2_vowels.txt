@@ -1,5 +1,5 @@
-front , 48
-central , 47
-diphthong , 30
 monophthong , 128
 back , 33
+front , 48
+diphthong , 30
+central , 47

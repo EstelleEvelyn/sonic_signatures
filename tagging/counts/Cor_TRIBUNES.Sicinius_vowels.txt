@@ -1,5 +1,5 @@
-front , 985
-central , 621
-diphthong , 332
 monophthong , 2009
 back , 403
+front , 985
+diphthong , 332
+central , 621

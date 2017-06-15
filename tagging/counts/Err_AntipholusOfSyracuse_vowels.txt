@@ -1,5 +1,5 @@
-front , 918
 monophthong , 1910
-diphthong , 502
 back , 409
+front , 918
+diphthong , 502
 central , 583
