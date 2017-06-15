@@ -113,8 +113,7 @@ def get_all_character_texts():
 
 
 def main():
-    # get_all_character_texts()
-    phonetic_transcript('Cym_Cymbeline')
+    get_all_character_texts()
 
 if __name__ == "__main__":
     main()
