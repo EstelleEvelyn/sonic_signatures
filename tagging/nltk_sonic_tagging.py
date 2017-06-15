@@ -20,6 +20,8 @@ and destination files of the phonetic transcriptions of those same files
 class Transcriber:
 
     def __init__(self):
+        self.transcr = cmudict.dict() #import cmudict
+
         self.play_code_list = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4',
                                 'H5', '1H6', '2H6', '3H6', 'H8', 'JC', 'Jn', 'Lr', 'LLL', 'Mac',
                                 'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Oth', 'Per', 'R2', 'R3', 'Rom',
@@ -90,17 +92,19 @@ class Transcriber:
         of that file to the destination folder
         '''
         root = nltk.data.find('/')
-        transcr = cmudict.dict() #import cmudict
         with open('res/{}.txt'.format(file_name), 'r') as corpus: #source file
             with open('dest/{}.txt'.format(file_name), 'w') as dest_file: #destination
                 corpus_text = corpus.read().lower().split() #normalize
                 for word in corpus_text:
-                    if word in transcr: #TODO find a better way to resolve non-standard words
-                        phonetic_list = transcr[word][0]
+                    if word in self.transcr: #TODO find a better way to resolve non-standard words
+                        phonetic_list = self.transcr[word][0]
                         phonetic_string=""
                         for sound in phonetic_list: #this is inefficient
                             phonetic_string = phonetic_string+sound+" "
                         dest_file.write(phonetic_string+", ")
+                    # this was for omiission finder testing
+                    # else:
+                    #     print(word, file_name)
 
 
     def get_all_character_texts(self):
