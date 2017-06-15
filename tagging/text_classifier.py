@@ -50,7 +50,7 @@ class Tagger:
             if phoneme[-1] in "0123456789":
                 phoneme = phoneme[:-1]
             if phoneme != ',':
-                characteristics = DICTIONARY_CLASSIFIER[phoneme]
+                characteristics = self.dictionary_classifier[phoneme]
                 for characteristic in characteristics:
                     return_dict[characteristic] += 1
 
