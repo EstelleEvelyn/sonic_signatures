@@ -1,7 +1,14 @@
 from nltk_sonic_tagging import Transcriber
 
+'''
+text_classifier.py
+@authors Estelle Bayer, Liz Nichols, Summer 2017
+A program that, given an ARPAbet source file, returns a dictionary containing the
+number of occurrences of a handful of linguistic classifications
+'''
 class Tagger:
     def __init__(self):
+        #a dictionary with rudimentary classifications of every phoneme in our source files
         self.dictionary_classifier = {'AA':['monophthong', 'back'],
             'AE':['monophthong', 'front'],
             'AH':['monophthong', 'central'],
@@ -42,7 +49,12 @@ class Tagger:
             'Z':['fricative', 'linguaalveolar', 'voiced'],
             'ZH':['fricative', 'linguapalatal', 'voiced']}
 
+
     def counts(self, read_file):
+        '''
+        Given a file of a phonemes separated by whitespace, returns a dictionary
+        of the number of occurrences of a handful of features
+        '''
         return_dict = {'fricative':0, 'affricate':0, 'glide':0, 'nasal':0, 'liquid':0,
                         'stop':0, 'monophthong':0, 'diphthong':0, 'glottal':0,
                         'linguaalveolar':0, 'linguapalatal':0, 'labiodental':0, 'bilabial':0,
@@ -60,6 +72,10 @@ class Tagger:
         return return_dict
 
     def count_all_texts(self):
+        '''
+        For every file in the phonetic transcription folder, writes the counts of
+        features to a new file in a counts folder. Entries are separated by newlines
+        '''
         transcriber = Transcriber()
         play_code_list = transcriber.get_play_code_list()
         for play in play_code_list:
@@ -68,8 +84,9 @@ class Tagger:
                 filename = play+"_"+character
                 with open ("dest/{}.txt".format(filename), 'r') as source:
                     with open("counts/{}.txt".format(filename), 'w') as result:
-                        result.write(str(self.counts(source)))
-
+                        count_dict = self.counts(source)
+                        for item in count_dict:
+                            result.write(item+" , "+str(count_dict[item])+"\n")
 
 
 def main():
