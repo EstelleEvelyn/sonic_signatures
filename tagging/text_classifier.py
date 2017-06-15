@@ -9,63 +9,80 @@ number of occurrences of a handful of linguistic classifications
 class Tagger:
     def __init__(self):
         #a dictionary with rudimentary classifications of every phoneme in our source files
-        self.dictionary_classifier = {'AA':['monophthong', 'back'],
+        self.consonant_classifier_dictionary = {
+            'B':['stop', 'bilabial', 'voiced', 'nonsibilant'],
+            'CH':['affricate', 'linguaalveolar', 'voiceless', 'nonsibilant'],
+            'D':['stop', 'linguaalveolar', 'voiced', 'nonsibilant'],
+            'DH':['fricative', 'linguadental', 'voiced', 'nonsibilant'],
+            'F':['fricative', 'labiodental', 'voiceless', 'nonsibilant'],
+            'G':['stop', 'linguavelar', 'voiced', 'nonsibilant'],
+            'HH':['fricative', 'glottal', 'voiceless', 'nonsibilant'],
+            'JH':['affricate', 'linguaalveolar', 'voiced', 'nonsibilant'],
+            'K':['stop', 'linguavelar', 'voiceless', 'nonsibilant'],
+            'L':['liquid', 'linguaalveolar', 'voiced', 'nonsibilant'],
+            'M':['nasal', 'bilabial', 'voiced', 'nonsibilant'],
+            'N':['nasal', 'linguaalveolar', 'voiced', 'nonsibilant'],
+            'NG':['nasal', 'linguavelar', 'voiced', 'nonsibilant'],
+            'P':['stop', 'bilabial', 'voiceless', 'nonsibilant'],
+            'R':['liquid', 'linguapalatal', 'voiced', 'nonsibilant'],
+            'S':['fricative', 'linguaalveolar', 'voiceless', 'sibilant'],
+            'SH':['fricative', 'linguapalatal', 'voiceless', 'sibilant'],
+            'T':['stop', 'linguaalveolar', 'voiceless', 'nonsibilant'],
+            'TH':['fricative', 'linguadental', 'voiceless', 'nonsibilant'],
+            'V':['fricative', 'labiodental', 'voiced', 'nonsibilant'],
+            'W':['glide', 'bilabial', 'voiced', 'nonsibilant'],
+            'Y':['glide', 'linguapalatal', 'voiced', 'nonsibilant'],
+            'Z':['fricative', 'linguaalveolar', 'voiced', 'sibilant'],
+            'ZH':['fricative', 'linguapalatal', 'voiced', 'sibilant']
+            }
+        self.vowel_classifier_dictionary = {
+            'AA':['monophthong', 'back'],
             'AE':['monophthong', 'front'],
             'AH':['monophthong', 'central'],
             'AO':['monophthong', 'back'],
             'AW':['diphthong'],
             'AY':['diphthong'],
-            'B':['stop', 'bilabial', 'voiced'],
-            'CH':['affricate', 'linguaalveolar', 'voiceless'],
-            'D':['stop', 'linguaalveolar', 'voiced'],
-            'DH':['fricative', 'linguadental', 'voiced'],
             'EH':['monophthong', 'front'],
             'ER':['monophthong', 'central'],
             'EY':['diphthong'],
-            'F':['fricative', 'labiodental', 'voiceless'],
-            'G':['stop', 'linguavelar', 'voiced'],
-            'HH':['fricative', 'glottal', 'voiceless'],
             'IH':['monophthong', 'front'],
             'IY':['monophthong', 'front'],
-            'JH':['affricate', 'linguaalveolar', 'voiced'],
-            'K':['stop', 'linguavelar', 'voiceless'],
-            'L':['liquid', 'linguaalveolar', 'voiced'],
-            'M':['nasal', 'bilabial', 'voiced'],
-            'N':['nasal', 'linguaalveolar', 'voiced'],
-            'NG':['nasal', 'linguavelar', 'voiced'],
             'OW':['diphthong'],
             'OY':['diphthong'],
-            'P':['stop', 'bilabial', 'voiceless'],
-            'R':['liquid', 'linguapalatal', 'voiced'],
-            'S':['fricative', 'linguaalveolar', 'voiceless'],
-            'SH':['fricative', 'linguapalatal', 'voiceless'],
-            'T':['stop', 'linguaalveolar', 'voiceless'],
-            'TH':['fricative', 'linguadental', 'voiceless'],
             'UH':['monophthong', 'back'],
-            'UW':['monophthong', 'back'],
-            'V':['fricative', 'labiodental', 'voiced'],
-            'W':['glide', 'bilabial', 'voiced'],
-            'Y':['glide', 'linguapalatal', 'voiced'],
-            'Z':['fricative', 'linguaalveolar', 'voiced'],
-            'ZH':['fricative', 'linguapalatal', 'voiced']}
+            'UW':['monophthong', 'back']
+            }
 
 
-    def counts(self, read_file):
+    def consonant_counts(self, read_file):
         '''
         Given a file of a phonemes separated by whitespace, returns a dictionary
-        of the number of occurrences of a handful of features
+        of the number of occurrences of a handful of features of consonants
         '''
         return_dict = {'fricative':0, 'affricate':0, 'glide':0, 'nasal':0, 'liquid':0,
-                        'stop':0, 'monophthong':0, 'diphthong':0, 'glottal':0,
-                        'linguaalveolar':0, 'linguapalatal':0, 'labiodental':0, 'bilabial':0,
-                        'linguavelar':0,'linguadental':0, 'voiced':0, 'voiceless':0,
-                        'central':0, 'front':0, 'back':0}
+                        'stop':0, 'glottal':0, 'linguaalveolar':0, 'linguapalatal':0,
+                        'labiodental':0, 'bilabial':0, 'linguavelar':0,'linguadental':0,
+                        'voiced':0, 'voiceless':0, 'sibilant':0, 'nonsibilant':0}
         text = read_file.read().split()
         for phoneme in text:
-            if phoneme[-1] in "0123456789":
-                phoneme = phoneme[:-1]
-            if phoneme != ',':
-                characteristics = self.dictionary_classifier[phoneme]
+            if phoneme in self.consonant_classifier_dictionary:
+                characteristics = self.consonant_classifier_dictionary[phoneme]
+                for characteristic in characteristics:
+                    return_dict[characteristic] += 1
+
+        return return_dict
+
+    def vowel_counts(self, read_file):
+        '''
+        Given a file of a phonemes separated by whitespace, returns a dictionary
+        of the number of occurrences of a handful of features of vowels
+        '''
+        return_dict = {'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0}
+        text = read_file.read().split()
+        for phoneme in text:
+            phoneme = phoneme[:-1]
+            if phoneme in self.vowel_classifier_dictionary:
+                characteristics = self.vowel_classifier_dictionary[phoneme]
                 for characteristic in characteristics:
                     return_dict[characteristic] += 1
 
@@ -83,11 +100,14 @@ class Tagger:
             for character in character_list:
                 filename = play+"_"+character
                 with open ("dest/{}.txt".format(filename), 'r') as source:
-                    with open("counts/{}.txt".format(filename), 'w') as result:
-                        count_dict = self.counts(source)
-                        for item in count_dict:
-                            result.write(item+" , "+str(count_dict[item])+"\n")
-
+                    with open("counts/{}_vowels.txt".format(filename), 'w') as result:
+                        vowel_count_dict = self.vowel_counts(source)
+                        for item in vowel_count_dict:
+                            result.write(item+" , "+str(vowel_count_dict[item])+"\n")
+                    with open("counts/{}_consonants.txt".format(filename), 'w') as result:
+                        consonant_count_dict = self.consonant_counts(source)
+                        for item in consonant_count_dict:
+                            result.write(item+" , "+str(consonant_count_dict[item])+"\n")
 
 def main():
     counter = Tagger()
