@@ -36,21 +36,21 @@ class Tagger:
             'ZH':['fricative', 'linguapalatal', 'voiced', 'sibilant', 'nonsonorant', 'coronal']
             }
         self.vowel_classifier_dictionary = {
-            'AA':['monophthong', 'back'],
-            'AE':['monophthong', 'front'],
-            'AH':['monophthong', 'central'],
-            'AO':['monophthong', 'back'],
+            'AA':['monophthong', 'back', 'unrounded', 'lax'],
+            'AE':['monophthong', 'front', 'unrounded', 'lax'],
+            'AH':['monophthong', 'central', 'unrounded', 'lax'],
+            'AO':['monophthong', 'back', 'rounded', 'lax'],
             'AW':['diphthong'],
             'AY':['diphthong'],
-            'EH':['monophthong', 'front'],
-            'ER':['monophthong', 'central'],
+            'EH':['monophthong', 'front', 'unrounded', 'lax'],
+            'ER':['monophthong', 'central', 'rounded','tense'],
             'EY':['diphthong'],
-            'IH':['monophthong', 'front'],
-            'IY':['monophthong', 'front'],
+            'IH':['monophthong', 'front', 'unrounded', 'lax'],
+            'IY':['monophthong', 'front', 'unrounded', 'tense'],
             'OW':['diphthong'],
             'OY':['diphthong'],
-            'UH':['monophthong', 'back'],
-            'UW':['monophthong', 'back']
+            'UH':['monophthong', 'back', 'rounded', 'lax'],
+            'UW':['monophthong', 'back', 'rounded', 'tense']
             }
 
 
@@ -78,7 +78,8 @@ class Tagger:
         Given a file of a phonemes separated by whitespace, returns a dictionary
         of the number of occurrences of a handful of features of vowels
         '''
-        return_dict = {'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0}
+        return_dict = {'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0
+                        'tense':0, 'lax':0, 'rounded':0, ,'unrounded':0}
         text = read_file.read().split()
         for phoneme in text:
             phoneme = phoneme[:-1]
