@@ -19,6 +19,15 @@ and destination files of the phonetic transcriptions of those same files
 #TODO efficiency optimization
 class Transcriber:
 
+    def __init__(self):
+        self.play_code_list = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4',
+                                'H5', '1H6', '2H6', '3H6', 'H8', 'JC', 'Jn', 'Lr', 'LLL', 'Mac',
+                                'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Oth', 'Per', 'R2', 'R3', 'Rom',
+                                'Shr', 'Tmp', 'Tim', 'Tit', 'Tro', 'TN', 'TGV', 'TNK', 'WT']
+
+    def get_play_code_list(self):
+        return self.play_code_list
+
     def get_character_text(self, play, character):
         '''
         Takes the name of a Shakespeare play key and character in that play, and uses the
@@ -100,11 +109,8 @@ class Transcriber:
         a file in the res folder, then writes the phonetic transcription to the dest
         folder
         '''
-        play_code_list = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4',
-                        'H5', '1H6', '2H6', '3H6', 'H8', 'JC', 'Jn', 'Lr', 'LLL', 'Mac',
-                        'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Oth', 'Per', 'R2', 'R3', 'Rom',
-                        'Shr', 'Tmp', 'Tim', 'Tit', 'Tro', 'TN', 'TGV', 'TNK', 'WT']
-        for play in play_code_list:
+
+        for play in self.play_code_list:
             character_list = self.get_character_list(play)
             for character in character_list:
                 self.get_character_text(play, character)
