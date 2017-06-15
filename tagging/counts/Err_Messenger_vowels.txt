@@ -1,0 +1,5 @@
+back , 27
+front , 55
+central , 34
+monophthong , 116
+diphthong , 31
