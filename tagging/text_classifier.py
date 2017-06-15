@@ -10,28 +10,28 @@ class Tagger:
     def __init__(self):
         #a dictionary with rudimentary classifications of every phoneme in our source files
         self.consonant_classifier_dictionary = {
-            'B':['stop', 'bilabial', 'voiced', 'nonsibilant', 'nonsonorant'],
-            'CH':['affricate', 'linguaalveolar', 'voiceless', 'nonsibilant', 'nonsonorant'],
+            'B':['stop', 'bilabial', 'voiced', 'nonsibilant', 'nonsonorant', 'noncoronal'],
+            'CH':['affricate', 'linguaalveolar', 'voiceless', 'nonsibilant', 'nonsonorant', 'noncoronal'],
             'D':['stop', 'linguaalveolar', 'voiced', 'nonsibilant', 'nonsonorant', 'coronal'],
             'DH':['fricative', 'linguadental', 'voiced', 'nonsibilant', 'nonsonorant', 'coronal'],
-            'F':['fricative', 'labiodental', 'voiceless', 'nonsibilant', 'nonsonorant'],
-            'G':['stop', 'linguavelar', 'voiced', 'nonsibilant', 'nonsonorant'],
-            'HH':['fricative', 'glottal', 'voiceless', 'nonsibilant', 'nonsonorant'],
-            'JH':['affricate', 'linguaalveolar', 'voiced', 'nonsibilant', 'nonsonorant'],
-            'K':['stop', 'linguavelar', 'voiceless', 'nonsibilant', 'nonsonorant'],
+            'F':['fricative', 'labiodental', 'voiceless', 'nonsibilant', 'nonsonorant', 'noncoronal'],
+            'G':['stop', 'linguavelar', 'voiced', 'nonsibilant', 'nonsonorant', 'noncoronal'],
+            'HH':['fricative', 'glottal', 'voiceless', 'nonsibilant', 'nonsonorant', 'noncoronal'],
+            'JH':['affricate', 'linguaalveolar', 'voiced', 'nonsibilant', 'nonsonorant', 'noncoronal'],
+            'K':['stop', 'linguavelar', 'voiceless', 'nonsibilant', 'nonsonorant', 'noncoronal'],
             'L':['liquid', 'linguaalveolar', 'voiced', 'nonsibilant', 'sonorant', 'coronal'],
-            'M':['nasal', 'bilabial', 'voiced', 'nonsibilant', 'sonorant'],
-            'N':['nasal', 'linguaalveolar', 'voiced', 'nonsibilant', 'sonorant'],
+            'M':['nasal', 'bilabial', 'voiced', 'nonsibilant', 'sonorant', 'noncoronal'],
+            'N':['nasal', 'linguaalveolar', 'voiced', 'nonsibilant', 'sonorant', 'noncoronal'],
             'NG':['nasal', 'linguavelar', 'voiced', 'nonsibilant', 'sonorant', 'coronal'],
-            'P':['stop', 'bilabial', 'voiceless', 'nonsibilant', 'nonsonorant'],
-            'R':['liquid', 'linguapalatal', 'voiced', 'nonsibilant', 'sonorant'],
+            'P':['stop', 'bilabial', 'voiceless', 'nonsibilant', 'nonsonorant', 'noncoronal'],
+            'R':['liquid', 'linguapalatal', 'voiced', 'nonsibilant', 'sonorant', 'coronal'],
             'S':['fricative', 'linguaalveolar', 'voiceless', 'sibilant', 'nonsonorant', 'coronal'],
             'SH':['fricative', 'linguapalatal', 'voiceless', 'sibilant', 'nonsonorant', 'coronal'],
             'T':['stop', 'linguaalveolar', 'voiceless', 'nonsibilant', 'nonsonorant', 'coronal'],
             'TH':['fricative', 'linguadental', 'voiceless', 'nonsibilant', 'nonsonorant', 'coronal'],
-            'V':['fricative', 'labiodental', 'voiced', 'nonsibilant', 'nonsonorant'],
-            'W':['glide', 'bilabial', 'voiced', 'nonsibilant', 'sonorant'],
-            'Y':['glide', 'linguapalatal', 'voiced', 'nonsibilant', 'sonorant'],
+            'V':['fricative', 'labiodental', 'voiced', 'nonsibilant', 'nonsonorant', 'noncoronal'],
+            'W':['glide', 'bilabial', 'voiced', 'nonsibilant', 'sonorant', 'noncoronal'],
+            'Y':['glide', 'linguapalatal', 'voiced', 'nonsibilant', 'sonorant', 'noncoronal'],
             'Z':['fricative', 'linguaalveolar', 'voiced', 'sibilant', 'nonsonorant', 'coronal'],
             'ZH':['fricative', 'linguapalatal', 'voiced', 'sibilant', 'nonsonorant', 'coronal']
             }
@@ -63,7 +63,7 @@ class Tagger:
                         'stop':0, 'glottal':0, 'linguaalveolar':0, 'linguapalatal':0,
                         'labiodental':0, 'bilabial':0, 'linguavelar':0,'linguadental':0,
                         'voiced':0, 'voiceless':0, 'sibilant':0, 'nonsibilant':0,
-                        'sonorant':0, 'nonsonorant':0}
+                        'sonorant':0, 'nonsonorant':0, 'coronal':0, 'noncoronal':0}
         text = read_file.read().split()
         for phoneme in text:
             if phoneme in self.consonant_classifier_dictionary:
