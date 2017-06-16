@@ -2,7 +2,7 @@ from nltk.corpus import cmudict
 import nltk
 import sys
 import argparse
-import urllib.request
+import urllib2
 import json
 from bs4 import BeautifulSoup
 import string
@@ -41,7 +41,7 @@ class Transcriber:
         base_url = 'http://www.folgerdigitaltexts.org/{0}/charText/{1}.html'
         url = base_url.format(play, character_tag)
 
-        data_from_server = urllib.request.urlopen(url).read()
+        data_from_server = urllib2.urlopen(url).read()
         string_from_server = data_from_server.decode('utf-8')
         string_from_server.encode('ascii', 'replace')
         initial_text = BeautifulSoup(string_from_server, 'html.parser')
@@ -74,7 +74,7 @@ class Transcriber:
         base_url = 'http://www.folgerdigitaltexts.org/{}/charText/'
         url  = base_url.format(play)
 
-        data_from_server = urllib.request.urlopen(url).read()
+        data_from_server = urllib2.urlopen(url).read()
         string_from_server = data_from_server.decode('utf-8')
         html_data = BeautifulSoup(string_from_server, "html.parser")
         character_list = []

@@ -78,8 +78,8 @@ class Tagger:
         Given a file of a phonemes separated by whitespace, returns a dictionary
         of the number of occurrences of a handful of features of vowels
         '''
-        return_dict = {'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0
-                        'tense':0, 'lax':0, 'rounded':0, ,'unrounded':0}
+        return_dict = {'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0,
+                        'tense':0, 'lax':0, 'rounded':0, 'unrounded':0}
         text = read_file.read().split()
         for phoneme in text:
             phoneme = phoneme[:-1]
@@ -89,6 +89,19 @@ class Tagger:
                     return_dict[characteristic] += 1
 
         return return_dict
+
+    def count_text(self, read_file):
+        with open("dest/{}.txt".format(read_file), 'r') as source:
+            with open("counts/{}_vowels.txt".format(read_file), 'w') as result:
+                vowel_count_dict = self.vowel_counts(source)
+                for item in vowel_count_dict:
+                    result.write(item+" , "+str(vowel_count_dict[item])+"\n")
+        with open("dest/{}.txt".format(read_file), 'r') as source:
+            with open("counts/{}_consonants.txt".format(read_file), 'w') as result:
+                consonant_count_dict = self.consonant_counts(source)
+                for item in consonant_count_dict:
+                    result.write(item+" , "+str(consonant_count_dict[item])+"\n")
+
 
     def count_all_texts(self):
         '''
@@ -101,16 +114,7 @@ class Tagger:
             character_list = transcriber.get_character_list(play)
             for character in character_list:
                 filename = play+"_"+character
-                with open ("dest/{}.txt".format(filename), 'r') as source:
-                    with open("counts/{}_vowels.txt".format(filename), 'w') as result:
-                        vowel_count_dict = self.vowel_counts(source)
-                        for item in vowel_count_dict:
-                            result.write(item+" , "+str(vowel_count_dict[item])+"\n")
-                with open ("dest/{}.txt".format(filename), 'r') as source:
-                    with open("counts/{}_consonants.txt".format(filename), 'w') as result:
-                        consonant_count_dict = self.consonant_counts(source)
-                        for item in consonant_count_dict:
-                            result.write(item+" , "+str(consonant_count_dict[item])+"\n")
+                count_text(filename)
 
 def main():
     counter = Tagger()
