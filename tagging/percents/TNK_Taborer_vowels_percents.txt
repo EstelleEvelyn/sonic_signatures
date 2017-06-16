@@ -1,0 +1,9 @@
+central , 0.0
+tense , 8.0
+rounded , 4.0
+back , 4.0
+front , 16.0
+diphthong , 8.0
+unrounded , 16.0
+lax , 12.0
+monophthong , 20.0

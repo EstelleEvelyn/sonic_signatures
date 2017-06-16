@@ -1,0 +1,9 @@
+central , 7.95
+tense , 6.94
+rounded , 5.05
+back , 5.05
+front , 10.72
+diphthong , 5.55
+unrounded , 18.67
+lax , 16.78
+monophthong , 23.71

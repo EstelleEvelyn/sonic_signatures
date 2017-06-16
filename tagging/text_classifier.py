@@ -1,4 +1,5 @@
 from nltk_sonic_tagging import Transcriber
+import math
 
 '''
 text_classifier.py
@@ -53,7 +54,16 @@ class Tagger:
             'UW':['monophthong', 'back', 'rounded', 'tense']
             }
 
-
+    globalConsonants = {'fricative':0, 'affricate':0, 'glide':0, 'nasal':0, 'liquid':0,
+                        'stop':0, 'glottal':0, 'linguaalveolar':0, 'linguapalatal':0,
+                        'labiodental':0, 'bilabial':0, 'linguavelar':0,'linguadental':0,
+                        'voiced':0, 'voiceless':0, 'sibilant':0, 'nonsibilant':0,
+                        'sonorant':0, 'nonsonorant':0, 'coronal':0, 'noncoronal':0}
+    
+    globalVowels = {'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0, 
+    'tense':0, 'lax':0, 'rounded':0,'unrounded':0}
+    phonemeCount = 0
+    
     def consonant_counts(self, read_file):
         '''
         Given a file of a phonemes separated by whitespace, returns a dictionary
@@ -65,11 +75,33 @@ class Tagger:
                         'voiced':0, 'voiceless':0, 'sibilant':0, 'nonsibilant':0,
                         'sonorant':0, 'nonsonorant':0, 'coronal':0, 'noncoronal':0}
         text = read_file.read().split()
+        
+        numberOfPhonemes = 0
+        
         for phoneme in text:
+            numberOfPhonemes +=1
+            self.phonemeCount +=1
             if phoneme in self.consonant_classifier_dictionary:
                 characteristics = self.consonant_classifier_dictionary[phoneme]
                 for characteristic in characteristics:
                     return_dict[characteristic] += 1
+                    self.globalConsonants[characteristic]+=1
+        
+        percentageDict = {}
+        for item in return_dict:
+           if return_dict.get(item)!= None:
+               if numberOfPhonemes !=0:
+                   percentOfTotal = float(return_dict.get(item))/numberOfPhonemes
+                   percentageDict[item] = (math.ceil((percentOfTotal*100)*100)/100)
+               else:
+                   percentageDict[item] = 0
+        
+        filename = str(read_file.name)
+        fn = filename.rstrip('.txt').lstrip('dest')
+        with open("percents/{}_consonants_percents.txt".format(fn),'w') as result:
+            for item in percentageDict:
+                result.write(item+" , "+str(percentageDict[item])+"\n") 
+
 
         return return_dict
 
@@ -78,15 +110,34 @@ class Tagger:
         Given a file of a phonemes separated by whitespace, returns a dictionary
         of the number of occurrences of a handful of features of vowels
         '''
-        return_dict = {'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0
-                        'tense':0, 'lax':0, 'rounded':0, ,'unrounded':0}
+        return_dict = {'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0, 
+        'tense':0, 'lax':0, 'rounded':0,'unrounded':0}
         text = read_file.read().split()
+        numberOfPhonemes = 0
+        
         for phoneme in text:
+            numberOfPhonemes +=1
             phoneme = phoneme[:-1]
             if phoneme in self.vowel_classifier_dictionary:
                 characteristics = self.vowel_classifier_dictionary[phoneme]
                 for characteristic in characteristics:
                     return_dict[characteristic] += 1
+                    self.globalVowels[characteristic] +=1
+        
+        percentageDict = {}
+        for item in return_dict:
+           if return_dict.get(item)!= None:
+               if numberOfPhonemes != 0:
+                   percentOfTotal = float(return_dict.get(item))/numberOfPhonemes
+                   percentageDict[item] = (math.ceil((percentOfTotal*100)*100)/100)
+               else:
+                   percentageDict[item] = 0
+        
+        filename = read_file.name
+        fn = filename.rstrip('.txt').lstrip('/dest')
+        with open("percents/{}_vowels_percents.txt".format(fn),'w') as result:
+            for item in percentageDict:
+                result.write(item+" , "+str(percentageDict[item])+"\n") 
 
         return return_dict
 
@@ -105,16 +156,39 @@ class Tagger:
                     with open("counts/{}_vowels.txt".format(filename), 'w') as result:
                         vowel_count_dict = self.vowel_counts(source)
                         for item in vowel_count_dict:
-                            result.write(item+" , "+str(vowel_count_dict[item])+"\n")
+                           result.write(item+" , "+str(vowel_count_dict[item])+"\n")
                 with open ("dest/{}.txt".format(filename), 'r') as source:
                     with open("counts/{}_consonants.txt".format(filename), 'w') as result:
                         consonant_count_dict = self.consonant_counts(source)
                         for item in consonant_count_dict:
                             result.write(item+" , "+str(consonant_count_dict[item])+"\n")
+    
+    def find_percentages(self):
+       '''
+       For every file in the counts folder, finds the total number of phonemes as well
+       as the percentage of each type
+       '''
+       percentageDict = {}
+       for item in self.globalConsonants:
+           if self.globalConsonants.get(item)!= None:
+               percentOfTotal = float(self.globalConsonants.get(item))/self.phonemeCount
+               percentageDict[item] = (math.ceil((percentOfTotal*100)*100)/100)
+               
+       for item in self.globalVowels:
+           if self.globalVowels.get(item)!= None:
+               percentOfTotal = float(self.globalVowels.get(item))/self.phonemeCount
+               percentageDict[item] = (math.ceil((percentOfTotal*100)*100)/100)
+               
+       for item in percentageDict:
+           print (str(item) + " " + str(percentageDict.get(item)) + ("%"))
+           
+       
+    
 
 def main():
     counter = Tagger()
     counter.count_all_texts()
+    counter.find_percentages()
 
 if __name__ == "__main__":
     main()
