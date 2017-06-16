@@ -1,10 +1,19 @@
 import re
-
+'''
+speaker_separator.py
+@author Estelle Bayer
+A program designed to process transcribed files and separate their text contents
+into separate files for distinct speakers
+'''
 class Separator:
     def __init__(self):
-        self.speaker_list = {}
+        self.speaker_list = {} #a dictionary of the speakers in a text:their lines
 
     def find_speakers(self, filename):
+        '''
+        Given the name of a file in the res folder, determines all of the distinct
+        names of speakers in that file using regex
+        '''
         with open(filename) as orig_file:
             text = orig_file.read()
             speaker_tags = re.findall("\n.*?:", text)
@@ -19,6 +28,10 @@ class Separator:
         return self.speaker_list
 
     def separate_file(self, filename):
+        '''
+        Given the name of a file in the res folder, separates the text of that file
+        into dictionary entries of the form speaker:speaker's lines
+        '''
         self.find_speakers(filename)
         with open(filename) as orig_file:
             raw_text = orig_file.readlines()
@@ -34,6 +47,11 @@ class Separator:
         return self.speaker_list
 
     def print_new_files(self, filename):
+        '''
+        Given the name of a file in the res folder, creates new files for every
+        speaker in the given file containg all the lines from one individual speaker
+        '''
+        self.separate_file(filename)
         base_file = filename.lstrip("res/").rstrip(".txt")
         for speaker in self.speaker_list:
             new_file = "res/{0}_{1}.txt".format(speaker, base_file)
@@ -47,7 +65,6 @@ class Separator:
 
 def main():
     separ = Separator()
-    separ.separate_file("res/presidential_debate.txt")
     separ.print_new_files("res/presidential_debate.txt")
 
 
