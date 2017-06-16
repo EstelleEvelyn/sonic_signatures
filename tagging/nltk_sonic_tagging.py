@@ -4,7 +4,7 @@ import sys
 import argparse
 import urllib2
 import json
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup #toggle comment for this line if bs4 not installed
 import string
 
 
