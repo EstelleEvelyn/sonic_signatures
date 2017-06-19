@@ -1,9 +1,0 @@
-feature , percentcentral , 6.91%
-tense , 5.6%
-rounded , 4.94%
-back , 5.93%
-front , 10.53%
-lax , 17.77%
-unrounded , 18.43%
-diphthong , 6.58%
-monophthong , 23.36%

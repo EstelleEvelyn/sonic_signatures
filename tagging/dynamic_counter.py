@@ -1,6 +1,12 @@
 import sys
 from nltk_sonic_tagging import Transcriber
 from text_classifier import Tagger
+'''
+dynamic_counter.py
+@author Estelle Bayer, Summer 2017
+A program which takes a file name as a command line argument and calculates the
+linguistic feature proportions for that file
+'''
 
 def main():
 

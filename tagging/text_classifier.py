@@ -1,11 +1,12 @@
-from nltk_sonic_tagging import Transcriber
 import math
+import os
 
 '''
 text_classifier.py
 @authors Estelle Bayer, Liz Nichols, Summer 2017
-A program that, given an ARPAbet source file, returns a dictionary containing the
-number of occurrences of a handful of linguistic classifications
+A program that, given an ARPAbet source file, produces files containing information
+about the raw number and percentage of a handful of linguistic features, separated
+into vowel and consonant
 '''
 class Tagger:
     def __init__(self):
@@ -92,7 +93,8 @@ class Tagger:
 
     def consonant_percentages(self, consonant_dictionary, consonant_count):
         '''
-        Given a dictionary containing
+        Given a dictionary of features and their counts as well as the overall
+        number of consonants in a file, converts them to a percentage dictionary
         '''
         percentage_dict = {}
         for item in consonant_dictionary:
@@ -105,11 +107,15 @@ class Tagger:
         return percentage_dict
 
     def print_cons_percents(self, percentage_dict, read_file):
+        '''
+        Given a dictionary of features and their percentages for a given file,
+        prints those features to a new csv file
+        '''
         fn = read_file.rstrip('.txt').lstrip('dest')
         with open("percents/{}_consonants_percents.csv".format(fn),'w') as result:
-            result.write('feature , percent \n')
+            result.write('feature,percent\n')
             for item in percentage_dict:
-                result.write(item+" , "+str(percentage_dict[item])+"\n")
+                result.write(item+","+str(percentage_dict[item])+"\n")
 
 
     def vowel_counts(self, read_file):
@@ -135,39 +141,63 @@ class Tagger:
         return self.global_vowels, self.vowel_count
 
     def vowel_percentages(self, vowel_dictionary, vowel_count):
+        '''
+        Given a dictionary of features and their counts as well as the overall
+        number of vowels in a file, converts them to a percentage dictionary
+        '''
         percentage_dict = {}
+        monophthong_count = vowel_dictionary['monophthong']
+        diphthong = vowel_count - monophthong_count
         for item in vowel_dictionary:
-           if vowel_dictionary.get(item)!= None:
-               if vowel_count != 0:
-                   percent_of_total = float(vowel_dictionary.get(item))/vowel_count
-                   percentage_dict[item] = (math.ceil((percent_of_total*100)*100)/100)
-               else:
-                   percentage_dict[item] = 0
+            if vowel_dictionary.get(item)!= None and item != 'diphthong' and item != 'monophthong':
+                if monophthong_count != 0:
+                    percent_of_total = float(vowel_dictionary.get(item))/monophthong_count
+                    percentage_dict[item] = (math.ceil((percent_of_total*100)*100)/100)
+                else:
+                    percentage_dict[item] = 0
+            elif vowel_dictionary.get(item) != None:
+                if vowel_count != 0:
+                    percent_of_total = float(vowel_dictionary.get(item))/vowel_count
+                    percentage_dict[item] = (math.ceil((percent_of_total*100)*100)/100)
+                else:
+                    percentage_dict[item] = 0
         return percentage_dict
 
     def print_vowel_percents(self, percentage_dict, read_file):
+        '''
+        Given a dictionary of features and their percentages for a given file,
+        prints those features to a new csv file
+        '''
         fn = read_file.rstrip('.txt').lstrip('/dest')
         with open("percents/{}_vowels_percents.csv".format(fn),'w') as result:
-            result.write('feature , percent \n')
+            result.write('feature,percent\n')
             for item in percentage_dict:
-                result.write(item+" , "+str(percentage_dict[item])+"\n")
+                result.write(item+","+str(percentage_dict[item])+"\n")
 
 
     def count_text(self, read_file):
+        '''
+        Given a text file name, writes the counts of its consonant and vowel features
+        to two new csv files in the percents folder
+        '''
         with open("dest/{}.txt".format(read_file), 'r') as source:
             with open("counts/{}_vowels.csv".format(read_file), 'w') as result:
-                result.write("feature , count \n")
+                result.write("feature,count\n")
                 vowel_count_dict = self.vowel_counts(source)[0]
                 for item in vowel_count_dict:
-                    result.write(item+" , "+str(vowel_count_dict[item])+"\n")
+                    result.write(item+","+str(vowel_count_dict[item])+"\n")
         with open("dest/{}.txt".format(read_file), 'r') as source:
             with open("counts/{}_consonants.csv".format(read_file), 'w') as result:
-                result.write("feature , count \n")
+                result.write("feature,count\n")
                 consonant_count_dict = self.consonant_counts(source)[0]
                 for item in consonant_count_dict:
-                    result.write(item+" , "+str(consonant_count_dict[item])+"\n")
+                    result.write(item+","+str(consonant_count_dict[item])+"\n")
 
     def percent_text(self, read_file):
+        '''
+        Given a file, writes the percentages of its consonant and vowel features
+        to two new csv files in the percents folder
+        '''
         with open("dest/{}.txt".format(read_file), 'r') as source:
             cons_counts = self.consonant_counts(source)
             cons_pct_dict = self.consonant_percentages(cons_counts[0], cons_counts[1])
@@ -181,16 +211,13 @@ class Tagger:
     def count_all_texts(self):
         '''
         For every file in the phonetic transcription folder, writes the counts of
-        features to a new file in a counts folder. Entries are separated by newlines
+        features to a two new csv files in a counts folder
         '''
-        transcriber = Transcriber()
-        play_code_list = transcriber.get_play_code_list()
-        for play in play_code_list:
-            character_list = transcriber.get_character_list(play)
-            for character in character_list:
-                filename = play+"_"+character
-                self.count_text(filename)
-                self.percent_text(filename)
+
+        for filename in os.listdir("dest/"):
+            file_base = filename[:-4]
+            self.count_text(file_base)
+            self.percent_text(file_base)
 
 
 

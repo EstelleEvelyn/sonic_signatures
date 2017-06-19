@@ -26,7 +26,7 @@ var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d5
 
 var pie = d3.pie()
     .sort(null)
-    .value(function(d) { return d.count; });
+    .value(function(d) { return d.percent; });
 
 var path = d3.arc()
     .outerRadius(radius - 10)
@@ -36,8 +36,8 @@ var label = d3.arc()
     .outerRadius(radius - 40)
     .innerRadius(radius - 40);
 
-d3.csv("tagging/counts/Ham_Horatio_consonants.csv", function(d) {
-  d.count = +d.count;
+d3.csv("tagging/features/H8_HenryVIII_consonants_percents_placement.csv", function(d) {
+  d.percent  = +d.percent;
   return d;
 }, function(error, data) {
   if (error) throw error;
@@ -55,7 +55,7 @@ d3.csv("tagging/counts/Ham_Horatio_consonants.csv", function(d) {
   arc.append("text")
       .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
       .attr("dy", "0.35em")
-      .text(function(d) { return d.data.feature; });
+      .text(function(d) { return d.data.feature ; });
 });
 
 </script>
