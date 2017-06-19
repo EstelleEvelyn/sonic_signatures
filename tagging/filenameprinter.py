@@ -27,7 +27,7 @@ for fn in os.listdir(path):
         for percent in percentsArray:
             print (str(percent)+ ("%"))
         filename = fn.rstrip('.txt')
-        destination = open("percents/{}_percents.txt".format(filename),'w')
+        destination = open("percents/{}_percents.csv".format(filename),'w')
+        destination.write("feature, percent \n")
         for i in range(0, len(percentsArray)):
             destination.write(typesArray[i]+ ', ' + str(percentsArray[i])+ ("%")+'\n')
-              

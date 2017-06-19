@@ -1,9 +1,9 @@
+feature , countfront , 904
+monophthong , 2021
 central , 671
-tense , 462
-rounded , 453
-back , 446
-front , 904
-lax , 1559
 unrounded , 1568
 diphthong , 434
-monophthong , 2021
+tense , 462
+lax , 1559
+back , 446
+rounded , 453

@@ -1,9 +1,9 @@
+feature , countfront , 5069
+monophthong , 11253
 central , 3925
-tense , 2644
-rounded , 2396
-back , 2259
-front , 5069
-lax , 8609
 unrounded , 8857
 diphthong , 2414
-monophthong , 11253
+tense , 2644
+lax , 8609
+back , 2259
+rounded , 2396
