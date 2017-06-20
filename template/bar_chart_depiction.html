@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="{{ url_for('static', filename='bar_chart.js') }}"></script>
+    <title> Phonemic Features: Shakespeare </title>
+    <style>
+    .axis text {
+      font: 10px sans-serif;
+    }
+    .axis line,
+    .axis path {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    .path-line {
+      fill: none;
+      stroke: yellow;
+      stroke-width: 1.5px;
+    }
+    svg {
+      background: #f0f0f0;
+    }
+    </style>
+  </head>
+  <body>
+    <div>
+      <select id="Character1">
+        <option value="MND_Bottom">Bottom</option>
+        <option value="MND_Demetrius">Demetrius</option>
+        <option value="MND_Egeus">Egeus</option>
+        <option value="MND_Flute">Flute</option>
+        <option value="MND_Helena">Helena</option>
+        <option value="MND_Hermia">Hermia</option>
+        <option value="MND_Hippolyta">Hippolyta</option>
+        <option value="MND_Lysander">Lysander</option>
+        <option value="MND_Oberon">Oberon</option>
+        <option value="MND_Philostrate">Philostrate</option>
+        <option value="MND_Quince">Quince</option>
+        <option value="MND_RobinGoodfellow">Robin Goodfellow</option>
+        <option value="MND_Snout">Snout</option>
+        <option value="MND_Snug">Snug</option>
+        <option value="MND_Starveling">Starveling</option>
+        <option value="MND_Theseus">Theseus</option>
+        <option value="MND_Titania">Titania</option>
+      </select>
+    </div>
+    <div>
+      <select id="Character2">
+        <option value="MND_Bottom">Bottom</option>
+        <option value="MND_Demetrius">Demetrius</option>
+        <option value="MND_Egeus">Egeus</option>
+        <option value="MND_Flute">Flute</option>
+        <option value="MND_Helena">Helena</option>
+        <option value="MND_Hermia">Hermia</option>
+        <option value="MND_Hippolyta">Hippolyta</option>
+        <option value="MND_Lysander">Lysander</option>
+        <option value="MND_Oberon">Oberon</option>
+        <option value="MND_Philostrate">Philostrate</option>
+        <option value="MND_Quince">Quince</option>
+        <option value="MND_RobinGoodfellow">Robin Goodfellow</option>
+        <option value="MND_Snout">Snout</option>
+        <option value="MND_Snug">Snug</option>
+        <option value="MND_Starveling">Starveling</option>
+        <option value="MND_Theseus">Theseus</option>
+        <option value="MND_Titania">Titania</option>
+      </select>
+    </div>
+    <div>
+      <select id="Character3">
+        <option value="MND_Bottom">Bottom</option>
+        <option value="MND_Demetrius">Demetrius</option>
+        <option value="MND_Egeus">Egeus</option>
+        <option value="MND_Flute">Flute</option>
+        <option value="MND_Helena">Helena</option>
+        <option value="MND_Hermia">Hermia</option>
+        <option value="MND_Hippolyta">Hippolyta</option>
+        <option value="MND_Lysander">Lysander</option>
+        <option value="MND_Oberon">Oberon</option>
+        <option value="MND_Philostrate">Philostrate</option>
+        <option value="MND_Quince">Quince</option>
+        <option value="MND_RobinGoodfellow">Robin Goodfellow</option>
+        <option value="MND_Snout">Snout</option>
+        <option value="MND_Snug">Snug</option>
+        <option value="MND_Starveling">Starveling</option>
+        <option value="MND_Theseus">Theseus</option>
+        <option value="MND_Titania">Titania</option>
+      </select>
+    </div>
+
+    <div>
+      <button onclick="onClick()">Go</button>
+    </div>
+
+    <div id='stacked-bar'></div>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script>
+    var initStackedBarChart = {
+    	draw: function(config) {
+    		me = this,
+    		domEle = config.element,
+    		stackKey = config.key,
+    		data = config.data,
+    		margin = {top: 20, right: 20, bottom: 30, left: 50},
+    		parseDate = d3.timeParse("%m/%Y"),
+    		width = 960 - margin.left - margin.right,
+    		height = 500 - margin.top - margin.bottom,
+    		xScale = d3.scaleLinear().rangeRound([0, width]),
+    		yScale = d3.scaleBand().rangeRound([height, 0]).padding(0.1),
+    		color = d3.scaleOrdinal(d3.schemeCategory20),
+    		xAxis = d3.axisBottom(xScale),
+    		yAxis =  d3.axisLeft(yScale).tickFormat(d3.timeFormat("%b")),
+    		svg = d3.select("#"+domEle).append("svg")
+    				.attr("width", width + margin.left + margin.right)
+    				.attr("height", height + margin.top + margin.bottom)
+    				.append("g")
+    				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    		var stack = d3.stack()
+    			.keys(stackKey)
+    			/*.order(d3.stackOrder)*/
+    			.offset(d3.stackOffsetNone);
+
+    		var layers= stack(data);
+    			data.sort(function(a, b) { return b.total - a.total; });
+    			yScale.domain(data.map(function(d) { return parseDate(d.date); }));
+    			xScale.domain([0, d3.max(layers[layers.length - 1], function(d) { return d[0] + d[1]; }) ]).nice();
+
+    		var layer = svg.selectAll(".layer")
+    			.data(layers)
+    			.enter().append("g")
+    			.attr("class", "layer")
+    			.style("fill", function(d, i) { return color(i); });
+
+    		  layer.selectAll("rect")
+    			  .data(function(d) { return d; })
+    			.enter().append("rect")
+    			  .attr("y", function(d) { return yScale(parseDate(d.data.date)); })
+    			  .attr("x", function(d) { return xScale(d[0]); })
+    			  .attr("height", yScale.bandwidth())
+    			  .attr("width", function(d) { return xScale(d[1]) - xScale(d[0]) });
+
+    			svg.append("g")
+    			.attr("class", "axis axis--x")
+    			.attr("transform", "translate(0," + (height+5) + ")")
+    			.call(xAxis);
+
+    			svg.append("g")
+    			.attr("class", "axis axis--y")
+    			.attr("transform", "translate(0,0)")
+    			.call(yAxis);
+    	}
+    }
+    var data =
+    var key =
+    initStackedBarChart.draw({
+    	data: data,
+    	key: key,
+    	element: 'stacked-bar'
+    });
+    </script>
+  </body>
+</html>
