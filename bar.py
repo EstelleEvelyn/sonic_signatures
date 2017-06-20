@@ -33,22 +33,22 @@ def create_data(char1, char2, char3):
     files[2][1] = "features/{}_voice.csv".format(char2)
     files[2][2] = "features/{}_voice.csv".format(char3)
 
-    manner_data[0]['Character'] = char1
-    manner_data[1]['Character'] = char2
-    manner_data[2]['Character'] = char3
+    manner_data[0]['character'] = char1
+    manner_data[1]['character'] = char2
+    manner_data[2]['character'] = char3
 
-    placement_data[0]['Character'] = char1
-    placement_data[1]['Character'] = char2
-    placement_data[2]['Character'] = char3
+    placement_data[0]['character'] = char1
+    placement_data[1]['character'] = char2
+    placement_data[2]['character'] = char3
 
-    voice_data[0]['Character'] = char1
-    voice_data[1]['Character'] = char2
-    voice_data[2]['Character'] = char3
+    voice_data[0]['character'] = char1
+    voice_data[1]['character'] = char2
+    voice_data[2]['character'] = char3
 
     for i in range(2):
-        manner_data[i]['Total'] = 100
-        placement_data[i]['Total'] = 100
-        voice_data[i]['Total'] = 100
+        manner_data[i]['total'] = 100
+        placement_data[i]['total'] = 100
+        voice_data[i]['total'] = 100
 
     for j in range(2):
         with open(files[0][j]) as manner_file:
@@ -69,4 +69,4 @@ def create_data(char1, char2, char3):
                 voice_data[v_row.get('feature')] = v_row.get('percent')
                 voice_key.add(v_row.get('feature'))
 
-    
+    return {manner_key:manner_data, placement_key:placement_data, voice_key:voice_data}

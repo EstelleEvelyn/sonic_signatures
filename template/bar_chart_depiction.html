@@ -103,7 +103,7 @@
     		stackKey = config.key,
     		data = config.data,
     		margin = {top: 20, right: 20, bottom: 30, left: 50},
-    		parseDate = d3.timeParse("%m/%Y"),
+    		parseChar = d3.timeParse("%m/%Y"),
     		width = 960 - margin.left - margin.right,
     		height = 500 - margin.top - margin.bottom,
     		xScale = d3.scaleLinear().rangeRound([0, width]),
@@ -124,7 +124,7 @@
 
     		var layers= stack(data);
     			data.sort(function(a, b) { return b.total - a.total; });
-    			yScale.domain(data.map(function(d) { return parseDate(d.date); }));
+    			yScale.domain(data.map(function(d) { return parseChar(d.character); }));
     			xScale.domain([0, d3.max(layers[layers.length - 1], function(d) { return d[0] + d[1]; }) ]).nice();
 
     		var layer = svg.selectAll(".layer")
@@ -136,7 +136,7 @@
     		  layer.selectAll("rect")
     			  .data(function(d) { return d; })
     			.enter().append("rect")
-    			  .attr("y", function(d) { return yScale(parseDate(d.data.date)); })
+    			  .attr("y", function(d) { return yScale(parseChar(d.data.character)); })
     			  .attr("x", function(d) { return xScale(d[0]); })
     			  .attr("height", yScale.bandwidth())
     			  .attr("width", function(d) { return xScale(d[1]) - xScale(d[0]) });
