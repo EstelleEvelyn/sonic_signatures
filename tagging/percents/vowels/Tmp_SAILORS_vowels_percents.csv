@@ -1,0 +1,10 @@
+feature,percent
+monophthong,100.0
+central,0.0
+lax,75.0
+back,75.0
+rounded,75.0
+diphthong,0.0
+tense,25.0
+front,25.0
+unrounded,25.0
