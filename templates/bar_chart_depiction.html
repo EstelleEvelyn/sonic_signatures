@@ -152,30 +152,30 @@
     	}
     }
     function onClick() {
-    var dataURL = '/data/' + getElementById('Character1')+ "+" + getElementById('Character2') + "+" + getElementById('Character3')
+    var dataURL = '/data/' + document.getElementById('Character1').value+ "+" + document.getElementById('Character2').value + "+" + document.getElementById('Character3').value
     d3.json(dataURL, function(error, dataObj) {
       dataObj = dataObj;
       var data;
       var key;
-
-      for (var i = 0; i < dataDict.length, i++) {
-        if (i == 0) {
+      //
+      // for (var i = 0; i < dataDict.length, i++) {
+      //   if (i == 0) {
           key = ['stop', 'affricate', 'fricative', 'liquid', 'glide', 'nasal'];
           data = dataObj['manner'];
-        } else if (i == 1) {
-          key = ['bilabial', 'linguaalveolar', 'linguadental', 'labiodental', 'linguavelar', 'glottal', 'linguapalatal'];
-          data = dataObj['placement'];
-        } else {
-          key = ['voiced', 'voiceless'];
-          data = dataObj['voice']
-        }
+        // } else if (i == 1) {
+        //   key = ['bilabial', 'linguaalveolar', 'linguadental', 'labiodental', 'linguavelar', 'glottal', 'linguapalatal'];
+        //   data = dataObj['placement'];
+        // } else {
+        //   key = ['voiced', 'voiceless'];
+        //   data = dataObj['voice']
+        // }
 
         initStackedBarChart.draw({
           data: data,
           key: key,
           element: 'stacked-bar'
         });
-      }
+      //}
     });
   }
     </script>
