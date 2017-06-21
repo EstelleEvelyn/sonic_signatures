@@ -102,7 +102,7 @@
     		stackKey = config.key,
     		data = config.data,
     		margin = {top: 20, right: 20, bottom: 30, left: 50},
-    		parseChar = d3.timeParse("%m/%Y"),
+    		// parseChar = data.character,
     		width = 960 - margin.left - margin.right,
     		height = 500 - margin.top - margin.bottom,
     		xScale = d3.scaleLinear().rangeRound([0, width]),
@@ -123,7 +123,7 @@
 
     		var layers= stack(data);
     			data.sort(function(a, b) { return b.total - a.total; });
-    			yScale.domain(data.map(function(d) { return parseChar(d.character); }));
+    			yScale.domain(data.map(function(d) { return d.character; }));
     			xScale.domain([0, d3.max(layers[layers.length - 1], function(d) { return d[0] + d[1]; }) ]).nice();
 
     		var layer = svg.selectAll(".layer")
@@ -135,7 +135,7 @@
     		  layer.selectAll("rect")
     			  .data(function(d) { return d; })
     			.enter().append("rect")
-    			  .attr("y", function(d) { return yScale(parseChar(d.data.character)); })
+    			  .attr("y", function(d) { return yScale(d.data.character)); })
     			  .attr("x", function(d) { return xScale(d[0]); })
     			  .attr("height", yScale.bandwidth())
     			  .attr("width", function(d) { return xScale(d[1]) - xScale(d[0]) });
@@ -157,25 +157,25 @@
       dataObj = dataObj;
       var data;
       var key;
-      //
-      // for (var i = 0; i < dataDict.length, i++) {
-      //   if (i == 0) {
+
+      for (var i = 0; i < 3; i++) {
+        if (i == 0) {
           key = ['stop', 'affricate', 'fricative', 'liquid', 'glide', 'nasal'];
           data = dataObj['manner'];
-        // } else if (i == 1) {
-        //   key = ['bilabial', 'linguaalveolar', 'linguadental', 'labiodental', 'linguavelar', 'glottal', 'linguapalatal'];
-        //   data = dataObj['placement'];
-        // } else {
-        //   key = ['voiced', 'voiceless'];
-        //   data = dataObj['voice']
-        // }
+        } else if (i == 1) {
+          key = ['bilabial', 'linguaalveolar', 'linguadental', 'labiodental', 'linguavelar', 'glottal', 'linguapalatal'];
+          data = dataObj['placement'];
+        } else {
+          key = ['voiced', 'voiceless'];
+          data = dataObj['voice']
+        }
 
         initStackedBarChart.draw({
           data: data,
           key: key,
           element: 'stacked-bar'
         });
-      //}
+      }
     });
   }
     </script>

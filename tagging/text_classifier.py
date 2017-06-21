@@ -111,7 +111,7 @@ class Tagger:
         Given a dictionary of features and their percentages for a given file,
         prints those features to a new csv file
         '''
-        fn = read_file.rstrip('.txt').lstrip('dest')
+        fn = read_file.lstrip('/dest')
         with open("percents/consonants/{}_consonants_percents.csv".format(fn),'w') as result:
             result.write('feature,percent\n')
             for item in percentage_dict:
@@ -168,7 +168,7 @@ class Tagger:
         Given a dictionary of features and their percentages for a given file,
         prints those features to a new csv file
         '''
-        fn = read_file.rstrip('.txt').lstrip('/dest')
+        fn = read_file.lstrip('/dest')
         with open("percents/vowels/{}_vowels_percents.csv".format(fn),'w') as result:
             result.write('feature,percent\n')
             for item in percentage_dict:
