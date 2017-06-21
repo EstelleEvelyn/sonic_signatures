@@ -6,20 +6,19 @@ import psycopg2
 import urllib
 
 app = flask.Flask(__name__)
+@app.route('/')
+def default():
+    return render_template('bar_chart_depiction.html')
 
-@app.route('/<char1>+<char2>+<char3>')
+@app.route('/data/<char1>+<char2>+<char3>')
 def create_data(char1, char2, char3):
 
     manner_data = [{},{},{}]
     placement_data = [{},{},{}]
     voice_data = [{},{},{}]
 
-    manner_key = []
-    placement_key = []
-    voice_key = []]
 
-
-    files = [[][][]]
+    files = [[],[],[]]
 
     files[0][0] = "features/{}_manner.csv".format(char1)
     files[0][1] = "features/{}_manner.csv".format(char2)
@@ -55,18 +54,18 @@ def create_data(char1, char2, char3):
             manner_reader = csv.DictReader(manner_file)
             for m_row in manner_reader:
                 manner_data[m_row.get('feature')] = m_row.get('percent')
-                manner_key.add(m_row.get('feature'))
 
         with open(files[1][j]) as placement_file:
             placement_reader = csv.DictReader(placement_file)
             for p_row in placement_reader:
                 placement_data[p_row.get('feature')] = p_row.get('percent')
-                placement_key.add(p_row.get('feature'))
 
         with open(files[2][j]) as voice_file:
             voice_reader = csv.DictReader(voice_file)
             for v_row in voice_reader:
                 voice_data[v_row.get('feature')] = v_row.get('percent')
-                voice_key.add(v_row.get('feature'))
 
-    return {manner_key:manner_data, placement_key:placement_data, voice_key:voice_data}
+    return jsonify({'manner':manner_data, 'placement':placement_data, 'voice':voice_data})
+
+if __name__=='__main__':
+    app.run(debug=True)

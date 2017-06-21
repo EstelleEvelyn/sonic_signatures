@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <script type="text/javascript" src="{{ url_for('static', filename='bar_chart.js') }}"></script>
     <title> Phonemic Features: Shakespeare </title>
     <style>
     .axis text {
@@ -152,13 +151,33 @@
     			.call(yAxis);
     	}
     }
-    var data =
-    var key =
-    initStackedBarChart.draw({
-    	data: data,
-    	key: key,
-    	element: 'stacked-bar'
+    function onClick() {
+    var dataURL = '/data/' + getElementById('Character1')+ "+" + getElementById('Character2') + "+" + getElementById('Character3')
+    d3.json(dataURL, function(error, dataObj) {
+      dataObj = dataObj;
+      var data;
+      var key;
+
+      for (var i = 0; i < dataDict.length, i++) {
+        if (i == 0) {
+          key = ['stop', 'affricate', 'fricative', 'liquid', 'glide', 'nasal'];
+          data = dataObj['manner'];
+        } else if (i == 1) {
+          key = ['bilabial', 'linguaalveolar', 'linguadental', 'labiodental', 'linguavelar', 'glottal', 'linguapalatal'];
+          data = dataObj['placement'];
+        } else {
+          key = ['voiced', 'voiceless'];
+          data = dataObj['voice']
+        }
+
+        initStackedBarChart.draw({
+          data: data,
+          key: key,
+          element: 'stacked-bar'
+        });
+      }
     });
+  }
     </script>
   </body>
 </html>
