@@ -140,6 +140,28 @@
     			  .attr("height", yScale.bandwidth())
     			  .attr("width", function(d) { return xScale(d[1]) - xScale(d[0]) });
 
+
+
+          layer.select("text")
+            .data(layers)
+             .enter()
+             .append("text")
+             .text(function(d) {return d.key; })
+             .attr("y", function(d, k) {
+                 return 15*(k+1) + yScale(d[0].data.character);
+             })
+     		 	   .attr("x", function(d) {
+                  return xScale(d[0][0]);
+              })
+
+          layer.selectAll("text")
+            .data(function(d) { return d; })
+             .enter()
+             .append("text")
+             .text(function(d) {return d.data.character; })
+             .attr("y", function(d) { return yScale(d.data.character); })
+             .attr("x", function(d) { return 0; })
+
     			svg.append("g")
     			.attr("class", "axis axis--x")
     			.attr("transform", "translate(0," + (height+5) + ")")
