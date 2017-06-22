@@ -1,5 +1,0 @@
-import os
-path = /Desktop/sonic_signatures/tagging/counts 
-for fn in os.listdir(path):
-     if os.path.isfile(fn):
-        print (fn)

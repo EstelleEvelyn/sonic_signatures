@@ -1,9 +1,0 @@
-back , 38
-tense , 38
-central , 46
-lax , 128
-front , 82
-unrounded , 135
-rounded , 31
-monophthong , 166
-diphthong , 38
