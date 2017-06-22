@@ -1,5 +1,10 @@
 .DS_Store
 tagging/.DS_Store
 tagging/res/.DS_Store
+tagging/__pycache__
+tagging/percents/.DS_Store
+tagging/percents/consonants/.DS_Store
+tagging/percents/vowels/.DS_Store
+tagging/features/.DS_Store
 __pycache__
 .DS_Store

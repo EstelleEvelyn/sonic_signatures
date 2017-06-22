@@ -16,20 +16,23 @@ class Stat_counter:
     def accumulate(self, read_file):
         with open(read_file, 'r') as csvfile:
             file_reader = csv.DictReader(x.replace('\0', '') for x in csvfile)
-            for line in file_reader:
+            for row in file_reader:
                 if not row.get('feature') in self.feature_dict:
-                    self.feature_dict[row.get('feature')] = [row.get('percent')]
+                    self.feature_dict[row.get('feature')] = [float(row.get('percent'))]
                 else:
-                    self.feature_dict[row.get('feature')].append(row.get('percent'))
+                    self.feature_dict[row.get('feature')].append(float(row.get('percent')))
 
-    def calc_stats(self, read_file):
-        self.accumulate(read_file)
+    def calc_stats(self):
+        for filename in os.listdir("../tagging/percents/consonants"):
+            self.accumulate("../tagging/percents/consonants/{}".format(filename))
+        for filename in os.listdir("../tagging/percents/vowels"):
+            self.accumulate("../tagging/percents/vowels/{}".format(filename))
         with open('feature_statistics.txt', 'w') as out_file:
-            out_file.write('feature,stdev,variance')
+            out_file.write('feature,stdev,variance\n')
             for feature in self.feature_dict:
                 feature_std_dev = statistics.stdev(self.feature_dict[feature])
                 feature_var = statistics.variance(self.feature_dict[feature])
-                out_file.write(feature+","+feature_std_dev+","+feature_var)
+                out_file.write(feature+","+str(feature_std_dev)+","+str(feature_var)+"\n")
         # with open('phoneme_statistics.txt', 'w') as out_file:
         #     out_file.write('phoneme,stdev,variance')
         #     for phoneme in self.phoneme_dict:
@@ -39,10 +42,7 @@ class Stat_counter:
 
 def main():
     stats = Stat_counter()
-    for filename in os.listdir("../tagging/percents/consonants"):
-        stats.calc_stats(filename)
-    for filename in os.listdir("../tagging/percents/vowels"):
-        stats.calc_stats(filename)
+    stats.calc_stats()
 
 if __name__ == "__main__":
     main()
