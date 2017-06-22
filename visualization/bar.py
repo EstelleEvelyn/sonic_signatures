@@ -19,17 +19,17 @@ def create_data(char1, char2, char3):
 
     files = [[],[],[]]
 
-    files[0].append("tagging/features/{}_manner.csv".format(char1))
-    files[0].append("tagging/features/{}_manner.csv".format(char2))
-    files[0].append("tagging/features/{}_manner.csv".format(char3))
+    files[0].append("../tagging/features/{}_manner.csv".format(char1))
+    files[0].append("../tagging/features/{}_manner.csv".format(char2))
+    files[0].append("../tagging/features/{}_manner.csv".format(char3))
 
-    files[1].append("tagging/features/{}_placement.csv".format(char1))
-    files[1].append("tagging/features/{}_placement.csv".format(char2))
-    files[1].append("tagging/features/{}_placement.csv".format(char3))
+    files[1].append("../tagging/features/{}_placement.csv".format(char1))
+    files[1].append("../tagging/features/{}_placement.csv".format(char2))
+    files[1].append("../tagging/features/{}_placement.csv".format(char3))
 
-    files[2].append("tagging/features/{}_voicing.csv".format(char1))
-    files[2].append("tagging/features/{}_voicing.csv".format(char2))
-    files[2].append("tagging/features/{}_voicing.csv".format(char3))
+    files[2].append("../tagging/features/{}_voicing.csv".format(char1))
+    files[2].append("../tagging/features/{}_voicing.csv".format(char2))
+    files[2].append("../tagging/features/{}_voicing.csv".format(char3))
 
     manner_data[0]['character'] = char1
     manner_data[1]['character'] = char2
