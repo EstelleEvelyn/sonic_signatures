@@ -4,11 +4,7 @@ import sys
 import argparse
 import urllib.request
 import json
-<<<<<<< HEAD
-from bs4 import BeautifulSoup #toggle comment for this line if bs4 not installed
-=======
-# from bs4 import BeautifulSoup #toggle comment for this line if not downloading files
->>>>>>> 7c7634609eb761ea2a83be39d570d802b5d2bc2a
+# from bs4 import BeautifulSoup #toggle comment for this line if bs4 not installed
 import string
 
 

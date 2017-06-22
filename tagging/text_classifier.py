@@ -1,5 +1,5 @@
-from nltk_sonic_tagging import Transcriber
 import math
+import os
 
 '''
 text_classifier.py
@@ -104,31 +104,29 @@ class Tagger:
        'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S','SH','T','TH',
        'UH','UW','V','W','Y','Z','ZH']
 
-        transcriber = Transcriber()
+
 
         with open("phonemefreq/masterData.txt", 'w') as result:
 
-           result.write(' '+',')
+           result.write(',')
            for item in consistentOrderList:
                result.write(item + ',')
            result.write('\n')
 
-           play_code_list = transcriber.get_play_code_list()
-           for play in play_code_list:
-               character_list = transcriber.get_character_list(play)
-               for character in character_list:
-                   filename = play+"_"+character
+           for filename in os.listdir("dest"):
+                filename = filename[:-4]
+                play, character = filename.split("_")
+                result.write(play+','+character + ',')
+               #print(filename,end='')
 
-                   result.write(play+','+character + ',')
-                   #print(filename,end='')
+                phonemeFreq = self.phoneme_frequency(filename)
 
-                   phonemeFreq = self.phoneme_frequency(filename)
-                   for item in consistentOrderList:
-                       result.write(str(phonemeFreq[item])+',')
-                       #print(str(phonemeFreq[item]), end= ',')
+                for item in consistentOrderList:
+                    result.write(str(phonemeFreq[item])+',')
+                   #print(str(phonemeFreq[item]), end= ',')
 
-                   #print('\n')
-                   result.write('\n')
+               #print('\n')
+                result.write('\n')
 
 
     def consonant_counts(self, read_file):
@@ -169,12 +167,12 @@ class Tagger:
                    percentage_dict[item] = 0
         return percentage_dict
 
-    def print_cons_percents(self, percentage_dict, read_file):
-        fn = read_file.rstrip('.txt').lstrip('dest')
-        with open("percents/{}_consonants_percents.csv".format(fn),'w') as result:
-            result.write('feature , percent \n')
-            for item in percentage_dict:
-                result.write(item+" , "+str(percentage_dict[item])+"\n")
+    # def print_cons_percents(self, percentage_dict, read_file):
+    #     fn = read_file.lstrip('dest')
+    #     with open("percents/{}_consonants_percents.csv".format(fn),'w') as result:
+    #         result.write('feature,percent\n')
+    #         for item in percentage_dict:
+    #             result.write(item+","+str(percentage_dict[item])+"\n")
 
 
     def vowel_counts(self, read_file):
@@ -210,52 +208,82 @@ class Tagger:
                    percentage_dict[item] = 0
         return percentage_dict
 
-    def print_vowel_percents(self, percentage_dict, read_file):
-        fn = read_file.rstrip('.txt').lstrip('/dest')
-        with open("percents/{}_vowels_percents.csv".format(fn),'w') as result:
-            result.write('feature , percent \n')
-            for item in percentage_dict:
-                result.write(item+" , "+str(percentage_dict[item])+"\n")
+    # def print_vowel_percents(self, percentage_dict, read_file):
+    #     fn = read_file.lstrip('/dest')
+    #     with open("percents/{}_vowels_percents.csv".format(fn),'w') as result:
+    #         result.write('feature,percent\n')
+    #         for item in percentage_dict:
+    #             result.write(item+","+str(percentage_dict[item])+"\n")
 
 
     def count_text(self, read_file):
         with open("dest/{}.txt".format(read_file), 'r') as source:
-            with open("counts/{}_vowels.csv".format(read_file), 'w') as result:
-                result.write("feature , count \n")
-                vowel_count_dict = self.vowel_counts(source)[0]
-                for item in vowel_count_dict:
-                    result.write(item+" , "+str(vowel_count_dict[item])+"\n")
+            vowel_count_dict = self.vowel_counts(source)[0]
+
         with open("dest/{}.txt".format(read_file), 'r') as source:
-            with open("counts/{}_consonants.csv".format(read_file), 'w') as result:
-                result.write("feature , count \n")
-                consonant_count_dict = self.consonant_counts(source)[0]
-                for item in consonant_count_dict:
-                    result.write(item+" , "+str(consonant_count_dict[item])+"\n")
+            consonant_count_dict = self.consonant_counts(source)[0]
+
+        consonant_count_dict.update(vowel_count_dict)
+        return consonant_count_dict
 
     def percent_text(self, read_file):
         with open("dest/{}.txt".format(read_file), 'r') as source:
             cons_counts = self.consonant_counts(source)
             cons_pct_dict = self.consonant_percentages(cons_counts[0], cons_counts[1])
-            self.print_cons_percents(cons_pct_dict, read_file)
         with open("dest/{}.txt".format(read_file), 'r') as source:
             vow_counts = self.vowel_counts(source)
             vow_pct_dict = self.vowel_percentages(vow_counts[0], vow_counts[1])
-            self.print_vowel_percents(vow_pct_dict, read_file)
 
+        cons_pct_dict.update(vow_pct_dict)
+        return cons_pct_dict
 
     def count_all_texts(self):
         '''
         For every file in the phonetic transcription folder, writes the counts of
         features to a new file in a counts folder. Entries are separated by newlines
         '''
-        transcriber = Transcriber()
-        play_code_list = transcriber.get_play_code_list()
-        for play in play_code_list:
-            character_list = transcriber.get_character_list(play)
-            for character in character_list:
-                filename = play+"_"+character
-                self.count_text(filename)
-                self.percent_text(filename)
+        with open ('percentData.csv', 'w') as result:
+            result.write(',')
+            for item in self.global_vowels:
+                result.write(item + ',')
+            for item in self.global_consonants:
+                result.write(item+',')
+            result.write('\n')
+
+            for filename in os.listdir("dest"):
+                filename = filename[:-4]
+                play, character = filename.split("_")
+                result.write(play+','+character + ',')
+
+                # self.count_text(filename)
+                pct_dict = self.percent_text(filename)
+                for item in self.global_vowels:
+                    result.write(str(pct_dict[item])+',')
+                for item in self.global_consonants:
+                    result.write(str(pct_dict[item])+',')
+
+                result.write('\n')
+
+            with open ('countData.csv', 'w') as result:
+                result.write(',')
+                for item in self.global_vowels:
+                    result.write(item + ',')
+                for item in self.global_consonants:
+                    result.write(item+',')
+                result.write('\n')
+
+                for filename in os.listdir("dest"):
+                    filename = filename[:-4]
+                    play, character = filename.split("_")
+                    result.write(play+','+character + ',')
+
+                    count_dict = self.count_text(filename)
+                    for item in self.global_vowels:
+                        result.write(str(count_dict[item])+',')
+                    for item in self.global_consonants:
+                        result.write(str(count_dict[item])+',')
+
+                    result.write('\n')
 
 
 
