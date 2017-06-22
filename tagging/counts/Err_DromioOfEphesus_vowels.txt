@@ -1,9 +1,9 @@
-central , 373
-tense , 326
-rounded , 305
 back , 258
-front , 549
+tense , 326
+central , 373
 lax , 854
+front , 549
 unrounded , 875
-diphthong , 345
+rounded , 305
 monophthong , 1180
+diphthong , 345
