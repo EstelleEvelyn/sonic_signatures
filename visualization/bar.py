@@ -77,6 +77,7 @@ def list_options(play):
             lstrip_length = len(play)+1
             character = fn[lstrip_length:-4]
             character_list.append(character)
+    character_list.sort()
     return flask.jsonify(character_list)
 
 if __name__=='__main__':
