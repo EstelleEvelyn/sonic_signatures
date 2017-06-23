@@ -25,22 +25,20 @@ class Stat_counter:
                             self.phoneme_dict[phoneme].append(float(row.get(phoneme)))
 
 
-    def accumulate_features(self, read_file):
-        with open(read_file, 'r') as csvfile:
-            file_reader = csv.DictReader(x.replace('\0', '') for x in csvfile)
+    def accumulate_features(self):
+        with open("../tagging/percentData.csv") as csvfile:
+            file_reader = csv.DictReader(csvfile)
             for row in file_reader:
-                if not row.get('feature') in self.feature_dict:
-                    self.feature_dict[row.get('feature')] = [float(row.get('percent'))]
-                else:
-                    self.feature_dict[row.get('feature')].append(float(row.get('percent')))
+                for feature in row:
+                    if (feature != 'filename'):
+                        if not feature in self.feature_dict:
+                            self.feature_dict[feature] = [float(row.get(feature))]
+                        else:
+                            self.feature_dict[feature].append(float(row.get(feature)))
 
     def calc_stats(self):
         self.accumuate_phonemes()
-
-        for filename in os.listdir("../tagging/percents/consonants"):
-            self.accumulate_features("../tagging/percents/consonants/{}".format(filename))
-        for filename in os.listdir("../tagging/percents/vowels"):
-            self.accumulate_features("../tagging/percents/vowels/{}".format(filename))
+        self.accumulate_features()
 
         with open('feature_statistics.txt', 'w') as out_file:
             out_file.write('feature,stdev,variance\n')

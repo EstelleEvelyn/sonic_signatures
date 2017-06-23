@@ -19,8 +19,8 @@ def main():
     transcr = Transcriber()
     transcr.phonetic_transcript(file_name)
     tagg = Tagger()
-    tagg.count_text(file_name)
-    tagg.percent_text(file_name)
+    tagg.count_all_texts()
+    tagg.phoneme_frequency_outputter()
 
 if __name__ == "__main__":
     main()
