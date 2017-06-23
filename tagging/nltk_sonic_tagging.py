@@ -1,10 +1,10 @@
-from nltk.corpus import cmudict
 import nltk
+from nltk.corpus import cmudict
 import sys
 import argparse
 import urllib.request
 import json
-# from bs4 import BeautifulSoup #toggle comment for this line if bs4 not installed
+from bs4 import BeautifulSoup #toggle comment for this line if bs4 not installed
 import string
 
 

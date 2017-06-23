@@ -3,6 +3,9 @@ import flask
 import json
 import urllib
 import csv
+import os
+import re
+
 
 app = flask.Flask(__name__)
 @app.route('/')
@@ -65,6 +68,16 @@ def create_data(char1, char2, char3):
                     voice_data[2][v_key] = row.get(v_key)
 
     return flask.jsonify({'manner':manner_data, 'placement':placement_data, 'voice':voice_data})
+
+@app.route('/options/<play>')
+def list_options(play):
+    character_list = []
+    for fn in os.listdir("../tagging/dest"):
+        if re.match(play+"_", fn) is not None:
+            lstrip_length = len(play)+1
+            character = fn[lstrip_length:-4]
+            character_list.append(character)
+    return flask.jsonify(character_list)
 
 if __name__=='__main__':
     app.run(debug=True)

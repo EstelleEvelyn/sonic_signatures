@@ -25,66 +25,144 @@
   </head>
   <body>
     <div>
+      <select id="Play1", onchange="onSelectOne()">
+        <option value="">Play</option>
+        <option value="AWW">All's Well That Ends Well</option>
+        <option value="Ant">Antony and Cleopatra</option>
+        <option value="AYL">As You Like It</option>
+        <option value="Err">The Comedy of Errors</option>
+        <option value="Cor">Coriolanus</option>
+        <option value="Cym">Cymbeline</option>
+        <option value="Ham">Hamlet</option>
+        <option value="1H4">Henry IV, Part 1</option>
+        <option value="2H4">Herny IV, Part 2</option>
+        <option value="H5">Henry V</option>
+        <option value="1H6">Henry VI, Part 1</option>
+        <option value="2H6">Henry VI, Part 2</option>
+        <option value="3H6">Henry VI, Part 3</option>
+        <option value="H8">Henry VIII</option>
+        <option value="JC">Julius Caesar</option>
+        <option value="Jn">King John</option>
+        <option value="Lr">King Lr</option>
+        <option value="LLL">Love's Labor's Lost</option>
+        <option value="Mac">Macbeth</option>
+        <option value="MM">Measure for Measure</option>
+        <option value="MV">The Merchant of Venice</option>
+        <option value="Wiv">The Merry Wives of Windsor</option>
+        <option value="MND">A Midsummer Night's Dream</option>
+        <option value="Ado">Much Ado About Nothing</option>
+        <option value="Oth">Othello</option>
+        <option value="Per">Pericles</option>
+        <option value="R2">Richard II</option>
+        <option value="R3">Richard III</option>
+        <option value="Rom">Romeo and Juliet</option>
+        <option value="Shr">The Taming of the Shrew</option>
+        <option value="Tmp">The Tempest</option>
+        <option value="Tim">Timon of Athens</option>
+        <option value="Tit">Titus Andronicus</option>
+        <option value="Tro">Troilus and Cressida</option>
+        <option value="TN">Twelfth Night</option>
+        <option value="TGV">The Two Gentlemen of Verona</option>
+        <option value="TNK">The Two Noble Kinsmen</option>
+        <option value="WT">The Winter's Tale</option>
+      </select>
+
       <select id="Character1">
-        <option value="MND_Bottom">Bottom</option>
-        <option value="MND_Demetrius">Demetrius</option>
-        <option value="MND_Egeus">Egeus</option>
-        <option value="MND_Flute">Flute</option>
-        <option value="MND_Helena">Helena</option>
-        <option value="MND_Hermia">Hermia</option>
-        <option value="MND_Hippolyta">Hippolyta</option>
-        <option value="MND_Lysander">Lysander</option>
-        <option value="MND_Oberon">Oberon</option>
-        <option value="MND_Philostrate">Philostrate</option>
-        <option value="MND_Quince">Quince</option>
-        <option value="MND_RobinGoodfellow">Robin Goodfellow</option>
-        <option value="MND_Snout">Snout</option>
-        <option value="MND_Snug">Snug</option>
-        <option value="MND_Starveling">Starveling</option>
-        <option value="MND_Theseus">Theseus</option>
-        <option value="MND_Titania">Titania</option>
+        <option value = "">Character</option>
       </select>
+
     </div>
     <div>
+      <select id="Play2", onchange="onSelectTwo()">
+        <option value="">Play</option>
+        <option value="AWW">All's Well That Ends Well</option>
+        <option value="Ant">Antony and Cleopatra</option>
+        <option value="AYL">As You Like It</option>
+        <option value="Err">The Comedy of Errors</option>
+        <option value="Cor">Coriolanus</option>
+        <option value="Cym">Cymbeline</option>
+        <option value="Ham">Hamlet</option>
+        <option value="1H4">Henry IV, Part 1</option>
+        <option value="2H4">Herny IV, Part 2</option>
+        <option value="H5">Henry V</option>
+        <option value="1H6">Henry VI, Part 1</option>
+        <option value="2H6">Henry VI, Part 2</option>
+        <option value="3H6">Henry VI, Part 3</option>
+        <option value="H8">Henry VIII</option>
+        <option value="JC">Julius Caesar</option>
+        <option value="Jn">King John</option>
+        <option value="Lr">King Lr</option>
+        <option value="LLL">Love's Labor's Lost</option>
+        <option value="Mac">Macbeth</option>
+        <option value="MM">Measure for Measure</option>
+        <option value="MV">The Merchant of Venice</option>
+        <option value="Wiv">The Merry Wives of Windsor</option>
+        <option value="MND">A Midsummer Night's Dream</option>
+        <option value="Ado">Much Ado About Nothing</option>
+        <option value="Oth">Othello</option>
+        <option value="Per">Pericles</option>
+        <option value="R2">Richard II</option>
+        <option value="R3">Richard III</option>
+        <option value="Rom">Romeo and Juliet</option>
+        <option value="Shr">The Taming of the Shrew</option>
+        <option value="Tmp">The Tempest</option>
+        <option value="Tim">Timon of Athens</option>
+        <option value="Tit">Titus Andronicus</option>
+        <option value="Tro">Troilus and Cressida</option>
+        <option value="TN">Twelfth Night</option>
+        <option value="TGV">The Two Gentlemen of Verona</option>
+        <option value="TNK">The Two Noble Kinsmen</option>
+        <option value="WT">The Winter's Tale</option>
+      </select>
+
       <select id="Character2">
-        <option value="MND_Bottom">Bottom</option>
-        <option value="MND_Demetrius">Demetrius</option>
-        <option value="MND_Egeus">Egeus</option>
-        <option value="MND_Flute">Flute</option>
-        <option value="MND_Helena">Helena</option>
-        <option value="MND_Hermia">Hermia</option>
-        <option value="MND_Hippolyta">Hippolyta</option>
-        <option value="MND_Lysander">Lysander</option>
-        <option value="MND_Oberon">Oberon</option>
-        <option value="MND_Philostrate">Philostrate</option>
-        <option value="MND_Quince">Quince</option>
-        <option value="MND_RobinGoodfellow">Robin Goodfellow</option>
-        <option value="MND_Snout">Snout</option>
-        <option value="MND_Snug">Snug</option>
-        <option value="MND_Starveling">Starveling</option>
-        <option value="MND_Theseus">Theseus</option>
-        <option value="MND_Titania">Titania</option>
+        <option value="">Character</option>
       </select>
     </div>
     <div>
+      <select id="Play3", onchange="onSelectThree()">
+        <option value="">Play</option>
+        <option value="AWW">All's Well That Ends Well</option>
+        <option value="Ant">Antony and Cleopatra</option>
+        <option value="AYL">As You Like It</option>
+        <option value="Err">The Comedy of Errors</option>
+        <option value="Cor">Coriolanus</option>
+        <option value="Cym">Cymbeline</option>
+        <option value="Ham">Hamlet</option>
+        <option value="1H4">Henry IV, Part 1</option>
+        <option value="2H4">Herny IV, Part 2</option>
+        <option value="H5">Henry V</option>
+        <option value="1H6">Henry VI, Part 1</option>
+        <option value="2H6">Henry VI, Part 2</option>
+        <option value="3H6">Henry VI, Part 3</option>
+        <option value="H8">Henry VIII</option>
+        <option value="JC">Julius Caesar</option>
+        <option value="Jn">King John</option>
+        <option value="Lr">King Lr</option>
+        <option value="LLL">Love's Labor's Lost</option>
+        <option value="Mac">Macbeth</option>
+        <option value="MM">Measure for Measure</option>
+        <option value="MV">The Merchant of Venice</option>
+        <option value="Wiv">The Merry Wives of Windsor</option>
+        <option value="MND">A Midsummer Night's Dream</option>
+        <option value="Ado">Much Ado About Nothing</option>
+        <option value="Oth">Othello</option>
+        <option value="Per">Pericles</option>
+        <option value="R2">Richard II</option>
+        <option value="R3">Richard III</option>
+        <option value="Rom">Romeo and Juliet</option>
+        <option value="Shr">The Taming of the Shrew</option>
+        <option value="Tmp">The Tempest</option>
+        <option value="Tim">Timon of Athens</option>
+        <option value="Tit">Titus Andronicus</option>
+        <option value="Tro">Troilus and Cressida</option>
+        <option value="TN">Twelfth Night</option>
+        <option value="TGV">The Two Gentlemen of Verona</option>
+        <option value="TNK">The Two Noble Kinsmen</option>
+        <option value="WT">The Winter's Tale</option>
+      </select>
       <select id="Character3">
-        <option value="MND_Bottom">Bottom</option>
-        <option value="MND_Demetrius">Demetrius</option>
-        <option value="MND_Egeus">Egeus</option>
-        <option value="MND_Flute">Flute</option>
-        <option value="MND_Helena">Helena</option>
-        <option value="MND_Hermia">Hermia</option>
-        <option value="MND_Hippolyta">Hippolyta</option>
-        <option value="MND_Lysander">Lysander</option>
-        <option value="MND_Oberon">Oberon</option>
-        <option value="MND_Philostrate">Philostrate</option>
-        <option value="MND_Quince">Quince</option>
-        <option value="MND_RobinGoodfellow">Robin Goodfellow</option>
-        <option value="MND_Snout">Snout</option>
-        <option value="MND_Snug">Snug</option>
-        <option value="MND_Starveling">Starveling</option>
-        <option value="MND_Theseus">Theseus</option>
-        <option value="MND_Titania">Titania</option>
+        <option value="">Character</option>
       </select>
     </div>
 
@@ -197,14 +275,77 @@
             data = dataObj['voice']
           }
 
-        initStackedBarChart.draw({
-          data: data,
-          key: key,
-          element: 'stacked-bar'
-        });
-      }
-    });
-  }
+          initStackedBarChart.draw({
+            data: data,
+            key: key,
+            element: 'stacked-bar'
+          });
+        }
+      });
+    }
+    function onSelectOne() {
+      d3.select('#Character1')
+        .selectAll('option')
+        .remove();
+
+      var play = document.getElementById('Play1').value
+      var dataURL = '/options/' + play
+      d3.json(dataURL, function(error, data) {
+        var data = data;
+        d3.select('#Character1')
+          .selectAll('option')
+          .data(data)
+          .enter()
+          .append('option')
+          .text(function(d) { return d; })
+          .property('value', function(d) {
+            return play + "_" + d;
+          })
+      });
+    }
+
+    function onSelectTwo() {
+      d3.select('#Character2')
+        .selectAll('option')
+        .remove();
+
+
+      var play = document.getElementById('Play2').value
+      var dataURL = '/options/' + play
+      d3.json(dataURL, function(error, data) {
+        var data = data;
+        d3.select('#Character2')
+          .selectAll('option')
+          .data(data)
+          .enter()
+          .append('option')
+          .text(function(d) { return d; })
+          .property('value', function(d) {
+            return play + "_" + d;
+          })
+      });
+    }
+
+    function onSelectThree() {
+      d3.select('#Character3')
+        .selectAll('option')
+        .remove();
+
+      var play = document.getElementById('Play3').value
+      var dataURL = '/options/' + play
+      d3.json(dataURL, function(error, data) {
+        var data = data;
+        d3.select('#Character3')
+          .selectAll('option')
+          .data(data)
+          .enter()
+          .append('option')
+          .text(function(d) { return d; })
+          .property('value', function(d) {
+            return play + "_" + d;
+          })
+      });
+    }
     </script>
   </body>
 </html>
