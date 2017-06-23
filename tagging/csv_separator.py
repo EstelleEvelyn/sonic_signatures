@@ -10,9 +10,9 @@ and articulation for use with a pie chart modeler
 class MPV:
     def get_manner(self):
         key_list = ['stop', 'affricate', 'fricative', 'liquid', 'glide', 'nasal']
-        with open("percentData.csv", 'r') as csvfile:
+        with open("features/percentData.csv", 'r') as csvfile:
             reader = csv.DictReader(csvfile)
-            with open('mannerData.csv', 'w') as result:
+            with open('features/mannerData.csv', 'w') as result:
                 result.write("filename,stop,affricate,fricative,liquid,glide,nasal\n")
                 for row in reader:
                     result.write(row.get('filename'))
@@ -22,9 +22,9 @@ class MPV:
 
     def get_placement(self):
         key_list = ['bilabial', 'linguaalveolar', 'linguadental', 'labiodental', 'linguavelar', 'glottal', 'linguapalatal']
-        with open('percentData.csv', 'r') as csvfile:
-            reader = csv.DictReader(x.replace(csvfile))
-            with open("placementData.csv", 'w') as result:
+        with open('features/percentData.csv', 'r') as csvfile:
+            reader = csv.DictReader(csvfile)
+            with open("features/placementData.csv", 'w') as result:
                 result.write("filename,bilabilal,linguaalveolar,linguadental,labiodental,linguavelar,glottal,linguapalatal\n")
                 for row in reader:
                     result.write(row.get('filename'))
@@ -33,9 +33,9 @@ class MPV:
                     result.write("\n")
 
     def get_voicing(self):
-        with open('percentData.csv', 'r') as csvfile:
+        with open('features/percentData.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
-            with open("voicingData.csv", 'w') as result:
+            with open("features/voicingData.csv", 'w') as result:
                 result.write("filename,voiced,voiceless\n")
                 for row in reader:
                     result.write(row.get('filename')+","+row.get('voiced')+row.get('voiceless')+"\n")

@@ -37,7 +37,7 @@ def create_data(char1, char2, char3):
         placement_data[i]['total'] = 100
         voice_data[i]['total'] = 100
 
-    with open('../tagging/percentData.csv', 'r') as csv_file:
+    with open('../tagging/features/percentData.csv', 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
             if row.get('filename') == char1:

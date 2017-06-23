@@ -26,7 +26,7 @@ class Stat_counter:
 
 
     def accumulate_features(self):
-        with open("../tagging/percentData.csv") as csvfile:
+        with open("../tagging/features/percentData.csv") as csvfile:
             file_reader = csv.DictReader(csvfile)
             for row in file_reader:
                 for feature in row:

@@ -245,7 +245,7 @@ class Tagger:
         For every file in the phonetic transcription folder, writes the counts of
         features to a new file in a counts folder. Entries are separated by newlines
         '''
-        with open ('percentData.csv', 'w') as result:
+        with open ('features/percentData.csv', 'w') as result:
             result.write('filename')
             for item in self.global_vowels:
                 result.write(','+item)
@@ -267,7 +267,7 @@ class Tagger:
 
                 result.write('\n')
 
-        with open ('countData.csv', 'w') as result:
+        with open ('features/countData.csv', 'w') as result:
             result.write('filename')
             for item in self.global_vowels:
                 result.write(','+item)
