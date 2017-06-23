@@ -35,7 +35,7 @@
         <option value="Cym">Cymbeline</option>
         <option value="Ham">Hamlet</option>
         <option value="1H4">Henry IV, Part 1</option>
-        <option value="2H4">Herny IV, Part 2</option>
+        <option value="2H4">Henry IV, Part 2</option>
         <option value="H5">Henry V</option>
         <option value="1H6">Henry VI, Part 1</option>
         <option value="2H6">Henry VI, Part 2</option>
@@ -43,7 +43,7 @@
         <option value="H8">Henry VIII</option>
         <option value="JC">Julius Caesar</option>
         <option value="Jn">King John</option>
-        <option value="Lr">King Lr</option>
+        <option value="Lr">King Lear</option>
         <option value="LLL">Love's Labor's Lost</option>
         <option value="Mac">Macbeth</option>
         <option value="MM">Measure for Measure</option>
@@ -83,7 +83,7 @@
         <option value="Cym">Cymbeline</option>
         <option value="Ham">Hamlet</option>
         <option value="1H4">Henry IV, Part 1</option>
-        <option value="2H4">Herny IV, Part 2</option>
+        <option value="2H4">Henry IV, Part 2</option>
         <option value="H5">Henry V</option>
         <option value="1H6">Henry VI, Part 1</option>
         <option value="2H6">Henry VI, Part 2</option>
@@ -91,7 +91,7 @@
         <option value="H8">Henry VIII</option>
         <option value="JC">Julius Caesar</option>
         <option value="Jn">King John</option>
-        <option value="Lr">King Lr</option>
+        <option value="Lr">King Lear</option>
         <option value="LLL">Love's Labor's Lost</option>
         <option value="Mac">Macbeth</option>
         <option value="MM">Measure for Measure</option>
@@ -130,7 +130,7 @@
         <option value="Cym">Cymbeline</option>
         <option value="Ham">Hamlet</option>
         <option value="1H4">Henry IV, Part 1</option>
-        <option value="2H4">Herny IV, Part 2</option>
+        <option value="2H4">Henry IV, Part 2</option>
         <option value="H5">Henry V</option>
         <option value="1H6">Henry VI, Part 1</option>
         <option value="2H6">Henry VI, Part 2</option>
@@ -138,7 +138,7 @@
         <option value="H8">Henry VIII</option>
         <option value="JC">Julius Caesar</option>
         <option value="Jn">King John</option>
-        <option value="Lr">King Lr</option>
+        <option value="Lr">King Lear</option>
         <option value="LLL">Love's Labor's Lost</option>
         <option value="Mac">Macbeth</option>
         <option value="MM">Measure for Measure</option>
@@ -254,8 +254,6 @@
     function onClick() {
 
       d3.selectAll('svg').remove();
-      d3.selectAll('stacked-bar')
-        .remove()
 
       var dataURL = '/data/' + document.getElementById('Character1').value+ "+" + document.getElementById('Character2').value + "+" + document.getElementById('Character3').value
       d3.json(dataURL, function(error, dataObj) {

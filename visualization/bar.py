@@ -30,7 +30,7 @@ def create_data(char1, char2, char3):
     placement_data[0]['character'] = char1
     placement_data[1]['character'] = char2
     placement_data[2]['character'] = char3
-    #
+    
     voice_data[0]['character'] = char1
     voice_data[1]['character'] = char2
     voice_data[2]['character'] = char3
