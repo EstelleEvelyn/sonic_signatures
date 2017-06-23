@@ -14,6 +14,12 @@ class Stat_counter:
         self.phoneme_dict = {}
 
     def accumuate_phonemes(self):
+        '''
+        Based on previously calculated phoneme distributions for every character,
+        returns a dictionary containing phonemes as keys and lists of percentages
+        for every phoneme as values
+        e.g. {'AA':[2.1, 0.3, 1.28,...], 'AH':[...], ...}
+        '''
         with open("../tagging/phonemefreq/masterData_combined.csv") as csvfile:
             file_reader = csv.DictReader(csvfile)
             for row in file_reader:
@@ -26,6 +32,12 @@ class Stat_counter:
 
 
     def accumulate_features(self):
+        '''
+        Based on previously calculated feature distributions for every character,
+        returns a dictionary containing features as keys and lists of percentages
+        for those features as values
+        e.g. {'front':[37.8, 40.22, 36.7,...], 'fricative':[...], ...}
+        '''
         with open("../tagging/features/percentData.csv") as csvfile:
             file_reader = csv.DictReader(csvfile)
             for row in file_reader:
@@ -37,6 +49,11 @@ class Stat_counter:
                             self.feature_dict[feature].append(float(row.get(feature)))
 
     def calc_stats(self):
+        '''
+        Calculates the standard deviation and variance of every feature and every
+        phoneme, printing the data for every feature to feature_statistics.txt
+        and the data for every phoneme to phoneme_statistics.txt
+        '''
         self.accumuate_phonemes()
         self.accumulate_features()
 

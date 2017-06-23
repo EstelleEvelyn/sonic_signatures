@@ -14,6 +14,10 @@ def default():
 
 @app.route('/data/<char1>+<char2>+<char3>')
 def create_data(char1, char2, char3):
+    '''
+    Returns the manner, placement, and voicing data for the selected characters
+    for use in creating bar charts
+    '''
 
     manner_data = [{},{},{}]
     placement_data = [{},{},{}]
@@ -30,7 +34,7 @@ def create_data(char1, char2, char3):
     placement_data[0]['character'] = char1
     placement_data[1]['character'] = char2
     placement_data[2]['character'] = char3
-    
+
     voice_data[0]['character'] = char1
     voice_data[1]['character'] = char2
     voice_data[2]['character'] = char3
@@ -70,6 +74,9 @@ def create_data(char1, char2, char3):
     return flask.jsonify({'manner':manner_data, 'placement':placement_data, 'voice':voice_data})
 
 @app.route('/options/<play>')
+'''
+returns the list of characters in a given play
+'''
 def list_options(play):
     character_list = []
     for fn in os.listdir("../tagging/dest"):

@@ -5,7 +5,7 @@ from text_classifier import Tagger
 dynamic_counter.py
 @author Estelle Bayer, Summer 2017
 A program which takes a file name as a command line argument and calculates the
-linguistic feature proportions for that file
+linguistic feature and phoneme proportions for that file
 '''
 
 def main():
