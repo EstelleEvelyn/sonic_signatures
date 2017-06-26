@@ -252,7 +252,8 @@ class Tagger:
             consonant_count_dict = self.consonant_counts(source)[0]
 
         consonant_count_dict.update(vowel_count_dict)
-        return consonant_count_dict
+        count_dict = consonant_count_dict
+        return count_dict
 
     def percent_text(self, read_file):
         '''
@@ -267,7 +268,8 @@ class Tagger:
             vow_pct_dict = self.vowel_percentages(vow_counts[0], vow_counts[1])
 
         cons_pct_dict.update(vow_pct_dict)
-        return cons_pct_dict
+        pct_dict = cons_pct_dict
+        return pct_dict
 
     def count_all_texts(self):
         '''

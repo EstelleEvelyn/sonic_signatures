@@ -6,6 +6,7 @@ csv_separator.py
 @author Estelle Bayer, Summer 2017
 A program designed to separate feature percentage data into manner, voice,
 and articulation
+Possibly obsolete/redundant after csv implementation
 '''
 
 class MPV:
@@ -47,12 +48,12 @@ class MPV:
         information about every feature and writes them to a separate file
         '''
         with open('features/percentData.csv', 'r') as csvfile:
-        reader = csv.DictReader(csvfile)
-        with open("features/voicingData.csv", 'w') as result:
-            result.write("filename,voiced,voiceless\n")
-            for row in reader:
-                result.write(row.get('filename')+","+row.get('voiced')+row.get('voiceless')+"\n")
-            result.write('\n')
+            reader = csv.DictReader(csvfile)
+            with open("features/voicingData.csv", 'w') as result:
+                result.write("filename,voiced,voiceless\n")
+                for row in reader:
+                    result.write(row.get('filename')+","+row.get('voiced')+row.get('voiceless')+"\n")
+                result.write('\n')
 
 
     def separate_file(self):

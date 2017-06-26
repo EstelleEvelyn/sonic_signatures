@@ -58,17 +58,19 @@ class Stat_counter:
         self.accumulate_features()
 
         with open('feature_statistics.txt', 'w') as out_file:
-            out_file.write('feature,stdev,variance\n')
+            out_file.write('feature,mean,stdev,variance\n')
             for feature in self.feature_dict:
+                feature_mean = statistics.mean(self.feature_dict[feature])
                 feature_std_dev = statistics.stdev(self.feature_dict[feature])
                 feature_var = statistics.variance(self.feature_dict[feature])
-                out_file.write(feature+","+str(feature_std_dev)+","+str(feature_var)+"\n")
+                out_file.write(feature+","+str(feature_mean)+","+str(feature_std_dev)+","+str(feature_var)+"\n")
         with open('phoneme_statistics.txt', 'w') as out_file:
-            out_file.write('phoneme,stdev,variance\n')
+            out_file.write('phoneme,mean,stdev,variance\n')
             for phoneme in self.phoneme_dict:
+                phoneme_mean = statistics.mean(self.phoneme_dict[phoneme])
                 phoneme_std_dev = statistics.stdev(self.phoneme_dict[phoneme])
                 phoneme_var = statistics.variance(self.phoneme_dict[phoneme])
-                out_file.write(phoneme+","+str(phoneme_std_dev)+","+str(phoneme_var)+"\n")
+                out_file.write(phoneme+","+str(phoneme_mean)+","+str(phoneme_std_dev)+","+str(phoneme_var)+"\n")
 
 def main():
     stats = Stat_counter()
