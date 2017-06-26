@@ -74,10 +74,10 @@ def create_data(char1, char2, char3):
     return flask.jsonify({'manner':manner_data, 'placement':placement_data, 'voice':voice_data})
 
 @app.route('/options/<play>')
-'''
-returns the list of characters in a given play
-'''
 def list_options(play):
+    '''
+    Returns the list of characters in a given play
+    '''
     character_list = []
     for fn in os.listdir("../tagging/dest"):
         if re.match(play+"_", fn) is not None:
