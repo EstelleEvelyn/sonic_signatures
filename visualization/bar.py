@@ -3,6 +3,9 @@ import flask
 import json
 import urllib
 import csv
+import os
+import re
+
 
 app = flask.Flask(__name__)
 @app.route('/')
@@ -11,25 +14,18 @@ def default():
 
 @app.route('/data/<char1>+<char2>+<char3>')
 def create_data(char1, char2, char3):
+    '''
+    Returns the manner, placement, and voicing data for the selected characters
+    for use in creating bar charts
+    '''
 
     manner_data = [{},{},{}]
     placement_data = [{},{},{}]
     voice_data = [{},{},{}]
 
-
-    files = [[],[],[]]
-
-    files[0].append("../tagging/features/{}_manner.csv".format(char1))
-    files[0].append("../tagging/features/{}_manner.csv".format(char2))
-    files[0].append("../tagging/features/{}_manner.csv".format(char3))
-
-    files[1].append("../tagging/features/{}_placement.csv".format(char1))
-    files[1].append("../tagging/features/{}_placement.csv".format(char2))
-    files[1].append("../tagging/features/{}_placement.csv".format(char3))
-
-    files[2].append("../tagging/features/{}_voicing.csv".format(char1))
-    files[2].append("../tagging/features/{}_voicing.csv".format(char2))
-    files[2].append("../tagging/features/{}_voicing.csv".format(char3))
+    manner_keys = ['stop', 'affricate', 'fricative', 'liquid', 'glide', 'nasal']
+    placement_keys = ['bilabial', 'linguaalveolar', 'linguadental', 'labiodental', 'linguavelar', 'glottal', 'linguapalatal']
+    voice_keys = ['voiced', 'voiceless']
 
     manner_data[0]['character'] = char1
     manner_data[1]['character'] = char2
@@ -38,7 +34,7 @@ def create_data(char1, char2, char3):
     placement_data[0]['character'] = char1
     placement_data[1]['character'] = char2
     placement_data[2]['character'] = char3
-    #
+
     voice_data[0]['character'] = char1
     voice_data[1]['character'] = char2
     voice_data[2]['character'] = char3
@@ -48,23 +44,48 @@ def create_data(char1, char2, char3):
         placement_data[i]['total'] = 100
         voice_data[i]['total'] = 100
 
-    for j in range(3):
-        with open(files[0][j]) as manner_file:
-            manner_reader = csv.DictReader(manner_file)
-            for m_row in manner_reader:
-                manner_data[j][m_row[('feature')]] = m_row[('percent')]
+    with open('../tagging/features/percentData.csv', 'r') as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            if row.get('filename') == char1:
+                for m_key in manner_keys:
+                    manner_data[0][m_key] = row.get(m_key)
+                for p_key in placement_keys:
+                    placement_data[0][p_key] = row.get(p_key)
+                for v_key in voice_keys:
+                    voice_data[0][v_key] = row.get(v_key)
 
-        with open(files[1][j]) as placement_file:
-            placement_reader = csv.DictReader(placement_file)
-            for p_row in placement_reader:
-                placement_data[j][p_row.get('feature')] = p_row.get('percent')
+            if row.get('filename') == char2:
+                for m_key in manner_keys:
+                    manner_data[1][m_key] = row.get(m_key)
+                for p_key in placement_keys:
+                    placement_data[1][p_key] = row.get(p_key)
+                for v_key in voice_keys:
+                    voice_data[1][v_key] = row.get(v_key)
 
-        with open(files[2][j]) as voice_file:
-            voice_reader = csv.DictReader(voice_file)
-            for v_row in voice_reader:
-                voice_data[j][v_row.get('feature')] = v_row.get('percent')
+            if row.get('filename') == char3:
+                for m_key in manner_keys:
+                    manner_data[2][m_key] = row.get(m_key)
+                for p_key in placement_keys:
+                    placement_data[2][p_key] = row.get(p_key)
+                for v_key in voice_keys:
+                    voice_data[2][v_key] = row.get(v_key)
 
     return flask.jsonify({'manner':manner_data, 'placement':placement_data, 'voice':voice_data})
+
+@app.route('/options/<play>')
+def list_options(play):
+    '''
+    Returns the list of characters in a given play
+    '''
+    character_list = []
+    for fn in os.listdir("../tagging/dest"):
+        if re.match(play+"_", fn) is not None:
+            lstrip_length = len(play)+1
+            character = fn[lstrip_length:-4]
+            character_list.append(character)
+    character_list.sort()
+    return flask.jsonify(character_list)
 
 if __name__=='__main__':
     app.run(debug=True)

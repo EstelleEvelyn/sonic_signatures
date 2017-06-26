@@ -28,4 +28,3 @@ voiced , 30.38%
 sibilant , 6.32%
 noncoronal , 21.39%
 linguadental , 3.1%
-

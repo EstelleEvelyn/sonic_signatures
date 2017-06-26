@@ -54,7 +54,7 @@ class Separator:
         self.separate_file(filename)
         base_file = filename.lstrip("res/").rstrip(".txt")
         for speaker in self.speaker_list:
-            new_file = "res/{0}_{1}.txt".format(speaker, base_file)
+            new_file = "res/{0}_{1}.txt".format(base_file, speaker)
             with open(new_file, 'w') as speaker_lines:
                 for line in self.speaker_list[speaker]:
                     speaker_lines.write(line)

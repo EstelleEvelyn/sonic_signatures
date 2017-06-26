@@ -66,63 +66,70 @@ class Tagger:
         self.consonant_count = 0
         self.vowel_count = 0
 
+    def get_features(self):
+        return(global_consonants.keys().append(global_vowels.keys()))
+
     def phoneme_frequency(self, read_file):
        ''' most of the research on phonemes in speech comes not from the distinctive
        features of phonemes used but from the phonemes themselves - counts the number of
        each phoneme and assesses the frequencies of each'''
 
-       countingDict = {'B':0,'AA':0,'AE':0,'AH':0,'AO':0,'AW':0,'AY':0,'EH':0,'ER':0,'EY':0,
+       counting_dict = {'B':0,'AA':0,'AE':0,'AH':0,'AO':0,'AW':0,'AY':0,'EH':0,'ER':0,'EY':0,
        'IH':0,'IY':0,'OW':0,'OY':0,'UH':0,'UW':0,'ZH':0,'Z':0,'Y':0,'W':0,'V':0,'TH':0,'T':0,
        'SH':0,'S':0,'R':0,'P':0,'NG':0,'N':0,'M':0,'L':0,'K':0,'JH':0,'HH':0,'G':0,'F':0,
        'DH':0,'D':0,'CH':0}
-       percentageDict = {}
+       percentage_dict = {}
 
-       totalPhonemeCount = 0
+       total_phoneme_count = 0
 
        with open("dest/{}.txt".format(read_file), 'r') as source:
            text = source.read().split()
            for phoneme in text:
-               totalPhonemeCount +=1
+               total_phoneme_count +=1
                if phoneme[-1] in '0123456789':
                    phoneme = phoneme[:-1]
-               if phoneme in countingDict:
-                   countingDict[phoneme]+=1
+               if phoneme in counting_dict:
+                   counting_dict[phoneme]+=1
 
-       for item in countingDict:
-           if countingDict.get(item)!= None:
-               if totalPhonemeCount !=0:
-                   percentOfTotal = float(countingDict.get(item))/totalPhonemeCount
-                   percentageDict[item] = (math.ceil((percentOfTotal*100)*100)/100)
+       for item in counting_dict:
+           if counting_dict.get(item)!= None:
+               if total_phoneme_count !=0:
+                   percent_of_total = float(counting_dict.get(item))/total_phoneme_count
+                   percentage_dict[item] = (math.ceil((percent_of_total*100)*100)/100)
                else:
-                   percentageDict[item] = 0
+                   percentage_dict[item] = 0
 
-       return percentageDict
+       return percentage_dict
 
-    def phonemeFrequencyOutputter(self):
-
+    def phoneme_frequency_outputter(self):
+        '''
+        Calculates the percentage for every phoneme within every character's text
+        and writes the information to a CSV file
+        '''
         consistentOrderList = ['AA','AE','AH','AO','AW','AY','B','CH','D','DH','EH','ER','EY',
        'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S','SH','T','TH',
        'UH','UW','V','W','Y','Z','ZH']
 
 
 
-        with open("phonemefreq/masterData.txt", 'w') as result:
+        with open("phonemefreq/masterData.csv", 'w') as result:
 
-           result.write(',')
+           result.write('filename')
            for item in consistentOrderList:
-               result.write(item + ',')
+               result.write(','+item)
            result.write('\n')
 
            for filename in os.listdir("dest"):
                 filename = filename[:-4]
-                play, character = filename.split("_")
-                result.write(play+','+character + ',')
+                # play, character = filename.split("_")
+                # result.write(play+','+character + ',')
+                result.write(filename)
                #print(filename,end='')
 
                 phonemeFreq = self.phoneme_frequency(filename)
 
                 for item in consistentOrderList:
-                    result.write(str(phonemeFreq[item])+',')
+                    result.write(','+str(phonemeFreq[item]))
                    #print(str(phonemeFreq[item]), end= ',')
 
                #print('\n')
@@ -132,7 +139,8 @@ class Tagger:
     def consonant_counts(self, read_file):
         '''
         Given a file of a phonemes separated by whitespace, returns a dictionary
-        of the number of occurrences of a handful of features of consonants
+        of the number of occurrences of a handful of features of consonants and
+        the total number of consonant phonemes encountered
         '''
 
         text = read_file.read().split()
@@ -155,7 +163,9 @@ class Tagger:
 
     def consonant_percentages(self, consonant_dictionary, consonant_count):
         '''
-        Given a dictionary containing
+        Given a dictionary containing the counts of various consonant features and
+        the total number of consonants in the related file, calculates percentages
+        for every tracked consonant feature
         '''
         percentage_dict = {}
         for item in consonant_dictionary:
@@ -168,6 +178,10 @@ class Tagger:
         return percentage_dict
 
     # def print_cons_percents(self, percentage_dict, read_file):
+    '''
+    A method which at one point wrote percentage information to a separate file
+    for every character. Scrapped in favor of keeping percentage data in one csv
+    '''
     #     fn = read_file.lstrip('dest')
     #     with open("percents/{}_consonants_percents.csv".format(fn),'w') as result:
     #         result.write('feature,percent\n')
@@ -178,7 +192,8 @@ class Tagger:
     def vowel_counts(self, read_file):
         '''
         Given a file of a phonemes separated by whitespace, returns a dictionary
-        of the number of occurrences of a handful of features of vowels
+        of the number of occurrences of a handful of features of vowels as well
+        as the total number of vowels in the given file
         '''
 
         text = read_file.read().split()
@@ -198,6 +213,11 @@ class Tagger:
         return self.global_vowels, self.vowel_count
 
     def vowel_percentages(self, vowel_dictionary, vowel_count):
+        '''
+        Given a dictionary containing the counts of various vowel features and
+        the total number of consonants in the related file, calculates percentages
+        for every tracked vowel feature
+        '''
         percentage_dict = {}
         for item in vowel_dictionary:
            if vowel_dictionary.get(item)!= None:
@@ -209,6 +229,10 @@ class Tagger:
         return percentage_dict
 
     # def print_vowel_percents(self, percentage_dict, read_file):
+        '''
+        A method which at one point wrote percentage information to a separate file
+        for every character. Scrapped in favor of keeping percentage data in one csv
+        '''
     #     fn = read_file.lstrip('/dest')
     #     with open("percents/{}_vowels_percents.csv".format(fn),'w') as result:
     #         result.write('feature,percent\n')
@@ -217,6 +241,10 @@ class Tagger:
 
 
     def count_text(self, read_file):
+        '''
+        Given a file, returns a dictionary whose keys are features and whose values
+        are the tally count of that feature in the given file
+        '''
         with open("dest/{}.txt".format(read_file), 'r') as source:
             vowel_count_dict = self.vowel_counts(source)[0]
 
@@ -227,6 +255,10 @@ class Tagger:
         return consonant_count_dict
 
     def percent_text(self, read_file):
+        '''
+        Given a file, returns a dictionary whose keys are features and whose values
+        are the percentageof the given file that feature comprises
+        '''
         with open("dest/{}.txt".format(read_file), 'r') as source:
             cons_counts = self.consonant_counts(source)
             cons_pct_dict = self.consonant_percentages(cons_counts[0], cons_counts[1])
@@ -239,58 +271,60 @@ class Tagger:
 
     def count_all_texts(self):
         '''
-        For every file in the phonetic transcription folder, writes the counts of
-        features to a new file in a counts folder. Entries are separated by newlines
+        Writes the counts of all the features of every file to its own line in a
+        counts csv file and writes the percents of all the features of every file
+        to its own line in  a percents csv file
         '''
-        with open ('percentData.csv', 'w') as result:
-            result.write(',')
+        with open ('features/percentData.csv', 'w') as result:
+            result.write('filename')
             for item in self.global_vowels:
-                result.write(item + ',')
+                result.write(','+item)
             for item in self.global_consonants:
-                result.write(item+',')
+                result.write(','+item)
             result.write('\n')
 
             for filename in os.listdir("dest"):
                 filename = filename[:-4]
-                play, character = filename.split("_")
-                result.write(play+','+character + ',')
+                # play, character = filename.split("_")
+                # result.write(play+','+character + ',')
+                result.write(filename)
 
-                # self.count_text(filename)
                 pct_dict = self.percent_text(filename)
                 for item in self.global_vowels:
-                    result.write(str(pct_dict[item])+',')
+                    result.write(','+str(pct_dict[item]))
                 for item in self.global_consonants:
-                    result.write(str(pct_dict[item])+',')
+                    result.write(','+str(pct_dict[item]))
 
                 result.write('\n')
 
-            with open ('countData.csv', 'w') as result:
-                result.write(',')
+        with open ('features/countData.csv', 'w') as result:
+            result.write('filename')
+            for item in self.global_vowels:
+                result.write(','+item)
+            for item in self.global_consonants:
+                result.write(','+item)
+            result.write('\n')
+
+            for filename in os.listdir("dest"):
+                filename = filename[:-4]
+                # play, character = filename.split("_")
+                # result.write(play+','+character + ',')
+                result.write(filename)
+
+                count_dict = self.count_text(filename)
                 for item in self.global_vowels:
-                    result.write(item + ',')
+                    result.write(','+str(count_dict[item]))
                 for item in self.global_consonants:
-                    result.write(item+',')
+                    result.write(','+str(count_dict[item]))
+
                 result.write('\n')
-
-                for filename in os.listdir("dest"):
-                    filename = filename[:-4]
-                    play, character = filename.split("_")
-                    result.write(play+','+character + ',')
-
-                    count_dict = self.count_text(filename)
-                    for item in self.global_vowels:
-                        result.write(str(count_dict[item])+',')
-                    for item in self.global_consonants:
-                        result.write(str(count_dict[item])+',')
-
-                    result.write('\n')
 
 
 
 def main():
     counter = Tagger()
     counter.count_all_texts()
-    counter.phonemeFrequencyOutputter()
+    counter.phoneme_frequency_outputter()
 
 
 if __name__ == "__main__":
