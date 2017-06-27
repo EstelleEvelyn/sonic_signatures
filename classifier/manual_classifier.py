@@ -138,7 +138,7 @@ def main():
         result.write('character,gender,role,genre\n')
         for item in char_dict:
             data_list.append([item, char_dict[item]['gender'],
-            char_dict[item]['role'], char_dict[item]['role']])
+            char_dict[item]['role'], char_dict[item]['genre']])
         data_list.sort(key = itemgetter(0))
         csv.writer(result).writerows(data_list)
 

@@ -344,8 +344,6 @@ class Counter:
 
 
 
-
-
 def main():
     counter = Counter()
     counter.count_all_texts()
