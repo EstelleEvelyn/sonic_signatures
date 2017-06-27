@@ -101,7 +101,7 @@ class Counter:
                else:
                    percentage_dict[item] = 0
 
-       return percentage_dict
+       return percentage_dict, counting_dict
 
     def phoneme_frequency_outputter(self):
         '''
@@ -130,7 +130,46 @@ class Counter:
                 temp_list.append(filename)
                 #print(filename,end='')
 
-                phonemeFreq = self.phoneme_frequency(filename)
+                phonemeFreq = self.phoneme_frequency(filename)[0]
+                for item in consistentOrderList:
+                    temp_list.append(str(phonemeFreq[item]))
+                   #print(str(phonemeFreq[item]), end= ',')
+
+                #print('\n')
+                presort_list.append(temp_list)
+
+            presort_list.sort(key = itemgetter(0))
+            data = presort_list
+            csv.writer(result).writerows(data)
+
+    def phoneme_count_outputter(self):
+        '''
+        Calculates the percentage for every phoneme within every character's text
+        and writes the information to a CSV file
+        '''
+        consistentOrderList = ['AA','AE','AH','AO','AW','AY','B','CH','D','DH','EH','ER','EY',
+       'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S','SH','T','TH',
+       'UH','UW','V','W','Y','Z','ZH']
+
+
+
+        with open("phonemefreq/masterCounts.csv", 'w') as result:
+
+            result.write('filename')
+            for item in consistentOrderList:
+               result.write(','+item)
+            result.write('\n')
+
+            presort_list = []
+            for filename in os.listdir("dest"):
+                temp_list = []
+                filename = filename[:-4]
+                # play, character = filename.split("_")
+                # result.write(play+','+character + ',')
+                temp_list.append(filename)
+                #print(filename,end='')
+
+                phonemeFreq = self.phoneme_frequency(filename)[1]
                 for item in consistentOrderList:
                     temp_list.append(str(phonemeFreq[item]))
                    #print(str(phonemeFreq[item]), end= ',')
@@ -348,6 +387,7 @@ def main():
     counter = Counter()
     counter.count_all_texts()
     counter.phoneme_frequency_outputter()
+    counter.phoneme_count_outputter()
 
 
 if __name__ == "__main__":
