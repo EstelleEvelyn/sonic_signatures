@@ -1,5 +1,7 @@
 import math
 import os
+import csv
+from operator import itemgetter
 
 '''
 text_classifier.py
@@ -114,26 +116,31 @@ class Tagger:
 
         with open("phonemefreq/masterData.csv", 'w') as result:
 
-           result.write('filename')
-           for item in consistentOrderList:
+            result.write('filename')
+            for item in consistentOrderList:
                result.write(','+item)
-           result.write('\n')
+            result.write('\n')
 
-           for filename in os.listdir("dest"):
+            presort_list = []
+            for filename in os.listdir("dest"):
+                temp_list = []
                 filename = filename[:-4]
                 # play, character = filename.split("_")
                 # result.write(play+','+character + ',')
-                result.write(filename)
-               #print(filename,end='')
+                presort_list.append(filename)
+                #print(filename,end='')
 
                 phonemeFreq = self.phoneme_frequency(filename)
-
                 for item in consistentOrderList:
-                    result.write(','+str(phonemeFreq[item]))
+                    temp_list.append(str(phonemeFreq[item]))
                    #print(str(phonemeFreq[item]), end= ',')
 
-               #print('\n')
-                result.write('\n')
+                #print('\n')
+                presort_list.append(temp_list)
+
+            presort_list.sort(key = itemgetter(0))
+            data = presort_list
+            csv.writer(result).writerows(data)
 
 
     def consonant_counts(self, read_file):
@@ -285,19 +292,26 @@ class Tagger:
                 result.write(','+item)
             result.write('\n')
 
+            presort_list = []
             for filename in os.listdir("dest"):
+                temp_list = []
                 filename = filename[:-4]
                 # play, character = filename.split("_")
                 # result.write(play+','+character + ',')
-                result.write(filename)
+                temp_list.append(filename)
 
                 pct_dict = self.percent_text(filename)
                 for item in self.global_vowels:
-                    result.write(','+str(pct_dict[item]))
+                    temp_list.append(str(pct_dict[item]))
                 for item in self.global_consonants:
-                    result.write(','+str(pct_dict[item]))
+                    temp_list.append(str(pct_dict[item]))
 
-                result.write('\n')
+                presort_list.append(temp_list)
+
+            presort_list.sort(key = itemgetter(0))
+            data = presort_list
+            csv.writer(result).writerows(data)
+
 
         with open ('features/countData.csv', 'w') as result:
             result.write('filename')
@@ -307,19 +321,28 @@ class Tagger:
                 result.write(','+item)
             result.write('\n')
 
+            presort_list = []
             for filename in os.listdir("dest"):
+                temp_list = []
                 filename = filename[:-4]
                 # play, character = filename.split("_")
                 # result.write(play+','+character + ',')
-                result.write(filename)
+                temp_list.append(filename)
 
                 count_dict = self.count_text(filename)
                 for item in self.global_vowels:
-                    result.write(','+str(count_dict[item]))
+                    temp_list.append(str(count_dict[item]))
                 for item in self.global_consonants:
-                    result.write(','+str(count_dict[item]))
+                    temp_list.append(str(count_dict[item]))
 
-                result.write('\n')
+                presort_list.append(temp_list)
+
+            presort_list.sort(key = itemgetter(0))
+            data = presort_list
+            csv.writer(result).writerows(data)
+
+
+
 
 
 
