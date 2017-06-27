@@ -65,8 +65,10 @@ def main():
     with open(data_file, 'r') as csvFile:
         reader = csv.DictReader(csvFile)
         for row in reader:
+            print(row)
             if re.match(play_code+'_', row.get('filename')):
                 training_data.append(row)
+
     training_data = numpy.array(training_data)
     gnb = GaussianNB()
     fit = get_training_fit(training_data)

@@ -4,13 +4,13 @@ import csv
 from operator import itemgetter
 
 '''
-text_classifier.py
+feature_counter.py
 @authors Estelle Bayer, Liz Nichols, Summer 2017
-A program that, given an ARPAbet source file, returns a dictionary containing the
-number of occurrences of a handful of linguistic classifications
+A program that generates csv files enumerating the phonemic and feature frequencies
+for all ARPAbet source files
 '''
 
-class Tagger:
+class Counter:
     def __init__(self):
         #a dictionary with rudimentary classifications of every phoneme in our source files
         self.consonant_classifier_dictionary = {
@@ -127,7 +127,7 @@ class Tagger:
                 filename = filename[:-4]
                 # play, character = filename.split("_")
                 # result.write(play+','+character + ',')
-                presort_list.append(filename)
+                temp_list.append(filename)
                 #print(filename,end='')
 
                 phonemeFreq = self.phoneme_frequency(filename)
@@ -347,7 +347,7 @@ class Tagger:
 
 
 def main():
-    counter = Tagger()
+    counter = Counter()
     counter.count_all_texts()
     counter.phoneme_frequency_outputter()
 
