@@ -42,6 +42,9 @@ class Distinct:
             'SH':0,'S':0,'R':0,'P':0,'NG':0,'N':0,'M':0,'L':0,'K':0,'JH':0,'HH':0,'G':0,'F':0,
             'DH':0,'D':0,'CH':0}
 
+        self.protag_sum = 0
+        self.antag_sum = 0
+
     def phoneme_totals(self):
         with open("../tagging/phonemefreq/masterCounts.csv", 'r') as csvfile:
             reader = csv.DictReader(csvfile)
@@ -50,10 +53,12 @@ class Distinct:
                     for item in row:
                         if item in self.protag_phoneme_count:
                             self.protag_phoneme_count[item] += int(row.get(item))
+                            self.protag_sum += int(row.get(item))
                 if row.get('filename') in self.antag_list:
                     for item in row:
                         if item in self.antag_phoneme_count:
                             self.antag_phoneme_count[item] += int(row.get(item))
+                            self.antag_sum += int(row.get(item))
 
 
     def feature_totals(self):
@@ -90,6 +95,11 @@ class Distinct:
             percent_list.append([item, protag_count/total])
         percent_list.sort(key=itemgetter(1), reverse=True)
         return percent_list
+
+    def normalize(self):
+        norm_dist = {}
+        for phoneme in self.protag_phoneme_count:
+
 
 def main():
     dist = Distinct()

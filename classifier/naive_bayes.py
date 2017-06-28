@@ -21,16 +21,25 @@ GLOBAL_PLAY_LIST = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4
                         'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Oth', 'Per', 'R2', 'R3', 'Rom',
                         'Shr', 'Tmp', 'Tim', 'Tit', 'Tro', 'TN', 'TGV', 'TNK', 'WT']
 
-def get_training_data(training_play, data_file):
+def get_training_data_play(training_play, data_file):
     training = []
     with open(data_file, 'r') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if re.match(training_play+"_", row[0]):
-                training.append(list(map(lambda x: float(x), (row[1:]))))
+                training.append(list(map(lambda x: float(x), row[1:])))
     return training
 
-def get_fit(play, trait):
+def get_training_data_char(char, data_file):
+    training = []
+    with open(data_file, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if char != row[0] and row[0] != 'filename':
+                training.append(list(map(lambda x: float(x), row[1:])))
+    return training
+
+def get_fit(target, trait):
     fit_set = []
     trait_indeces = {'gender':1, 'role':2, 'genre':3}
     class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'other':4, 'comedy':5, 'tragedy':6, 'history':7}
@@ -46,22 +55,35 @@ def get_fit(play, trait):
     with open('characteristics.csv', 'r') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
-            if re.match(play+"_", row[0]):
+            if re.match(target+"_", row[0]) or target == row[0]:
                 fit_set.append(class_list[row[trait_indeces[trait]]])
                 # fit_set.append(class_list[(row[1], row[2], row[3])])
     return fit_set
 
-def get_new_data(play, data_file):
+def get_fit_char(char, trait):
+    fit_set = []
+    trait_indeces = {'gender':1, 'role':2, 'genre':3}
+    class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'other':4, 'comedy':5, 'tragedy':6, 'history':7}
+
+    with open('characteristics.csv', 'r') as csvFile:
+        reader = csv.reader(csvFile)
+        for row in reader:
+            if char != row[0] and row[0] != 'character':
+                fit_set.append(class_list[row[trait_indeces[trait]]])
+                # fit_set.append(class_list[(row[1], row[2], row[3])])
+    return fit_set
+
+def get_new_data(target, data_file):
     #get some new data
     new_data = []
     with open(data_file, 'r') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
-            if re.match(play+"_", row[0]):
+            if re.match(target+"_", row[0]) or target == row[0]:
                 new_data.append(list(map(lambda x: float(x), (row[1:]))))
     return numpy.array(new_data)
 
-def predict_data(play, trait, data_file):
+def predict_data_play(play, trait, data_file):
 
         training_choices = GLOBAL_PLAY_LIST.copy()
         training_choices.remove(play)
@@ -75,7 +97,7 @@ def predict_data(play, trait, data_file):
         for training_play in training_choices:
             play_fit = get_fit(training_play, trait)
             fit.append(play_fit)
-            play_data = get_training_data(training_play, data_file)
+            play_data = get_training_data_play(training_play, data_file)
             training_data.append(play_data)
 
 
@@ -95,29 +117,74 @@ def predict_data(play, trait, data_file):
 
         return predicted, actual
 
+def predict_data_char(char, trait, data_file):
+
+        # random_training = random.randint(0,37)
+        # training_play = training_choices[random_training]
+
+        training_data = numpy.array(get_training_data_char(char, data_file))
+        fit = numpy.array(get_fit_char(char, trait))
+
+        # gnb = GaussianNB()
+        # gnb.fit(training_data, fit)
+        mnb  = MultinomialNB()
+        mnb.fit(training_data, fit)
+
+        predict_data = get_new_data(char, data_file)
+        predict_data.reshape(1, -1)
+        predicted = mnb.predict(predict_data)
+        # predicted = gnb.predict(predict_data)
+        actual = numpy.array(get_fit(char, trait))
+
+        return predicted, actual
+
 
 def main():
     if len(sys.argv) < 4:
-        print("Usage: naive_bayes.py <play_code> <characteristic> <[p]honeme or [f]eature>")
+        #this is kind of a lie with the current state of my main but w/e w/e
+        print("Usage: naive_bayes.py <play_code or character> <characteristic> <[p]honeme or [f]eature>")
         sys.exit()
     else:
         play_code = sys.argv[1]
         trait = sys.argv[2]
         data = sys.argv[3]
 
+    data_file = None
+
     if data[0].lower() == 'p':
         data_file = "../tagging/phonemefreq/masterData.csv"
     elif data[0].lower() == 'f':
         data_file = "../tagging/features/percentData.csv"
     else:
-        print("Invalid data type. Please enter \"[p]honeme\" or \"[f]eature\"")
-        sys.exit() #TODO prompt for input instead
+        while data_file is None:
+            data = input("Invalid data type. Please enter \"[p]honeme\" or \"[f]eature\"")
+            if data[0].lower() == 'p':
+                data_file = "../tagging/phonemefreq/masterData.csv"
+            elif data[0].lower() == 'f':
+                data_file = "../tagging/features/percentData.csv"
 
-    hamm_dist = []
-    for play in GLOBAL_PLAY_LIST:
-        predicted, actual = predict_data(play, trait, data_file)
-        hamm_dist.append(hamming(predicted, actual))
-    print(statistics.mean(hamm_dist))
+    if "_" in play_code:
+        misses = 0
+        total = 0
+        with open('characteristics.csv', 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if row[0] == "character":
+                    pass
+                else:
+                    char = row[0]
+                    predicted, actual = predict_data_char(char, trait, data_file)
+                    if predicted != actual:
+                        misses += 1
+                    total += 1
+        print(misses/float(total))
+
+    else:
+        hamm_dist = []
+        for play in GLOBAL_PLAY_LIST:
+            predicted, actual = predict_data_play(play, trait, data_file)
+            hamm_dist.append(hamming(predicted, actual))
+        print(statistics.mean(hamm_dist))
     # print("Predicted:", gnb.predict(predict_data))
     # print("Actual:", numpy.array(get_fit(play_code, trait))
 
