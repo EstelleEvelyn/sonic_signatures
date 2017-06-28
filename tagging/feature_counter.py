@@ -68,6 +68,12 @@ class Counter:
         self.consonant_count = 0
         self.vowel_count = 0
 
+        self.feature_ordered_list = ['fricative', 'affricate', 'glide', 'nasal', 'liquid',
+            'stop', 'glottal', 'linguaalveolar', 'linguapalatal', 'labiodental', 'bilabial',
+            'linguavelar','linguadental', 'voiced', 'voiceless', 'sibilant', 'nonsibilant',
+            'sonorant', 'nonsonorant', 'coronal', 'noncoronal', 'monophthong', 'diphthong',
+            'central', 'front', 'back', 'tense', 'lax', 'rounded','unrounded']
+
     def get_features(self):
         return(global_consonants.keys().append(global_vowels.keys()))
 
@@ -97,7 +103,7 @@ class Counter:
            if counting_dict.get(item)!= None:
                if total_phoneme_count !=0:
                    percent_of_total = float(counting_dict.get(item))/total_phoneme_count
-                   percentage_dict[item] = (math.ceil((percent_of_total*100)*100)/100)
+                   percentage_dict[item] = percent_of_total
                else:
                    percentage_dict[item] = 0
 
@@ -215,12 +221,12 @@ class Counter:
         '''
         percentage_dict = {}
         for item in consonant_dictionary:
-           if consonant_dictionary.get(item)!= None:
-               if consonant_count !=0:
-                   percent_of_total = float(consonant_dictionary.get(item))/consonant_count
-                   percentage_dict[item] = (math.ceil((percent_of_total*100)*100)/100)
-               else:
-                   percentage_dict[item] = 0
+            if consonant_dictionary.get(item)!= None:
+                if consonant_count !=0:
+                    percent_of_total = float(consonant_dictionary.get(item))/consonant_count
+                    percentage_dict[item] = percent_of_total
+                else:
+                    percentage_dict[item] = 0
         return percentage_dict
 
     # def print_cons_percents(self, percentage_dict, read_file):
@@ -266,12 +272,12 @@ class Counter:
         '''
         percentage_dict = {}
         for item in vowel_dictionary:
-           if vowel_dictionary.get(item)!= None:
-               if vowel_count != 0:
-                   percent_of_total = float(vowel_dictionary.get(item))/vowel_count
-                   percentage_dict[item] = (math.ceil((percent_of_total*100)*100)/100)
-               else:
-                   percentage_dict[item] = 0
+            if vowel_dictionary.get(item)!= None:
+                if vowel_count != 0:
+                    percent_of_total = float(vowel_dictionary.get(item))/vowel_count
+                    percentage_dict[item] = percent_of_total
+                else:
+                    percentage_dict[item] = 0
         return percentage_dict
 
     # def print_vowel_percents(self, percentage_dict, read_file):
@@ -325,9 +331,7 @@ class Counter:
         '''
         with open ('features/percentData.csv', 'w') as result:
             result.write('filename')
-            for item in self.global_vowels:
-                result.write(','+item)
-            for item in self.global_consonants:
+            for item in self.feature_ordered_list:
                 result.write(','+item)
             result.write('\n')
 
@@ -340,9 +344,7 @@ class Counter:
                 temp_list.append(filename)
 
                 pct_dict = self.percent_text(filename)
-                for item in self.global_vowels:
-                    temp_list.append(str(pct_dict[item]))
-                for item in self.global_consonants:
+                for item in self.feature_ordered_list:
                     temp_list.append(str(pct_dict[item]))
 
                 presort_list.append(temp_list)
@@ -354,9 +356,7 @@ class Counter:
 
         with open ('features/countData.csv', 'w') as result:
             result.write('filename')
-            for item in self.global_vowels:
-                result.write(','+item)
-            for item in self.global_consonants:
+            for item in self.feature_ordered_list:
                 result.write(','+item)
             result.write('\n')
 
@@ -369,10 +369,8 @@ class Counter:
                 temp_list.append(filename)
 
                 count_dict = self.count_text(filename)
-                for item in self.global_vowels:
-                    temp_list.append(str(count_dict[item]))
-                for item in self.global_consonants:
-                    temp_list.append(str(count_dict[item]))
+                for item in self.feature_ordered_list:
+                    temp_list.append(str(count_dict[]))
 
                 presort_list.append(temp_list)
 
