@@ -42,7 +42,7 @@ def get_training_data_char(char, data_file):
 def get_fit(target, trait):
     fit_set = []
     trait_indeces = {'gender':1, 'role':2, 'genre':3}
-    class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'other':4, 'comedy':5, 'tragedy':6, 'history':7}
+    class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'fool':4, 'other':5, 'comedy':6, 'tragedy':7, 'history':8}
 
     # #this is highly inaccurate.
     # class_list = {('f', 'protag', 'comedy'):0, ('f', 'protag', 'tragedy'):1, ('f', 'protag', 'history'):2,
@@ -63,7 +63,7 @@ def get_fit(target, trait):
 def get_fit_char(char, trait):
     fit_set = []
     trait_indeces = {'gender':1, 'role':2, 'genre':3}
-    class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'other':4, 'comedy':5, 'tragedy':6, 'history':7}
+    class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'fool':4, 'other':5, 'comedy':6, 'tragedy':7, 'history':8}
 
     with open('characteristics.csv', 'r') as csvFile:
         reader = csv.reader(csvFile)
@@ -125,15 +125,15 @@ def predict_data_char(char, trait, data_file):
         training_data = numpy.array(get_training_data_char(char, data_file))
         fit = numpy.array(get_fit_char(char, trait))
 
-        # gnb = GaussianNB()
-        # gnb.fit(training_data, fit)
-        mnb  = MultinomialNB()
-        mnb.fit(training_data, fit)
+        gnb = GaussianNB()
+        gnb.fit(training_data, fit)
+        # mnb  = MultinomialNB()
+        # mnb.fit(training_data, fit)
 
         predict_data = get_new_data(char, data_file)
         predict_data.reshape(1, -1)
-        predicted = mnb.predict(predict_data)
-        # predicted = gnb.predict(predict_data)
+        # predicted = mnb.predict(predict_data)
+        predicted = gnb.predict(predict_data)
         actual = numpy.array(get_fit(char, trait))
 
         return predicted, actual
@@ -166,6 +166,7 @@ def main():
     if "_" in play_code:
         false_pos = 0
         false_neg = 0
+        swap = 0
         total = 0
         with open('characteristics.csv', 'r') as csvfile:
             reader = csv.reader(csvfile)
@@ -173,14 +174,14 @@ def main():
                 if row[0] != "character":
                     char = row[0]
                     predicted, actual = predict_data_char(char, trait, data_file)
-                    if predicted != 4:
-                        print("found one")
-                    if predicted > actual:
+                    if predicted == 5 > actual:
                         false_neg += 1
-                    elif predicted < actual:
+                    elif predicted < actual == 5:
                         false_pos += 1
+                    elif predicted != actual:
+                        swap += 1
                     total += 1
-        print(false_neg/float(total), false_pos/float(total))
+        print(false_neg/float(total), false_pos/float(total), swap/float(total))
 
     else:
         hamm_dist = []

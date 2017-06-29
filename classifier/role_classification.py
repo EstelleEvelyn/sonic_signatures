@@ -18,9 +18,17 @@ class Distinct:
                         'Cor_TRIBUNES.Brutus', 'Cym_Iachimo', 'Ham_Claudius', '1H4_Hotspur',
                         '2H4_ChiefJustice', 'H5_Dauphin', '1H6_Charles', 'H8_Wolsey',
                         'JC_Antony', 'Jn_KingPhilip', 'Lr_Goneril', 'LLL_Princess', 'MM_Angelo',
-                        'MV_Shylock', 'Wiv_Falstaff', 'MND', 'Ado_DonJohn', 'Oth_Iago', 'Per_Antiochus',
+                        'MV_Shylock', 'Wiv_Falstaff', 'Ado_DonJohn', 'Oth_Iago', 'Per_Antiochus',
                         'R2_HenryIV', 'R3_RichardIII', 'Rom_Tybalt', 'Tmp_Antonio', 'Tit_Aaron',
                         'TN_Malvolio', 'TGV_Proteus', 'WT_Polixenes']
+
+        self.fool_list = ['Tim_Fool', 'WT_Autolycus', 'JC_PLEBEIANS', 'Cym_Cloten', 'Oth_Clown',
+                        'Tit_CountryFellow', 'LLL_Costard', 'Ado_Dogberry', 'Err_DromioOfEphesus',
+                        'Err_DromioOfSyracuse', '1H4_Falstaff', '2H4_Falstaff', 'TN_Feste',
+                        'Shr_Grumio', 'TGV_Lance', 'MV_LanceletGobbo', 'AWW_Fool',
+                        'MND_Bottom', 'MM_Pompey', 'MND_Puck', 'TGV_Speed', 'Lr_Fool',
+                        'Ham_Gravedigger', 'Mac_Porter', 'Tro_Thersites', 'AYL_Touchstone'
+                        'Tmp_Trinculo']
 
         self.antag_feature_count = {'fricative':0, 'affricate':0, 'glide':0, 'nasal':0, 'liquid':0,
             'stop':0, 'glottal':0, 'linguaalveolar':0, 'linguapalatal':0, 'labiodental':0,
@@ -28,7 +36,15 @@ class Distinct:
             'sibilant':0, 'nonsibilant':0, 'sonorant':0, 'nonsonorant':0, 'coronal':0,
             'noncoronal':0, 'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0,
             'tense':0, 'lax':0, 'rounded':0,'unrounded':0}
+
         self.protag_feature_count = {'fricative':0, 'affricate':0, 'glide':0, 'nasal':0, 'liquid':0,
+            'stop':0, 'glottal':0, 'linguaalveolar':0, 'linguapalatal':0, 'labiodental':0,
+            'bilabial':0, 'linguavelar':0,'linguadental':0, 'voiced':0, 'voiceless':0,
+            'sibilant':0, 'nonsibilant':0, 'sonorant':0, 'nonsonorant':0, 'coronal':0,
+            'noncoronal':0, 'monophthong':0, 'diphthong':0, 'central':0, 'front':0, 'back':0,
+            'tense':0, 'lax':0, 'rounded':0,'unrounded':0}
+
+        self.fool_feature_count = {'fricative':0, 'affricate':0, 'glide':0, 'nasal':0, 'liquid':0,
             'stop':0, 'glottal':0, 'linguaalveolar':0, 'linguapalatal':0, 'labiodental':0,
             'bilabial':0, 'linguavelar':0,'linguadental':0, 'voiced':0, 'voiceless':0,
             'sibilant':0, 'nonsibilant':0, 'sonorant':0, 'nonsonorant':0, 'coronal':0,
@@ -51,11 +67,17 @@ class Distinct:
             'IH':0,'IY':0,'OW':0,'OY':0,'UH':0,'UW':0,'ZH':0,'Z':0,'Y':0,'W':0,'V':0,'TH':0,'T':0,
             'SH':0,'S':0,'R':0,'P':0,'NG':0,'N':0,'M':0,'L':0,'K':0,'JH':0,'HH':0,'G':0,'F':0,
             'DH':0,'D':0,'CH':0}
+        self.fool_phoneme_count = {'B':0,'AA':0,'AE':0,'AH':0,'AO':0,'AW':0,'AY':0,'EH':0,'ER':0,'EY':0,
+            'IH':0,'IY':0,'OW':0,'OY':0,'UH':0,'UW':0,'ZH':0,'Z':0,'Y':0,'W':0,'V':0,'TH':0,'T':0,
+            'SH':0,'S':0,'R':0,'P':0,'NG':0,'N':0,'M':0,'L':0,'K':0,'JH':0,'HH':0,'G':0,'F':0,
+            'DH':0,'D':0,'CH':0}
 
         self.protag_cons_sum = 0
         self.protag_vowel_sum = 0
         self.antag_cons_sum = 0
         self.antag_vowel_sum = 0
+        self.fool_cons_sum = 0
+        self.fool_vowel_sum = 0
 
     def phoneme_totals(self):
         with open("../tagging/phonemefreq/masterCounts.csv", 'r') as csvfile:
@@ -77,6 +99,14 @@ class Distinct:
                                 self.antag_cons_sum += int(row.get(item))
                             else:
                                 self.antag_vowel_sum += int(row.get(item))
+                if row.get('filename') in self.fool_list:
+                    for item in row:
+                        if item in self.fool_phoneme_count:
+                            self.fool_phoneme_count[item] += int(row.get(item))
+                            if item in self.consonants:
+                                self.fool_cons_sum += int(row.get(item))
+                            else:
+                                self.fool_vowel_sum += int(row.get(item))
 
 
     def feature_totals(self):
@@ -91,11 +121,16 @@ class Distinct:
                     for item in row:
                         if item in self.antag_feature_count:
                             self.antag_feature_count[item] += int(row.get(item))
+                if row.get('filename') in self.fool_list:
+                    for item in row:
+                        if item in self.fool_feature_count:
+                            self.fool_feature_count[item] += int(row.get(item))
 
     def z_features(self):
-        p_pcts, a_pcts = self.percent_features()
-        z_list = []
-        for feature in self.protag_feature_count:
+        p_pcts, a_pcts, f_pcts = self.percent_features()
+        z_dict = {}
+        for feature in p_pcts:
+            z_dict[feature] = {}
             with open("../statistics/feature_statistics.csv", 'r') as featfile:
                 reader = csv.DictReader(featfile)
                 for row in reader:
@@ -107,16 +142,21 @@ class Distinct:
 
                         antag_feat_mean = a_pcts[feature]
                         antag_z = (antag_feat_mean - float(row['mean'])) / std_err
-                        break
-                z_list.append((feature, (protag_z, antag_z)))
-                z_list.sort(key = itemgetter(1), reverse=True)
 
-        return z_list
+                        fool_feat_mean = f_pcts[feature]
+                        fool_z = (fool_feat_mean - float(row['mean'])) / std_err
+                        break
+                z_dict[feature]['protag'] = protag_z
+                z_dict[feature]['antag'] = antag_z
+                z_dict[feature]['fool'] = fool_z
+
+        return z_dict
 
     def z_phonemes(self):
-        p_pcts, a_pcts = self.percent_phonemes()
-        z_list = []
+        p_pcts, a_pcts, f_pcts = self.percent_phonemes()
+        z_dict = {}
         for phoneme in p_pcts:
+            z_dict[phoneme] = {}
             with open("../statistics/phoneme_statistics.csv", 'r') as phonefile:
                 reader = csv.DictReader(phonefile)
                 for row in reader:
@@ -124,52 +164,72 @@ class Distinct:
                         std_err = float(row['stdev'])# / math.sqrt(686)
 
                         protag_phon_mean = p_pcts[phoneme]
-                        print(phoneme,protag_phon_mean, row['mean'], std_err)
                         protag_z = (protag_phon_mean - float(row['mean'])) / std_err
 
                         antag_phon_mean = a_pcts[phoneme]
                         antag_z = (antag_phon_mean - float(row['mean'])) / std_err
-                        break
-                z_list.append((phoneme, (protag_z, antag_z)))
-                z_list.sort(key = itemgetter(1), reverse=True)
 
-        return z_list
+                        fool_phon_mean = f_pcts[phoneme]
+                        fool_z = (fool_phon_mean - float(row['mean'])) / std_err
+                        break
+                z_dict[phoneme]['protag'] = protag_z
+                z_dict[phoneme]['antag'] = antag_z
+                z_dict[phoneme]['fool'] = fool_z
+
+        return z_dict
 
     def percent_phonemes(self):
         self.phoneme_totals()
         p_percent_dict = {}
         a_percent_dict = {}
+        f_percent_dict = {}
         for item in self.protag_phoneme_count:
             antag_count = self.antag_phoneme_count[item]
             protag_count = self.protag_phoneme_count[item]
+            fool_count = self.fool_phoneme_count[item]
+
             p_total = self.protag_cons_sum + self.protag_vowel_sum
+            f_total = self.fool_cons_sum + self.fool_vowel_sum
             a_total = self.antag_cons_sum + self.antag_vowel_sum
+
             p_percent_dict[item]=float(protag_count)/p_total
             a_percent_dict[item]=float(antag_count)/a_total
-        return p_percent_dict, a_percent_dict
+            f_percent_dict[item]=float(fool_count)/f_total
+        return p_percent_dict, a_percent_dict, f_percent_dict
 
     def percent_features(self):
         self.feature_totals()
         p_percent_dict = {}
         a_percent_dict = {}
+        f_percent_dict = {}
         for item in self.protag_feature_count:
             antag_count = self.antag_feature_count[item]
             protag_count = self.protag_feature_count[item]
+            fool_count = self.fool_feature_count[item]
             if item in self.consonants:
                 p_percent_dict[item]=float(protag_count)/self.protag_cons_sum
                 a_percent_dict[item]=float(antag_count)/self.antag_cons_sum
+                f_percent_dict[item]=float(fool_count)/self.fool_cons_sum
             else:
                 p_percent_dict[item]=float(protag_count)/self.protag_vowel_sum
                 a_percent_dict[item]=float(antag_count)/self.antag_vowel_sum
-        return p_percent_dict, a_percent_dict
+                f_percent_dict[item]=float(fool_count)/self.fool_vowel_sum
+        return p_percent_dict, a_percent_dict, f_percent_dict
 
 def main():
     dist = Distinct()
     phonemes = dist.z_phonemes()
     features = dist.z_features()
 
-    print("features: ", features)
-    print("phonemes: ", phonemes)
+    with open("feature_z_scores.csv", 'w') as z_file:
+        z_file.write("feature,protag,antag,fool\n")
+        for feature in features:
+            z_file.write(str(feature)+","+str(features[feature]['protag'])+","+str(features[feature]['antag'])+","+str(features[feature]['fool'])+"\n")
+
+    with open("phoneme_z_scores.csv", 'w') as z_file:
+        z_file.write("phoneme,protag,antag,fool\n")
+        for phoneme in phonemes:
+            z_file.write(str(phoneme)+","+str(phonemes[phoneme]['protag'])+","+str(phonemes[phoneme]['antag'])+","+str(phonemes[phoneme]['fool'])+"\n")
 
 if __name__ == "__main__":
     main()

@@ -62,6 +62,14 @@ class manual_classifier:
                         'R2_HenryIV', 'R3_RichardIII', 'Rom_Tybalt', 'Tmp_Antonio', 'Tit_Aaron',
                         'TN_Malvolio', 'TGV_Proteus', 'WT_Polixenes']
 
+        self.fool_list = ['Tim_Fool', 'WT_Autolycus', 'JC_PLEBEIANS', 'Cym_Cloten', 'Oth_Clown',
+                        'Tit_CountryFellow', 'LLL_Costard', 'Ado_Dogberry', 'Err_DromioOfEphesus',
+                        'Err_DromioOfSyracuse', '1H4_Falstaff', '2H4_Falstaff', 'TN_Feste',
+                        'Shr_Grumio', 'TGV_Lance', 'MV_LanceletGobbo', 'AWW_Fool',
+                        'MND_Bottom', 'MM_Pompey', 'MND_Puck', 'TGV_Speed', 'Lr_Fool',
+                        'Ham_Gravedigger', 'Mac_Porter', 'Tro_Thersites', 'AYL_Touchstone'
+                        'Tmp_Trinculo']
+
         self.comedy_list = ['AWW', 'AYL', 'Err', 'LLL', 'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Per',
                         'Shr', 'Tmp', 'TN', 'TNK', 'TGV', 'WT']
 
@@ -93,6 +101,8 @@ class manual_classifier:
             self.characteristic_dict[char]['role'] = 'protag'
         elif char in self.antag_list:
             self.characteristic_dict[char]['role'] = 'antag'
+        elif char in self.fool_list:
+            self.characteristic_dict[char]['role'] = 'fool'
         else:
             self.characteristic_dict[char]['role'] = 'other'
 
