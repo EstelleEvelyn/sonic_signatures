@@ -164,20 +164,23 @@ def main():
                 data_file = "../tagging/features/percentData.csv"
 
     if "_" in play_code:
-        misses = 0
+        false_pos = 0
+        false_neg = 0
         total = 0
         with open('characteristics.csv', 'r') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                if row[0] == "character":
-                    pass
-                else:
+                if row[0] != "character":
                     char = row[0]
                     predicted, actual = predict_data_char(char, trait, data_file)
-                    if predicted != actual:
-                        misses += 1
+                    if predicted != 4:
+                        print("found one")
+                    if predicted > actual:
+                        false_neg += 1
+                    elif predicted < actual:
+                        false_pos += 1
                     total += 1
-        print(misses/float(total))
+        print(false_neg/float(total), false_pos/float(total))
 
     else:
         hamm_dist = []

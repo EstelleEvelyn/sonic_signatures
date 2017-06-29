@@ -304,7 +304,7 @@ AYL_Celia,f,other,comedy
 AYL_Charles,m,other,comedy
 AYL_Corin,m,other,comedy
 AYL_Dennis,m,other,comedy
-AYL_DukeFrederick,m,other,comedy
+AYL_DukeFrederick,m,antag,comedy
 AYL_DukeSenior,m,other,comedy
 AYL_Hymen,m,other,comedy
 AYL_Jaques,m,other,comedy
@@ -397,7 +397,7 @@ Ant_Maecenas,m,other,tragedy
 Ant_Mardian,m,other,tragedy
 Ant_Menas,m,other,tragedy
 Ant_Octavia,f,other,tragedy
-Ant_Octavius,m,other,tragedy
+Ant_Octavius,m,antag,tragedy
 Ant_Philo,m,other,tragedy
 Ant_Pompey,m,other,tragedy
 Ant_Proculeius,m,other,tragedy
@@ -1461,7 +1461,7 @@ Wiv_John,m,other,comedy
 Wiv_MasterFord,m,other,comedy
 Wiv_MasterPage,m,other,comedy
 Wiv_MistressFord,f,other,comedy
-Wiv_MistressPage,f,other,comedy
+Wiv_MistressPage,f,protag,comedy
 Wiv_MistressQuickly,f,other,comedy
 Wiv_Nym,m,other,comedy
 Wiv_Pistol,m,other,comedy

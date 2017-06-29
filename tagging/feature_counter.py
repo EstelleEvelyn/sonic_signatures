@@ -370,7 +370,7 @@ class Counter:
 
                 count_dict = self.count_text(filename)
                 for item in self.feature_ordered_list:
-                    temp_list.append(str(count_dict[]))
+                    temp_list.append(str(count_dict[item]))
 
                 presort_list.append(temp_list)
 

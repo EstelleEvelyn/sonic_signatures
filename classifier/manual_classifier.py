@@ -49,12 +49,12 @@ class manual_classifier:
                         'Cor_Coriolanus', 'Cym_Imogen', 'Ham_Hamlet', '1H4_HenryV', '2H4_HenryV',
                         'H5_HenryV', '1H6_HenryVI', 'H8_HenryVIII', 'JC_Brutus', 'Jn_KingJohn',
                         'Lr_Lear', 'LLL_King', 'Mac_Macbeth', 'MM_Duke', 'MV_Portia',
-                        'Wiv_Mistrss_Page', 'MND', 'Ado_Beatrice', 'Oth_Othello', 'Per_Pericles',
+                        'Wiv_MistressPage', 'MND', 'Ado_Beatrice', 'Oth_Othello', 'Per_Pericles',
                         'R2_RichardII', 'R3_RichardIII', 'Rom_Romeo', 'Shr_Petruchio', 'Tmp_Prospero',
                         'Tim_Timon', 'Tit_Titus', 'Tro_Troilus', 'TN_Viola', 'TGV_Valentine',
                         'TNK_Theseus', 'WT_Leontes']
 
-        self.antag_list = ['AWW_Bertram', 'Ant_Caesar', 'AYL_DukeFredrick', 'Err_AntipholusOfEphesus',
+        self.antag_list = ['AWW_Bertram', 'Ant_Octavius', 'AYL_DukeFrederick', 'Err_AntipholusOfEphesus',
                         'Cor_TRIBUNES.Brutus', 'Cym_Iachimo', 'Ham_Claudius', '1H4_Hotspur',
                         '2H4_ChiefJustice', 'H5_Dauphin', '1H6_Charles', 'H8_Wolsey',
                         'JC_Antony', 'Jn_KingPhilip', 'Lr_Goneril', 'LLL_Princess', 'MM_Angelo',
