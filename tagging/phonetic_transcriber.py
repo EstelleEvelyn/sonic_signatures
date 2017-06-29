@@ -6,6 +6,8 @@ import urllib.request
 import json
 from bs4 import BeautifulSoup #toggle comment for this line if bs4 not installed
 import string
+import unicodedata
+
 
 
 '''
@@ -26,6 +28,8 @@ class Transcriber:
                                 'H5', '1H6', '2H6', '3H6', 'H8', 'JC', 'Jn', 'Lr', 'LLL', 'Mac',
                                 'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Oth', 'Per', 'R2', 'R3', 'Rom',
                                 'Shr', 'Tmp', 'Tim', 'Tit', 'Tro', 'TN', 'TGV', 'TNK', 'WT']
+        self.omission_dict = {}
+        self.word_count = 0
 
     def get_play_code_list(self):
         return self.play_code_list
@@ -84,6 +88,11 @@ class Transcriber:
                 character_list.append(words_and_chars[i].text)
         return character_list
 
+    def normalize_caseless(self,text):
+       return unicodedata.normalize("NFKD", text.casefold())
+
+    def caseless_equal(left, right):
+       return normalize_caseless(left) == normalize_caseless(right)
 
 
     def phonetic_transcript(self, file_name):
@@ -96,6 +105,9 @@ class Transcriber:
             with open('dest/{}.txt'.format(file_name), 'w') as dest_file: #destination
                 corpus_text = corpus.read().lower().split() #normalize
                 for word in corpus_text:
+                    self.word_count +=1
+                    # for char in string.punctuation:
+#                         word = word.replace(char,"")
                     if word in self.transcr: #TODO find a better way to resolve non-standard words
                         phonetic_list = self.transcr[word][0]
                         phonetic_string=""
@@ -103,8 +115,35 @@ class Transcriber:
                             phonetic_string = phonetic_string+sound+" "
                         dest_file.write(phonetic_string+", ")
                     # this was for omiission finder testing
-                    # else:
-                    #     print(word, file_name)
+                    else:
+                         word = self.normalize_caseless(word)
+
+                         if word in self.omission_dict:
+                            self.omission_dict[word]+=1
+                         else:
+                            self.omission_dict[word] = 1
+   
+    
+   
+    def omission_printer(self):
+       '''
+       Prints the omissions into a file
+       '''
+       tacofile = open('keys.txt','a')
+       keydict = {}
+       with open('omissionsWITHPUNCTUATION.txt','a') as dest:
+           for key in self.omission_dict.keys():
+               if not key in keydict:
+                  keydict[key] = 1
+               else:
+                  keydict[key] +=1  
+      
+               #tacofile.write(key + ",")
+               #for char in key:
+                  #tacofile.write(unicodedata.name(char)+",")
+               #tacofile.write("\n")
+               dest.write(str(key) + "," + str(self.omission_dict[key]) + "\n")
+       
 
 
     def get_all_character_texts(self):
@@ -117,7 +156,7 @@ class Transcriber:
         for play in self.play_code_list:
             character_list = self.get_character_list(play)
             for character in character_list:
-                self.get_character_text(play, character)
+                #self.get_character_text(play, character)
                 self.phonetic_transcript(play+"_"+character)
 
 
@@ -126,6 +165,8 @@ class Transcriber:
 def main():
     transcriber = Transcriber()
     transcriber.get_all_character_texts()
+    print(transcriber.word_count)
+    #transcriber.omission_printer()
 
 if __name__ == "__main__":
     main()
