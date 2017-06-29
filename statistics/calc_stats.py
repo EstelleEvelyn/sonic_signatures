@@ -10,8 +10,20 @@ and phonemes in Shakespearean text files
 
 class Stat_counter:
     def __init__(self):
-        self.feature_dict = {}
-        self.phoneme_dict = {}
+        self.feature_dict = {'fricative':[], 'affricate':[], 'glide':[], 'nasal':[],
+                    'liquid':[],'stop':[], 'glottal':[], 'linguaalveolar':[],
+                    'linguapalatal':[], 'labiodental':[], 'bilabial':[],'linguavelar':[],
+                    'linguadental':[], 'voiced':[], 'voiceless':[], 'sibilant':[],
+                    'nonsibilant':[],'sonorant':[], 'nonsonorant':[], 'coronal':[],
+                    'noncoronal':[], 'monophthong':[], 'diphthong':[], 'central':[],
+                    'front':[], 'back':[], 'tense':[], 'lax':[], 'rounded':[],'unrounded':[]}
+        self.phoneme_dict = {'AA':[], 'AE':[], 'AH':[], 'AO':[], 'AW':[], 'AY':[],
+            'B':[], 'CH':[], 'D':[], 'DH':[], 'EH':[], 'ER':[], 'EY':[], 'F':[],
+            'G':[], 'HH':[], 'IH':[], 'IY':[], 'JH':[], 'K':[], 'L':[], 'M':[],
+            'N':[], 'NG':[], 'OW':[], 'OY':[], 'P':[], 'R':[], 'S':[], 'SH':[], 'T':[],
+            'TH':[], 'UH':[], 'UW':[], 'V':[], 'W':[], 'Y':[], 'Z':[], 'ZH':[]}
+        self.threshold = 500
+        self.files_used= 0
 
     def accumuate_phonemes(self):
         '''
@@ -20,15 +32,20 @@ class Stat_counter:
         for every phoneme as values
         e.g. {'AA':[.021, .03, .0128,...], 'AH':[...], ...}
         '''
+        order_list = ['AA','AE','AH','AO','AW','AY','B','CH','D','DH','EH','ER','EY',
+            'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S',
+            'SH','T','TH', 'UH','UW','V','W','Y','Z','ZH']
         with open("../tagging/phonemefreq/masterData.csv") as csvfile:
-            file_reader = csv.DictReader(csvfile)
+            file_reader = csv.reader(csvfile)
             for row in file_reader:
-                for phoneme in row:
-                    if(phoneme != 'filename'):
-                        if not phoneme in self.phoneme_dict:
-                            self.phoneme_dict[phoneme]=[float(row.get(phoneme))]
-                        else:
-                            self.phoneme_dict[phoneme].append(float(row.get(phoneme)))
+                with open("../tagging/phonemefreq/masterCounts.csv") as checkfile:
+                    checker = csv.reader(checkfile)
+                    for char in checker:
+                        if char[0] == row[0] != 'filename' and sum(map(lambda x: int(x),
+                            char[1:])) > self.threshold:
+                            self.files_used += 1
+                            for i in range(len(order_list)):
+                                self.phoneme_dict[order_list[i]].append(float(row[i+1]))
 
 
     def accumulate_features(self):
@@ -38,15 +55,23 @@ class Stat_counter:
         for those features as values
         e.g. {'front':[.378, .4022, .367,...], 'fricative':[...], ...}
         '''
+        order_list  =['fricative', 'affricate', 'glide', 'nasal', 'liquid',
+            'stop', 'glottal', 'linguaalveolar', 'linguapalatal', 'labiodental',
+            'bilabial', 'linguavelar','linguadental', 'voiced', 'voiceless',
+            'sibilant', 'nonsibilant', 'sonorant', 'nonsonorant', 'coronal',
+            'noncoronal', 'monophthong', 'diphthong', 'central', 'front', 'back',
+            'tense', 'lax', 'rounded','unrounded']
+
         with open("../tagging/features/percentData.csv") as csvfile:
-            file_reader = csv.DictReader(csvfile)
+            file_reader = csv.reader(csvfile)
             for row in file_reader:
-                for feature in row:
-                    if (feature != 'filename'):
-                        if not feature in self.feature_dict:
-                            self.feature_dict[feature] = [float(row.get(feature))]
-                        else:
-                            self.feature_dict[feature].append(float(row.get(feature)))
+                with open("../tagging/phonemefreq/masterCounts.csv") as checkfile:
+                    checker = csv.reader(checkfile)
+                    for char in checker:
+                        if char[0] == row[0] != 'filename' and sum(map(lambda x: int(x),
+                            char[1:])) > self.threshold:
+                            for i in range(len(order_list)):
+                                self.feature_dict[order_list[i]].append(float(row[i+1]))
 
     def calc_stats(self):
         '''
@@ -75,6 +100,7 @@ class Stat_counter:
 def main():
     stats = Stat_counter()
     stats.calc_stats()
+    # print(stats.files_used)
 
 if __name__ == "__main__":
     main()

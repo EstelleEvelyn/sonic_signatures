@@ -100,7 +100,7 @@ class Distinct:
                 reader = csv.DictReader(featfile)
                 for row in reader:
                     if row['feature'] == feature:
-                        std_err = float(row['stdev']) / math.sqrt(1473)
+                        std_err = float(row['stdev']) # / math.sqrt(686)
 
                         protag_feat_mean = p_pcts[feature]
                         protag_z = (protag_feat_mean - float(row['mean'])) / std_err
@@ -109,7 +109,7 @@ class Distinct:
                         antag_z = (antag_feat_mean - float(row['mean'])) / std_err
                         break
                 z_list.append((feature, (protag_z, antag_z)))
-                z_list.sort(reverse=True)
+                z_list.sort(key = itemgetter(1), reverse=True)
 
         return z_list
 
@@ -121,16 +121,17 @@ class Distinct:
                 reader = csv.DictReader(phonefile)
                 for row in reader:
                     if row['phoneme'] == phoneme:
-                        std_err = float(row['stdev']) / math.sqrt(1473)
+                        std_err = float(row['stdev'])# / math.sqrt(686)
 
                         protag_phon_mean = p_pcts[phoneme]
+                        print(phoneme,protag_phon_mean, row['mean'], std_err)
                         protag_z = (protag_phon_mean - float(row['mean'])) / std_err
 
                         antag_phon_mean = a_pcts[phoneme]
                         antag_z = (antag_phon_mean - float(row['mean'])) / std_err
                         break
                 z_list.append((phoneme, (protag_z, antag_z)))
-                # z_list.sort(reverse=True)
+                z_list.sort(key = itemgetter(1), reverse=True)
 
         return z_list
 
