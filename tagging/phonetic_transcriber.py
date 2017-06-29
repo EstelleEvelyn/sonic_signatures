@@ -9,7 +9,7 @@ import string
 
 
 '''
-nltk_sonic_tagging.py
+phonetic_transcriber.py
 @author Estelle Bayer, Summer 2017
 A program which uses the Folger Shakespeare API and the nltk pronuncation dictionary
 to produce resource files containing text for every speaking character in every play

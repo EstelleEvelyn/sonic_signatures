@@ -1,6 +1,6 @@
 import sys
-from nltk_sonic_tagging import Transcriber
-from text_classifier import Tagger
+from phonetic_transcribber import Transcriber
+from feature_counter import Counter
 '''
 dynamic_counter.py
 @author Estelle Bayer, Summer 2017
@@ -18,9 +18,9 @@ def main():
 
     transcr = Transcriber()
     transcr.phonetic_transcript(file_name)
-    tagg = Tagger()
-    tagg.count_all_texts()
-    tagg.phoneme_frequency_outputter()
+    counter = Counter()
+    counter.count_all_texts()
+    counter.phoneme_frequency_outputter()
 
 if __name__ == "__main__":
     main()

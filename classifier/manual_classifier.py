@@ -1,6 +1,12 @@
 import csv
 import re
-
+from operator import itemgetter
+'''
+manual_classifier.py
+Estelle Bayer, Summer 2017
+A program used to assign traits to Shakespearean characters, for use in training
+and testing a classifier based on sonic signature data
+'''
 class manual_classifier:
     def __init__(self):
         self.female_list = ['AWW_Helen', 'AWW_Countess', 'AWW_Diana', 'AWW_Widow', 'AWW_Mariana',
@@ -127,10 +133,15 @@ class manual_classifier:
 def main():
     classifier = manual_classifier()
     char_dict = classifier.update_char_dict()
+    data_list = []
     with open('characteristics.csv', 'w') as result:
         result.write('character,gender,role,genre\n')
-        for char in char_dict:
-            result.write(char+','+char_dict[char]['gender']+','+char_dict[char]['role']+','+char_dict[char]['genre']+'\n')
+        for item in char_dict:
+            data_list.append([item, char_dict[item]['gender'],
+            char_dict[item]['role'], char_dict[item]['genre']])
+        data_list.sort(key = itemgetter(0))
+        csv.writer(result).writerows(data_list)
+
 
 if __name__ == '__main__':
     main()

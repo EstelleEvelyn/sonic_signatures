@@ -7,7 +7,7 @@ character
 phoneme'''
 
 
-from nltk_sonic_tagging import Transcriber
+from phonetic_transcribber import Transcriber
 
 
 
