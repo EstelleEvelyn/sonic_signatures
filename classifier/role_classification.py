@@ -2,7 +2,12 @@ import csv
 from operator import itemgetter
 import statistics
 import math
-
+'''
+role_classification.py
+Estelle Bayer, Summer 2017
+Calculates the z-scores for feature and phoneme percentages of Shakespearean
+protagonists, antagonists, and fools, printing them to csv files.
+'''
 class Distinct:
     def __init__(self):
         self.protag_list = ['AWW_Helen', 'Ant_Antony', 'AYL_Rosalind', 'Err_AntipholusOfSyracuse',
@@ -80,6 +85,12 @@ class Distinct:
         self.fool_vowel_sum = 0
 
     def phoneme_totals(self):
+        '''
+        Sums the total number of each phoneme said by each protagonist, antagonist,
+        and fool, updating the respective dictionaries
+
+        Also tracks the total number of vowels and consonants said by every archetype
+        '''
         with open("../tagging/phonemefreq/masterCounts.csv", 'r') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
@@ -110,6 +121,10 @@ class Distinct:
 
 
     def feature_totals(self):
+        '''
+        Sums the total number of each feature said by each protagonist, antagonist,
+        and fool, updating the respective dictionaries
+        '''
         with open("../tagging/features/countData.csv", 'r') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
@@ -127,6 +142,13 @@ class Distinct:
                             self.fool_feature_count[item] += int(row.get(item))
 
     def z_features(self):
+        '''
+        Calculates the z-scores of every feature for protagonists, antagonists,
+        and fools.
+
+        Returns a dictionary whose keys are features and whose values are themselves
+        dictionaries of roles and z-scores
+        '''
         p_pcts, a_pcts, f_pcts = self.percent_features()
         z_dict = {}
         for feature in p_pcts:
@@ -153,6 +175,13 @@ class Distinct:
         return z_dict
 
     def z_phonemes(self):
+        '''
+        Calculates the z-scores of every phoneme for protagonists, antagonists,
+        and fools.
+
+        Returns a dictionary whose keys are phonemes and whose values are themselves
+        dictionaries of roles and z-scores
+        '''
         p_pcts, a_pcts, f_pcts = self.percent_phonemes()
         z_dict = {}
         for phoneme in p_pcts:
@@ -179,6 +208,13 @@ class Distinct:
         return z_dict
 
     def percent_phonemes(self):
+        '''
+        Uses the calculated phoneme sums and totals to determine the percentage
+        of the aggregate protag/antag/fool speech consisting of each phoneme
+
+        Returns a dictionary for every role whose keys are phonemes and whose
+        values are percentages
+        '''
         self.phoneme_totals()
         p_percent_dict = {}
         a_percent_dict = {}
@@ -198,6 +234,13 @@ class Distinct:
         return p_percent_dict, a_percent_dict, f_percent_dict
 
     def percent_features(self):
+        '''
+        Uses the calculated feature sums and totals to determine the percentage
+        of the aggregate protag/antag/fool speech consisting of each feature
+
+        Returns a dictionary for every role whose keys are features and whose
+        values are percentages
+        '''
         self.feature_totals()
         p_percent_dict = {}
         a_percent_dict = {}

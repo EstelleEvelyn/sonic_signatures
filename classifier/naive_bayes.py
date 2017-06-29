@@ -22,6 +22,13 @@ GLOBAL_PLAY_LIST = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4
                         'Shr', 'Tmp', 'Tim', 'Tit', 'Tro', 'TN', 'TGV', 'TNK', 'WT']
 
 def get_training_data_play(training_play, data_file):
+    '''
+    @param training_play: a string play code in the training data
+    @param data_file: a string of either the phoneme percent or feature percent file,
+        based on command line input
+    @return training: a list of the percent distributions for every character in the
+        training play. used to train the naive Bayes classifier
+    '''
     training = []
     with open(data_file, 'r') as csvFile:
         reader = csv.reader(csvFile)
@@ -31,6 +38,13 @@ def get_training_data_play(training_play, data_file):
     return training
 
 def get_training_data_char(char, data_file):
+    '''
+    @param char: the string char being withheld
+    @param data_file: a tring of either the phoneme percent or feature percent file,
+        determined by arguments to main
+    @return training: a list of percent distributions for every character other than
+        the withheld char
+    '''
     training = []
     with open(data_file, 'r') as csvfile:
         reader = csv.reader(csvfile)
@@ -40,6 +54,14 @@ def get_training_data_char(char, data_file):
     return training
 
 def get_fit(target, trait):
+    '''
+    @param target: a string of either a play or character for which we want to obtain
+        the value(s) of the specified trait
+    @param trait: "gender", "role", or "genre". The class on which the classifier
+        is deciding, specified in arguments to main
+    @return fit_set: a list containing the correct classification(s) for the
+        target character(s)
+    '''
     fit_set = []
     trait_indeces = {'gender':1, 'role':2, 'genre':3}
     class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'fool':4, 'other':5, 'comedy':6, 'tragedy':7, 'history':8}
@@ -61,6 +83,13 @@ def get_fit(target, trait):
     return fit_set
 
 def get_fit_char(char, trait):
+    '''
+    @param char: the string character withheld
+    @param trait: "gender", "role", or "genre." The class on which the classifier
+        is deciding, specified in arguments to main
+    @return fit_set: a list containing correct classification of every character
+        other than the withheld
+    '''
     fit_set = []
     trait_indeces = {'gender':1, 'role':2, 'genre':3}
     class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'fool':4, 'other':5, 'comedy':6, 'tragedy':7, 'history':8}
@@ -74,7 +103,13 @@ def get_fit_char(char, trait):
     return fit_set
 
 def get_new_data(target, data_file):
-    #get some new data
+    '''
+    @param target: a string of the play or char to be predicted by the naive Bayes
+    @param data_file: a string of either the feature or phoneme percent file,
+        specified in the arguments to main
+    @return new_data: an array of the percent distribution(s) for the selected
+        character(s)
+    '''
     new_data = []
     with open(data_file, 'r') as csvFile:
         reader = csv.reader(csvFile)
@@ -84,6 +119,14 @@ def get_new_data(target, data_file):
     return numpy.array(new_data)
 
 def predict_data_play(play, trait, data_file):
+    '''
+    @param play: the play whose class we wish to predict
+    @param trait: the trait we are attempting to classify
+    @param data_file: the file containing either phoneme or feature data
+    @return predicted: a vector of the classifications predicted by the naive Bayes
+        for the characters in the play
+    @return actual: a vector of the actual classifications for those characters
+    '''
 
         training_choices = GLOBAL_PLAY_LIST.copy()
         training_choices.remove(play)
@@ -118,7 +161,14 @@ def predict_data_play(play, trait, data_file):
         return predicted, actual
 
 def predict_data_char(char, trait, data_file):
-
+        '''
+        @param char: the char whose class we wish to predict
+        @param trait: the trait we are attempting to classify
+        @param data_file: the file containing either phoneme or feature data
+        @return predicted: an int of the classification predicted by the naive Bayes
+            for the character
+        @return actual: an int of the actual classifications for that characters
+        '''
         # random_training = random.randint(0,37)
         # training_play = training_choices[random_training]
 
@@ -140,6 +190,18 @@ def predict_data_char(char, trait, data_file):
 
 
 def main():
+    '''
+    Currently either withholds and classifies one character or one play at a time
+    based on whether or not the first arg contains an underscore. Classification
+    is done for the specified characteristic, by the linguistic characterization
+    given in the 3rd arg
+
+    The character version currently prints the proportion of false positives, false
+    negatives, and swaps, assuming that role was chosen as the trait.
+
+    The play version prints the average Hamming distance between the predicted and
+    actual vectors
+    '''
     if len(sys.argv) < 4:
         #this is kind of a lie with the current state of my main but w/e w/e
         print("Usage: naive_bayes.py <play_code or character> <characteristic> <[p]honeme or [f]eature>")

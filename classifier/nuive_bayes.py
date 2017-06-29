@@ -9,8 +9,18 @@ import statistics
 import random
 import naive_bayes
 import random
-
+'''
+nuive_bayes.py (this is a pun)
+Estelle Bayer, Summer 2017
+'''
 def main():
+    '''
+    A stripped-down version of the naive Bayes, which trains only on protagonists
+    and antagonists rather than on every character. Takes no arguments.
+
+    Prints every pro/antagonist's predicted and actual roles, as well as printing
+    the percentage of each that was falsely chosen
+    '''
         prot_ant_list = ['AWW_Helen', 'Ant_Antony', 'AYL_Rosalind', 'Err_AntipholusOfSyracuse',
                     'Cor_Coriolanus', 'Cym_Imogen', 'Ham_Hamlet', '1H4_HenryV', '2H4_HenryV',
                     'H5_HenryV', '1H6_HenryVI', 'H8_HenryVIII', 'JC_Brutus', 'Jn_KingJohn',
