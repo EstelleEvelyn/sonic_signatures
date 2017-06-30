@@ -1,5 +1,6 @@
 import csv
 import unicodedata
+from feature_counter import Counter
 
 ''' unimportant script that liz wrote this summer number 3005 '''
 
@@ -17,15 +18,48 @@ playDict = {'All\'s Well That Ends Well':'AWW','Antony and Cleopatra':'Ant','As 
 characterDict={}
 otherDict={}
 
-input_file = csv.DictReader(open("Liz'sTableauMDSStuff/tableaudata/characteristics_split.csv"))
+
+counter = Counter()
+consonant_dict = counter.consonant_classifier_dictionary
+vowel_dict = counter.vowel_classifier_dictionary
+
+input_file = csv.DictReader(open("Liz'sTableauMDSStuff/tableaudata/tableauwCharacteristics.csv"))
+
+for row in input_file:
+   phoneme = row["phoneme"]
+   attrList=[row["play"],row["character"],row["sex"],row["role"],row["genre"],phoneme]
+   if phoneme in consonant_dict:
+      with open('consonantsFile.txt','a') as dest:
+         attrList += consonant_dict[phoneme]
+         dest.write(str(attrList)+"\n")
+   elif phoneme in vowel_dict:
+      with open ('vowelsFile.txt','a') as dest:
+         attrList += vowel_dict[phoneme]
+         dest.write(str(attrList)+"\n")
+   else:
+      print("what?")
+         
+      
+   #if phoneme in consonant dict, write to a consonant file
+      #we want play, name, gender, role, phoneme, vowel/consonant, feature... 
+   #if phoneme in vowel dict, write to a vowel file
+      #we want play, name, gender, role, phoneme, vowel/consonant, feature... 
+     # for feature in consonant_dict[phoneme]
+         
+
+
+
+
+
+
+'''
+
 
 for row in input_file:
    keyTup = (row["play"],row["character"])
-   valList = []
-   valList.append(row["gender"])
-   valList.append(row["role"])
-   valList.append(row["genre"])
-   characterDict[keyTup]=valList
+   valTup = (row["phoneme"],row["sex"],row["role"],row["genre"])
+   
+   characterDict[keyTup]=valTup
 
 another_file=csv.DictReader(open("tagging/phonemefreq/tableauVersion.csv"))
 
@@ -40,7 +74,7 @@ with open("tableauwCharacteristics",'a') as dest:
       str(info[1])+","+str(info[2])+"\n"))
 
 
-'''def normalize_caseless(text):
+def normalize_caseless(text):
     return unicodedata.normalize("NFKD", text.casefold())
 
 for row in input_file:
