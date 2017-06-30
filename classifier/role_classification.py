@@ -153,7 +153,7 @@ class Distinct:
         z_dict = {}
         for feature in p_pcts:
             z_dict[feature] = {}
-            with open("../statistics/feature_statistics.csv", 'r') as featfile:
+            with open("../stats/feature_statistics.csv", 'r') as featfile:
                 reader = csv.DictReader(featfile)
                 for row in reader:
                     if row['feature'] == feature:
@@ -186,7 +186,7 @@ class Distinct:
         z_dict = {}
         for phoneme in p_pcts:
             z_dict[phoneme] = {}
-            with open("../statistics/phoneme_statistics.csv", 'r') as phonefile:
+            with open("../stats/phoneme_statistics.csv", 'r') as phonefile:
                 reader = csv.DictReader(phonefile)
                 for row in reader:
                     if row['phoneme'] == phoneme:
@@ -259,20 +259,28 @@ class Distinct:
                 f_percent_dict[item]=float(fool_count)/self.fool_vowel_sum
         return p_percent_dict, a_percent_dict, f_percent_dict
 
+    def write_z_scores(self):
+        '''
+        Writes the results of calculating the z-scores to csv files for features
+        and phonemes
+        '''
+        phonemes = self.z_phonemes()
+        features = self.z_features()
+
+        with open("feature_z_scores.csv", 'w') as z_file:
+            z_file.write("feature,protag,antag,fool\n")
+            for feature in features:
+                z_file.write(str(feature)+","+str(features[feature]['protag'])+","+str(features[feature]['antag'])+","+str(features[feature]['fool'])+"\n")
+
+        with open("phoneme_z_scores.csv", 'w') as z_file:
+            z_file.write("phoneme,protag,antag,fool\n")
+            for phoneme in phonemes:
+                z_file.write(str(phoneme)+","+str(phonemes[phoneme]['protag'])+","+str(phonemes[phoneme]['antag'])+","+str(phonemes[phoneme]['fool'])+"\n")
+
 def main():
     dist = Distinct()
-    phonemes = dist.z_phonemes()
-    features = dist.z_features()
+    dist.write_z_scores()
 
-    with open("feature_z_scores.csv", 'w') as z_file:
-        z_file.write("feature,protag,antag,fool\n")
-        for feature in features:
-            z_file.write(str(feature)+","+str(features[feature]['protag'])+","+str(features[feature]['antag'])+","+str(features[feature]['fool'])+"\n")
-
-    with open("phoneme_z_scores.csv", 'w') as z_file:
-        z_file.write("phoneme,protag,antag,fool\n")
-        for phoneme in phonemes:
-            z_file.write(str(phoneme)+","+str(phonemes[phoneme]['protag'])+","+str(phonemes[phoneme]['antag'])+","+str(phonemes[phoneme]['fool'])+"\n")
 
 if __name__ == "__main__":
     main()

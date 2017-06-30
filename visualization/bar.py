@@ -79,7 +79,7 @@ def list_options(play):
     Returns the list of characters in a given play
     '''
     character_list = []
-    for fn in os.listdir("../tagging/dest"):
+    for fn in os.listdir("C:/Accounts/bayere/Desktop/sonic_signatures/tagging/dest"):
         if re.match(play+"_", fn) is not None:
             lstrip_length = len(play)+1
             character = fn[lstrip_length:-4]

@@ -128,65 +128,65 @@ def predict_data_play(play, trait, data_file):
     @return actual: a vector of the actual classifications for those characters
     '''
 
-        training_choices = GLOBAL_PLAY_LIST.copy()
-        training_choices.remove(play)
+    training_choices = GLOBAL_PLAY_LIST.copy()
+    training_choices.remove(play)
 
-        # random_training = random.randint(0,37)
-        # training_play = training_choices[random_training]
+    # random_training = random.randint(0,37)
+    # training_play = training_choices[random_training]
 
-        training_data = []
-        fit = []
+    training_data = []
+    fit = []
 
-        for training_play in training_choices:
-            play_fit = get_fit(training_play, trait)
-            fit.append(play_fit)
-            play_data = get_training_data_play(training_play, data_file)
-            training_data.append(play_data)
-
-
-        training_data = numpy.array(sum(training_data, []))
-        fit = numpy.array(sum(fit, []))
+    for training_play in training_choices:
+        play_fit = get_fit(training_play, trait)
+        fit.append(play_fit)
+        play_data = get_training_data_play(training_play, data_file)
+        training_data.append(play_data)
 
 
-        # gnb = GaussianNB()
-        # gnb.fit(training_data, fit)
-        mnb  = MultinomialNB()
-        mnb.fit(training_data, fit)
+    training_data = numpy.array(sum(training_data, []))
+    fit = numpy.array(sum(fit, []))
 
-        predict_data = get_new_data(play, data_file)
-        predicted = mnb.predict(predict_data)
-        # predicted = gnb.predict(predict_data)
-        actual = numpy.array(get_fit(play, trait))
 
-        return predicted, actual
+    # gnb = GaussianNB()
+    # gnb.fit(training_data, fit)
+    mnb  = MultinomialNB()
+    mnb.fit(training_data, fit)
+
+    predict_data = get_new_data(play, data_file)
+    predicted = mnb.predict(predict_data)
+    # predicted = gnb.predict(predict_data)
+    actual = numpy.array(get_fit(play, trait))
+
+    return predicted, actual
 
 def predict_data_char(char, trait, data_file):
-        '''
-        @param char: the char whose class we wish to predict
-        @param trait: the trait we are attempting to classify
-        @param data_file: the file containing either phoneme or feature data
-        @return predicted: an int of the classification predicted by the naive Bayes
-            for the character
-        @return actual: an int of the actual classifications for that characters
-        '''
-        # random_training = random.randint(0,37)
-        # training_play = training_choices[random_training]
+    '''
+    @param char: the char whose class we wish to predict
+    @param trait: the trait we are attempting to classify
+    @param data_file: the file containing either phoneme or feature data
+    @return predicted: an int of the classification predicted by the naive Bayes
+        for the character
+    @return actual: an int of the actual classifications for that characters
+    '''
+    # random_training = random.randint(0,37)
+    # training_play = training_choices[random_training]
 
-        training_data = numpy.array(get_training_data_char(char, data_file))
-        fit = numpy.array(get_fit_char(char, trait))
+    training_data = numpy.array(get_training_data_char(char, data_file))
+    fit = numpy.array(get_fit_char(char, trait))
 
-        gnb = GaussianNB()
-        gnb.fit(training_data, fit)
-        # mnb  = MultinomialNB()
-        # mnb.fit(training_data, fit)
+    gnb = GaussianNB()
+    gnb.fit(training_data, fit)
+    # mnb  = MultinomialNB()
+    # mnb.fit(training_data, fit)
 
-        predict_data = get_new_data(char, data_file)
-        predict_data.reshape(1, -1)
-        # predicted = mnb.predict(predict_data)
-        predicted = gnb.predict(predict_data)
-        actual = numpy.array(get_fit(char, trait))
+    predict_data = get_new_data(char, data_file)
+    predict_data.reshape(1, -1)
+    # predicted = mnb.predict(predict_data)
+    predicted = gnb.predict(predict_data)
+    actual = numpy.array(get_fit(char, trait))
 
-        return predicted, actual
+    return predicted, actual
 
 
 def main():

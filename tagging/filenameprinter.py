@@ -42,4 +42,3 @@ with open("counts/PP_Austen_consonants.txt",'r') as source:
    destination = open("percents/{}_percents.txt".format(filename),'w')
    for i in range(0, len(percentsArray)):
       destination.write(typesArray[i]+ ', ' + str(percentsArray[i])+ ("%")+'\n')
-     

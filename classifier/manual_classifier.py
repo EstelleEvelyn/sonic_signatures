@@ -7,7 +7,7 @@ Estelle Bayer, Summer 2017
 A program used to assign traits to Shakespearean characters, for use in training
 and testing a classifier based on sonic signature data
 '''
-class manual_classifier:
+class Classifier:
     def __init__(self):
         self.female_list = ['AWW_Helen', 'AWW_Countess', 'AWW_Diana', 'AWW_Widow', 'AWW_Mariana',
                         'Ant_Cleopatra', 'Ant_Charmian', 'Ant_Octavia', 'Ant_Iras', 'AYL_Rosalind',
@@ -129,7 +129,7 @@ class manual_classifier:
 
     def update_char_dict(self):
         '''
-        Updates the gender, role, and genre of every character, and returns the characteristic_dict
+        Updates the gender, role, and genre of every character in the characteristic_dict
         '''
         with open("../tagging/features/percentData.csv", 'r') as csvFile:
             reader = csv.DictReader(csvFile)
@@ -138,19 +138,22 @@ class manual_classifier:
                 self.sort_gender(char)
                 self.sort_role(char)
                 self.sort_genre(char)
-        return self.characteristic_dict
+
+    def classify(self):
+        self.update_char_dict()
+        data_list = []
+        with open('characteristics.csv', 'w') as result:
+            result.write('character,gender,role,genre\n')
+            for item in self.characteristic_dict:
+                data_list.append([item, self.characteristic_dict[item]['gender'],
+                self.characteristic_dict[item]['role'], self.characteristic_dict[item]['genre']])
+            data_list.sort(key = itemgetter(0))
+            csv.writer(result).writerows(data_list)
 
 def main():
-    classifier = manual_classifier()
-    char_dict = classifier.update_char_dict()
-    data_list = []
-    with open('characteristics.csv', 'w') as result:
-        result.write('character,gender,role,genre\n')
-        for item in char_dict:
-            data_list.append([item, char_dict[item]['gender'],
-            char_dict[item]['role'], char_dict[item]['genre']])
-        data_list.sort(key = itemgetter(0))
-        csv.writer(result).writerows(data_list)
+    classifier = Classifier()
+    classifier.classify()
+
 
 
 if __name__ == '__main__':

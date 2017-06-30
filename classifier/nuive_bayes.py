@@ -67,7 +67,7 @@ def main():
             gnb = GaussianNB()
             gnb.fit(training_data, fit_set)
 
-            predict_data = naive_bayes.get_new_data(char, '../tagging/phonemefreq/masterData.csv')
+            predict_data = naive_bayes.get_new_data(char, 'C:/Accounts/bayere/Desktop/sonic_signatures/tagging/phonemefreq/masterData.csv')
             predict_data.reshape(1, -1)
             # predicted = mnb.predict(predict_data)
             predicted = gnb.predict(predict_data)
