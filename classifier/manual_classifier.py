@@ -7,7 +7,7 @@ Estelle Bayer, Summer 2017
 A program used to assign traits to Shakespearean characters, for use in training
 and testing a classifier based on sonic signature data
 '''
-class manual_classifier:
+class Classifier:
     def __init__(self):
         self.female_list = ['AWW_Helen', 'AWW_Countess', 'AWW_Diana', 'AWW_Widow', 'AWW_Mariana',
                         'Ant_Cleopatra', 'Ant_Charmian', 'Ant_Octavia', 'Ant_Iras', 'AYL_Rosalind',
@@ -49,18 +49,26 @@ class manual_classifier:
                         'Cor_Coriolanus', 'Cym_Imogen', 'Ham_Hamlet', '1H4_HenryV', '2H4_HenryV',
                         'H5_HenryV', '1H6_HenryVI', 'H8_HenryVIII', 'JC_Brutus', 'Jn_KingJohn',
                         'Lr_Lear', 'LLL_King', 'Mac_Macbeth', 'MM_Duke', 'MV_Portia',
-                        'Wiv_Mistrss_Page', 'MND', 'Ado_Beatrice', 'Oth_Othello', 'Per_Pericles',
+                        'Wiv_MistressPage', 'MND', 'Ado_Beatrice', 'Oth_Othello', 'Per_Pericles',
                         'R2_RichardII', 'R3_RichardIII', 'Rom_Romeo', 'Shr_Petruchio', 'Tmp_Prospero',
                         'Tim_Timon', 'Tit_Titus', 'Tro_Troilus', 'TN_Viola', 'TGV_Valentine',
                         'TNK_Theseus', 'WT_Leontes']
 
-        self.antag_list = ['AWW_Bertram', 'Ant_Caesar', 'AYL_DukeFredrick', 'Err_AntipholusOfEphesus',
+        self.antag_list = ['AWW_Bertram', 'Ant_Octavius', 'AYL_DukeFrederick', 'Err_AntipholusOfEphesus',
                         'Cor_TRIBUNES.Brutus', 'Cym_Iachimo', 'Ham_Claudius', '1H4_Hotspur',
                         '2H4_ChiefJustice', 'H5_Dauphin', '1H6_Charles', 'H8_Wolsey',
                         'JC_Antony', 'Jn_KingPhilip', 'Lr_Goneril', 'LLL_Princess', 'MM_Angelo',
                         'MV_Shylock', 'Wiv_Falstaff', 'MND', 'Ado_DonJohn', 'Oth_Iago', 'Per_Antiochus',
                         'R2_HenryIV', 'R3_RichardIII', 'Rom_Tybalt', 'Tmp_Antonio', 'Tit_Aaron',
                         'TN_Malvolio', 'TGV_Proteus', 'WT_Polixenes']
+
+        self.fool_list = ['Tim_Fool', 'WT_Autolycus', 'JC_PLEBEIANS', 'Cym_Cloten', 'Oth_Clown',
+                        'Tit_CountryFellow', 'LLL_Costard', 'Ado_Dogberry', 'Err_DromioOfEphesus',
+                        'Err_DromioOfSyracuse', '1H4_Falstaff', '2H4_Falstaff', 'TN_Feste',
+                        'Shr_Grumio', 'TGV_Lance', 'MV_LanceletGobbo', 'AWW_Fool',
+                        'MND_Bottom', 'MM_Pompey', 'MND_Puck', 'TGV_Speed', 'Lr_Fool',
+                        'Ham_Gravedigger', 'Mac_Porter', 'Tro_Thersites', 'AYL_Touchstone'
+                        'Tmp_Trinculo']
 
         self.comedy_list = ['AWW', 'AYL', 'Err', 'LLL', 'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Per',
                         'Shr', 'Tmp', 'TN', 'TNK', 'TGV', 'WT']
@@ -93,6 +101,8 @@ class manual_classifier:
             self.characteristic_dict[char]['role'] = 'protag'
         elif char in self.antag_list:
             self.characteristic_dict[char]['role'] = 'antag'
+        elif char in self.fool_list:
+            self.characteristic_dict[char]['role'] = 'fool'
         else:
             self.characteristic_dict[char]['role'] = 'other'
 
@@ -119,7 +129,7 @@ class manual_classifier:
 
     def update_char_dict(self):
         '''
-        Updates the gender, role, and genre of every character, and returns the characteristic_dict
+        Updates the gender, role, and genre of every character in the characteristic_dict
         '''
         with open("../tagging/features/percentData.csv", 'r') as csvFile:
             reader = csv.DictReader(csvFile)
@@ -128,19 +138,22 @@ class manual_classifier:
                 self.sort_gender(char)
                 self.sort_role(char)
                 self.sort_genre(char)
-        return self.characteristic_dict
+
+    def classify(self):
+        self.update_char_dict()
+        data_list = []
+        with open('characteristics.csv', 'w') as result:
+            result.write('character,gender,role,genre\n')
+            for item in self.characteristic_dict:
+                data_list.append([item, self.characteristic_dict[item]['gender'],
+                self.characteristic_dict[item]['role'], self.characteristic_dict[item]['genre']])
+            data_list.sort(key = itemgetter(0))
+            csv.writer(result).writerows(data_list)
 
 def main():
-    classifier = manual_classifier()
-    char_dict = classifier.update_char_dict()
-    data_list = []
-    with open('characteristics.csv', 'w') as result:
-        result.write('character,gender,role,genre\n')
-        for item in char_dict:
-            data_list.append([item, char_dict[item]['gender'],
-            char_dict[item]['role'], char_dict[item]['genre']])
-        data_list.sort(key = itemgetter(0))
-        csv.writer(result).writerows(data_list)
+    classifier = Classifier()
+    classifier.classify()
+
 
 
 if __name__ == '__main__':

@@ -17,4 +17,3 @@ for file in os.listdir(directory):
 with open("numlines.txt",'a') as result:
     for item in numberOfLines:
         result.write(str(item)+'\n')
-        

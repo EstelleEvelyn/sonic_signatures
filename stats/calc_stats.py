@@ -8,7 +8,7 @@ A program to calculate the standard deviations and variances of various features
 and phonemes in Shakespearean text files
 '''
 
-class Stat_counter:
+class StatCounter:
     def __init__(self):
         self.feature_dict = {'fricative':[], 'affricate':[], 'glide':[], 'nasal':[],
                     'liquid':[],'stop':[], 'glottal':[], 'linguaalveolar':[],
@@ -98,7 +98,7 @@ class Stat_counter:
                 out_file.write(phoneme+","+str(phoneme_mean)+","+str(phoneme_std_dev)+","+str(phoneme_var)+"\n")
 
 def main():
-    stats = Stat_counter()
+    stats = StatCounter()
     stats.calc_stats()
     # print(stats.files_used)
 

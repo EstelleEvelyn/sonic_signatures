@@ -6,7 +6,7 @@ character,gender,role,genre
 1H4_Chamberlain,m,other,history
 1H4_DRAWERS.Francis,m,other,history
 1H4_Douglas,m,other,history
-1H4_Falstaff,m,other,history
+1H4_Falstaff,m,fool,history
 1H4_Gadshill,m,other,history
 1H4_Glendower,m,other,history
 1H4_HenryIV,m,other,history
@@ -114,7 +114,7 @@ character,gender,role,genre
 2H4_Davy,m,other,history
 2H4_DollTearsheet,f,other,history
 2H4_Epilogue,m,other,history
-2H4_Falstaff,m,other,history
+2H4_Falstaff,m,fool,history
 2H4_Feeble,m,other,history
 2H4_GROOMS.1,m,other,history
 2H4_GROOMS.2,m,other,history
@@ -276,7 +276,7 @@ AWW_Countess,f,other,comedy
 AWW_Diana,f,other,comedy
 AWW_Duke,m,other,comedy
 AWW_Epilogue,m,other,comedy
-AWW_Fool,m,other,comedy
+AWW_Fool,m,fool,comedy
 AWW_GENTLEMEN.1,m,other,comedy
 AWW_GENTLEMEN.2,m,other,comedy
 AWW_GENTLEMEN.3,m,other,comedy
@@ -304,7 +304,7 @@ AYL_Celia,f,other,comedy
 AYL_Charles,m,other,comedy
 AYL_Corin,m,other,comedy
 AYL_Dennis,m,other,comedy
-AYL_DukeFrederick,m,other,comedy
+AYL_DukeFrederick,m,antag,comedy
 AYL_DukeSenior,m,other,comedy
 AYL_Hymen,m,other,comedy
 AYL_Jaques,m,other,comedy
@@ -335,7 +335,7 @@ Ado_Borachio,m,other,comedy
 Ado_Boy,m,other,comedy
 Ado_Claudio,m,other,comedy
 Ado_Conrade,m,other,comedy
-Ado_Dogberry,m,other,comedy
+Ado_Dogberry,m,fool,comedy
 Ado_DonJohn,m,antag,comedy
 Ado_DonPedro,m,other,comedy
 Ado_FriarFrancis,m,other,comedy
@@ -397,7 +397,7 @@ Ant_Maecenas,m,other,tragedy
 Ant_Mardian,m,other,tragedy
 Ant_Menas,m,other,tragedy
 Ant_Octavia,f,other,tragedy
-Ant_Octavius,m,other,tragedy
+Ant_Octavius,m,antag,tragedy
 Ant_Philo,m,other,tragedy
 Ant_Pompey,m,other,tragedy
 Ant_Proculeius,m,other,tragedy
@@ -502,7 +502,7 @@ Cym_ATTENDANTS.CLOTEN.1,m,other,tragedy
 Cym_ATTENDANTS.CLOTEN.2,m,other,tragedy
 Cym_Arviragus,m,other,tragedy
 Cym_Belarius,m,other,tragedy
-Cym_Cloten,m,other,tragedy
+Cym_Cloten,m,fool,tragedy
 Cym_Cornelius,m,other,tragedy
 Cym_Cymbeline,m,other,tragedy
 Cym_Frenchman,m,other,tragedy
@@ -541,8 +541,8 @@ Err_AntipholusOfEphesus,m,antag,comedy
 Err_AntipholusOfSyracuse,m,protag,comedy
 Err_Balthasar,m,other,comedy
 Err_Courtesan,f,other,comedy
-Err_DromioOfEphesus,m,other,comedy
-Err_DromioOfSyracuse,m,other,comedy
+Err_DromioOfEphesus,m,fool,comedy
+Err_DromioOfSyracuse,m,fool,comedy
 Err_Duke,m,other,comedy
 Err_Egeon,m,other,comedy
 Err_Luce,f,other,comedy
@@ -664,7 +664,7 @@ Ham_Fortinbras,m,other,tragedy
 Ham_Francisco,m,other,tragedy
 Ham_Gertrude,f,other,tragedy
 Ham_Ghost,m,other,tragedy
-Ham_Gravedigger,m,other,tragedy
+Ham_Gravedigger,m,fool,tragedy
 Ham_GravediggersCompanion,m,other,tragedy
 Ham_Guildenstern,m,other,tragedy
 Ham_Hamlet,m,protag,tragedy
@@ -708,7 +708,7 @@ JC_Marullus,m,other,tragedy
 JC_Messenger,m,other,tragedy
 JC_Metellus,m,other,tragedy
 JC_Octavius,m,other,tragedy
-JC_PLEBEIANS,m,other,tragedy
+JC_PLEBEIANS,m,fool,tragedy
 JC_PLEBEIANS.0.1,m,other,tragedy
 JC_PLEBEIANS.0.2,m,other,tragedy
 JC_PLEBEIANS.0.3,m,other,tragedy
@@ -770,7 +770,7 @@ LLL_Armado,m,other,comedy
 LLL_Berowne,m,other,comedy
 LLL_Boy,m,other,comedy
 LLL_Boyet,m,other,comedy
-LLL_Costard,m,other,comedy
+LLL_Costard,m,fool,comedy
 LLL_Dull,m,other,comedy
 LLL_Dumaine,m,other,comedy
 LLL_Forester,m,other,comedy
@@ -802,7 +802,7 @@ Lr_Curan,m,other,tragedy
 Lr_Doctor,m,other,tragedy
 Lr_Edgar,m,other,tragedy
 Lr_Edmund,m,other,tragedy
-Lr_Fool,m,other,tragedy
+Lr_Fool,m,fool,tragedy
 Lr_France,m,other,tragedy
 Lr_Gloucester,m,other,tragedy
 Lr_Goneril,f,antag,tragedy
@@ -841,10 +841,10 @@ MM_Lucio,m,other,comedy
 MM_Mariana,f,other,comedy
 MM_Messenger,m,other,comedy
 MM_Nun,f,other,comedy
-MM_Pompey,m,other,comedy
+MM_Pompey,m,fool,comedy
 MM_Provost,m,other,comedy
 MM_SERVANTS.1,m,other,comedy
-MND_Bottom,m,other,comedy
+MND_Bottom,m,fool,comedy
 MND_Demetrius,m,other,comedy
 MND_Egeus,m,other,comedy
 MND_FAIRIES.TITANIA,m,other,comedy
@@ -878,7 +878,7 @@ MV_Bassanio,m,other,comedy
 MV_Duke,m,other,comedy
 MV_Gratiano,m,other,comedy
 MV_Jessica,f,other,comedy
-MV_LanceletGobbo,m,other,comedy
+MV_LanceletGobbo,m,fool,comedy
 MV_Lorenzo,m,other,comedy
 MV_MUSICIANS,m,other,comedy
 MV_Messenger,m,other,comedy
@@ -921,7 +921,7 @@ Mac_MacduffsSon,m,other,tragedy
 Mac_Malcolm,m,other,tragedy
 Mac_Menteith,m,other,tragedy
 Mac_OldMan,m,other,tragedy
-Mac_Porter,m,other,tragedy
+Mac_Porter,m,fool,tragedy
 Mac_Ross,m,other,tragedy
 Mac_SERVANTS.X.2,m,other,tragedy
 Mac_SERVANTS.X.3,m,other,tragedy
@@ -941,7 +941,7 @@ Mac_YoungSiward,m,other,tragedy
 Oth_Bianca,f,other,tragedy
 Oth_Brabantio,m,other,tragedy
 Oth_Cassio,m,other,tragedy
-Oth_Clown,m,other,tragedy
+Oth_Clown,m,fool,tragedy
 Oth_Desdemona,f,other,tragedy
 Oth_Duke,m,other,tragedy
 Oth_Emilia,f,other,tragedy
@@ -1158,7 +1158,7 @@ Shr_Bianca,f,other,comedy
 Shr_Biondello,m,other,comedy
 Shr_Curtis,m,other,comedy
 Shr_Gremio,m,other,comedy
-Shr_Grumio,m,other,comedy
+Shr_Grumio,m,fool,comedy
 Shr_HUNTSMEN.0.1,m,other,comedy
 Shr_HUNTSMEN.0.2,m,other,comedy
 Shr_HUNTSMEN.0.3,m,other,comedy
@@ -1196,7 +1196,7 @@ TGV_Duke,m,other,comedy
 TGV_Eglamour,m,other,comedy
 TGV_Host,m,other,comedy
 TGV_Julia,f,other,comedy
-TGV_Lance,m,other,comedy
+TGV_Lance,m,fool,comedy
 TGV_Lucetta,f,other,comedy
 TGV_OUTLAWS.1,m,other,comedy
 TGV_OUTLAWS.2,m,other,comedy
@@ -1204,7 +1204,7 @@ TGV_OUTLAWS.3,m,other,comedy
 TGV_Pantino,m,other,comedy
 TGV_Proteus,m,antag,comedy
 TGV_SERVANTS.1,m,other,comedy
-TGV_Speed,m,other,comedy
+TGV_Speed,m,fool,comedy
 TGV_Sylvia,m,other,comedy
 TGV_Thurio,m,other,comedy
 TGV_Valentine,m,protag,comedy
@@ -1255,7 +1255,7 @@ TN_AndrewAguecheek,m,other,comedy
 TN_Antonio,m,other,comedy
 TN_Captain,m,other,comedy
 TN_Fabian,m,other,comedy
-TN_Feste,m,other,comedy
+TN_Feste,m,fool,comedy
 TN_Malvolio,m,antag,comedy
 TN_Maria,f,other,comedy
 TN_OFFICERS.1,m,other,comedy
@@ -1283,7 +1283,7 @@ Tim_FRIENDS.Lucullus,m,other,tragedy
 Tim_FRIENDS.Sempronius,m,other,tragedy
 Tim_FRIENDS.Ventidius,m,other,tragedy
 Tim_Flavius,m,other,tragedy
-Tim_Fool,m,other,tragedy
+Tim_Fool,m,fool,tragedy
 Tim_Jeweler,m,other,tragedy
 Tim_LADIES,f,other,tragedy
 Tim_LADIES.0.1,f,other,tragedy
@@ -1340,7 +1340,7 @@ Tit_Aemilius,m,other,tragedy
 Tit_Bassianus,m,other,tragedy
 Tit_Captain,m,other,tragedy
 Tit_Chiron,m,other,tragedy
-Tit_CountryFellow,m,other,tragedy
+Tit_CountryFellow,m,fool,tragedy
 Tit_Demetrius,m,other,tragedy
 Tit_GOTHS,m,other,tragedy
 Tit_GOTHS.0,m,other,tragedy
@@ -1411,7 +1411,7 @@ Tro_SERVANTS.PARIS.1,m,other,tragedy
 Tro_SERVANTS.TROILUS.1,m,other,tragedy
 Tro_SOLDIERS,m,other,tragedy
 Tro_SOLDIERS.TROJAN,m,other,tragedy
-Tro_Thersites,m,other,tragedy
+Tro_Thersites,m,fool,tragedy
 Tro_Troilus,m,protag,tragedy
 Tro_Ulysses,m,other,tragedy
 WT_ATTENDANTS,m,other,comedy
@@ -1422,7 +1422,7 @@ WT_ATTENDANTS.3,m,other,comedy
 WT_ATTENDANTS.X,m,other,comedy
 WT_Antigonus,m,other,comedy
 WT_Archidamus,m,other,comedy
-WT_Autolycus,m,other,comedy
+WT_Autolycus,m,fool,comedy
 WT_Camillo,m,other,comedy
 WT_Chorus,m,other,comedy
 WT_Cleomenes,m,other,comedy
@@ -1461,7 +1461,7 @@ Wiv_John,m,other,comedy
 Wiv_MasterFord,m,other,comedy
 Wiv_MasterPage,m,other,comedy
 Wiv_MistressFord,f,other,comedy
-Wiv_MistressPage,f,other,comedy
+Wiv_MistressPage,f,protag,comedy
 Wiv_MistressQuickly,f,other,comedy
 Wiv_Nym,m,other,comedy
 Wiv_Pistol,m,other,comedy

@@ -52,7 +52,7 @@ class Transcriber:
         for tag in initial_text.findAll('br'):
             tag.replace_with('\n')
 
-        with open ('res/{}.txt'.format(character_tag), 'w') as res_file:
+        with open ('C:/Accounts/bayere/Desktop/sonic_signatures/res/{}.txt'.format(character_tag), 'w') as res_file:
             for line in initial_text.find_all('body'):
                 write_string = line.text
                 #TODO try to fix this mapping
@@ -122,9 +122,9 @@ class Transcriber:
                             self.omission_dict[word]+=1
                          else:
                             self.omission_dict[word] = 1
-   
-    
-   
+
+
+
     def omission_printer(self):
        '''
        Prints the omissions into a file
@@ -136,14 +136,14 @@ class Transcriber:
                if not key in keydict:
                   keydict[key] = 1
                else:
-                  keydict[key] +=1  
-      
+                  keydict[key] +=1
+
                #tacofile.write(key + ",")
                #for char in key:
                   #tacofile.write(unicodedata.name(char)+",")
                #tacofile.write("\n")
                dest.write(str(key) + "," + str(self.omission_dict[key]) + "\n")
-       
+
 
 
     def get_all_character_texts(self):

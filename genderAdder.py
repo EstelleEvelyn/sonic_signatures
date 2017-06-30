@@ -68,7 +68,7 @@ with open("tableauwCharacteristics",'a') as dest:
       keyTup = (row["play"],row["char"])
       val = row["phoneme"]
       otherDict[keyTup] = val
-      
+
       info = (characterDict[keyTup])
       dest.write(str(str(keyTup[0])+","+ str(keyTup[1])+","+val+","+str(info[0])+","+
       str(info[1])+","+str(info[2])+"\n"))
@@ -101,7 +101,4 @@ with open("mdsGendered.txt",'a') as dest:
          print (tup)
          notInDict +=1
    print (notInDict)
-'''         
-   
-   
-   
+'''
