@@ -29,8 +29,8 @@ def main():
 
     if new_file == True:
         transcr = Transcriber()
-        for res_file in os.listdr("/tagging/res"):
-            transcr.phonetic_transcript(res_file)
+        for res_file in os.listdir("res"):
+            transcr.phonetic_transcript(res_file[:-4])
     count = Counter()
     count.count_all_texts()
     mpv = MPV()
