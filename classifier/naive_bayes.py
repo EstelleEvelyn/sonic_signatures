@@ -254,8 +254,6 @@ def main():
                 if row[0] != "character":
                     char = row[0]
                     predicted, actual = predict_data_char(char, trait, data_file)
-                    if predicted == 0 and actual == 1:
-                        weird+=1
                     if actual[0] not in ret_dict:
                         ret_dict[actual[0]] = {}
                         ret_dict[actual[0]][predicted[0]] = 1
