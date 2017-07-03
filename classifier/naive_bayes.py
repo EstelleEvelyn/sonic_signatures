@@ -188,6 +188,27 @@ def predict_data_char(char, trait, data_file):
 
     return predicted, actual
 
+def print_confusion_matrix(confusion_dictionary, trait):
+    '''
+    @param confusion_dictionary: a dictionary containing the tallies of actual and
+    predicted values for a data set. Format: {actual1:{predicted1:#, predicted2:#,...},actual2:{predicted1:#, ...},...}
+    @param trait: the trait for which the confusion dictionary was calculated
+    @return nothing
+    Prints the given confusion dictionary to a csv file
+    '''
+    class_list = {0:'f', 1:'m', 2:'protag', 3:'antag', 4:'fool', 5:'other', 6:'comedy', 7:'tragedy', 8:'history'}
+    with open("confusion_matrix_{}.csv".format(trait), 'w') as result:
+        for i in range(9):
+            if i in confusion_dictionary:
+                result.write(','+class_list[i])
+        result.write('\n')
+        for j in range(9):
+            if j in list(list(confusion_dictionary.values())[0].keys()):
+                result.write(class_list[j])
+                for i in range(9):
+                    if i in confusion_dictionary and j in confusion_dictionary[i]:
+                        result.write(','+str(confusion_dictionary[i][j]))
+                result.write('\n')
 
 def main():
     '''
@@ -226,24 +247,28 @@ def main():
                 data_file = "../tagging/features/percentData.csv"
 
     if "_" in play_code:
-        false_pos = 0
-        false_neg = 0
-        swap = 0
-        total = 0
+        ret_dict = {}
         with open('characteristics.csv', 'r') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 if row[0] != "character":
                     char = row[0]
                     predicted, actual = predict_data_char(char, trait, data_file)
-                    if predicted == 5 > actual:
-                        false_neg += 1
-                    elif predicted < actual == 5:
-                        false_pos += 1
-                    elif predicted != actual:
-                        swap += 1
-                    total += 1
-        print(false_neg/float(total), false_pos/float(total), swap/float(total))
+                    if predicted == 0 and actual == 1:
+                        weird+=1
+                    if actual[0] not in ret_dict:
+                        ret_dict[actual[0]] = {}
+                        ret_dict[actual[0]][predicted[0]] = 1
+                    elif predicted[0] not in ret_dict[actual[0]]:
+                        ret_dict[actual[0]][predicted[0]] = 1
+                    else:
+                        ret_dict[actual[0]][predicted[0]] += 1
+        for value in ret_dict:
+            for possible in ret_dict:
+                if possible not in ret_dict[value]:
+                    ret_dict[value][possible] = 0
+        print_confusion_matrix(ret_dict, trait)
+
 
     else:
         hamm_dist = []
