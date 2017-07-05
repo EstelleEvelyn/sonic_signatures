@@ -74,7 +74,7 @@ def get_fit(target, trait):
     #              ('m', 'antag', 'comedy'):12, ('m', 'antag', 'tragedy'):13, ('m', 'antag', 'history'):14,
     #              ('m', 'other', 'comedy'):15, ('m', 'other', 'tragedy'):16, ('m', 'other', 'history'):17}
 
-    with open('characteristics.csv', 'r') as csvFile:
+    with open('../characteristics.csv', 'r') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if re.match(target+"_", row[0]) or target == row[0]:
@@ -94,7 +94,7 @@ def get_fit_char(char, trait):
     trait_indeces = {'gender':1, 'role':2, 'genre':3}
     class_list = {'f':0, 'm':1, 'protag':2, 'antag':3, 'fool':4, 'other':5, 'comedy':6, 'tragedy':7, 'history':8}
 
-    with open('characteristics.csv', 'r') as csvFile:
+    with open('../characteristics.csv', 'r') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if char != row[0] and row[0] != 'character':
@@ -197,7 +197,7 @@ def print_confusion_matrix(confusion_dictionary, trait):
     Prints the given confusion dictionary to a csv file
     '''
     class_list = {0:'f', 1:'m', 2:'protag', 3:'antag', 4:'fool', 5:'other', 6:'comedy', 7:'tragedy', 8:'history'}
-    with open("confusion_matrix_{}.csv".format(trait), 'w') as result:
+    with open("../confusion_matrix_{}.csv".format(trait), 'w') as result:
         for i in range(9):
             if i in confusion_dictionary:
                 result.write(','+class_list[i])
@@ -235,20 +235,20 @@ def main():
     data_file = None
 
     if data[0].lower() == 'p':
-        data_file = "../tagging/phonemefreq/masterData.csv"
+        data_file = "../../tagging/phonemefreq/masterData.csv"
     elif data[0].lower() == 'f':
-        data_file = "../tagging/features/percentData.csv"
+        data_file = "../../tagging/features/percentData.csv"
     else:
         while data_file is None:
             data = input("Invalid data type. Please enter \"[p]honeme\" or \"[f]eature\"")
             if data[0].lower() == 'p':
-                data_file = "../tagging/phonemefreq/masterData.csv"
+                data_file = "../../tagging/phonemefreq/masterData.csv"
             elif data[0].lower() == 'f':
-                data_file = "../tagging/features/percentData.csv"
+                data_file = "../../tagging/features/percentData.csv"
 
     if "_" in play_code:
         ret_dict = {}
-        with open('characteristics.csv', 'r') as csvfile:
+        with open('../characteristics.csv', 'r') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 if row[0] != "character":

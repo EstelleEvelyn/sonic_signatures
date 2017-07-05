@@ -1,6 +1,7 @@
 from tagging.phonetic_transcriber import Transcriber
 from tagging.feature_counter import Counter
 from tagging.csv_separator import MPV
+from tagging.phon_feat_combiner import combine
 from stats.calc_stats import StatCounter
 from classifier.manual_classifier import Classifier
 from classifier.role_classification import Distinct
@@ -35,6 +36,8 @@ def main():
     count.count_all_texts()
     mpv = MPV()
     mpv.separate_file()
+    combine()
+
 
     os.chdir("../stats")
 

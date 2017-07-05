@@ -1,15 +1,15 @@
 import numpy
-from sklearn.naive_bayes import GaussianNB
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 from scipy.spatial.distance import hamming
 import csv
 import re
 import sys
 
 '''
-double_bayes.py
+double_SVM.py
 Estelle Bayer, Summer 2017
-A program designed to classify roles in Shakespearean plays by two naive Bayes
+A program designed to classify roles in Shakespearean plays by two SVM
 iterations: the first to determine whether a character is a special role, and the
 second performed only on that subset to classify which role those characters fill
 '''
@@ -58,7 +58,7 @@ def get_fit_initial(char):
     remaining = []
     class_list = {'protag':1, 'antag':1, 'fool':1, 'other':0}
 
-    with open('characteristics.csv', 'r') as csvFile:
+    with open('../characteristics.csv', 'r') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if char != row[0] and row[0] != 'character':
@@ -76,7 +76,7 @@ def get_fit_reserved(remaining_chars):
     fit_set = []
     class_list = {'protag':1, 'antag':2, 'fool':3}
 
-    with open('characteristics.csv', 'r') as csvFile:
+    with open('../characteristics.csv', 'r') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if row[0] in remaining_chars and row[0] != 'character':
@@ -93,7 +93,7 @@ def get_actual(char):
     actual_set = []
     class_list = {'protag':1, 'antag':2, 'fool':3, 'other':0}
 
-    with open('characteristics.csv', 'r') as csvFile:
+    with open('../characteristics.csv', 'r') as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if re.match(char+"_", row[0]) or char == row[0]:
@@ -130,15 +130,15 @@ def predict_data_char(char, data_file):
     training_data_initial = numpy.array(get_training_data_initial(char, data_file))
     fit_initial, remaining = get_fit_initial(char)
 
-    gnb = GaussianNB()
-    gnb.fit(training_data_initial, fit_initial)
+    clf = LinearSVC()
+    clf.fit(training_data_initial, fit_initial)
     # mnb  = MultinomialNB()
     # mnb.fit(training_data, fit)
 
     prediction_data = get_new_data(char, data_file)
     prediction_data.reshape(1, -1)
     # predicted = mnb.predict(predict_data)
-    initial_predicted = gnb.predict(prediction_data)
+    initial_predicted = clf.predict(prediction_data)
 
     if initial_predicted == 1:
 
@@ -148,8 +148,8 @@ def predict_data_char(char, data_file):
         training_data_reserved = numpy.array(get_training_data_reserved(remaining, data_file))
         fit_reserved = numpy.array(get_fit_reserved(remaining))
 
-        gnb.fit(training_data_reserved, fit_reserved)
-        remaining_predicted = gnb.predict(prediction_data)
+        clf.fit(training_data_reserved, fit_reserved)
+        remaining_predicted = clf.predict(prediction_data)
 
         initial_predicted = remaining_predicted
 
@@ -167,7 +167,8 @@ def print_confusion_matrix(confusion_dictionary):
     Prints the given confusion dictionary to a csv file
     '''
     class_list = {1:'protag', 2:'antag', 3:'fool', 0:'other'}
-    with open("confusion_matrix_double.csv", 'w') as result:
+    # with open("confusion_matrix_double.csv", 'w') as result:
+    with open("svm_confusion_matrix_double_combined.csv", 'w') as result:
         for i in range(4):
             result.write(','+class_list[i])
         result.write('\n')
@@ -185,7 +186,7 @@ def main():
     '''
     if len(sys.argv) < 2:
         #this is kind of a lie with the current state of my main but w/e w/e
-        print("Usage: naive_bayes.py <[p]honeme or [f]eature>")
+        print("Usage: naive_bayes.py <[p]honeme, [f]eature, or [c]ombined>")
         sys.exit()
     else:
         data = sys.argv[1]
@@ -193,19 +194,23 @@ def main():
     data_file = None
 
     if data[0].lower() == 'p':
-        data_file = "../tagging/phonemefreq/masterData.csv"
+        data_file = "../../tagging/phonemefreq/masterData.csv"
     elif data[0].lower() == 'f':
-        data_file = "../tagging/features/percentData.csv"
+        data_file = "../../tagging/features/percentData.csv"
+    elif data[0].lower() == 'c':
+        data_file = "../../tagging/combinedData.csv"
     else:
         while data_file is None:
             data = input("Invalid data type. Please enter \"[p]honeme\" or \"[f]eature\"")
             if data[0].lower() == 'p':
-                data_file = "../tagging/phonemefreq/masterData.csv"
+                data_file = "../../tagging/phonemefreq/masterData.csv"
             elif data[0].lower() == 'f':
-                data_file = "../tagging/features/percentData.csv"
+                data_file = "../../tagging/features/percentData.csv"
+            elif data[0].lower() == 'c':
+                data_file = "../../tagging/combinedData.csv"
 
     ret_dict = {}
-    with open('characteristics.csv', 'r') as csvfile:
+    with open('../characteristics.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             if row[0] != "character":
@@ -218,6 +223,7 @@ def main():
                     ret_dict[actual[0]][predicted[0]] = 1
                 else:
                     ret_dict[actual[0]][predicted[0]] += 1
+
     for value in ret_dict:
         for possible in ret_dict:
             if possible not in ret_dict[value]:

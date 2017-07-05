@@ -47,14 +47,14 @@ def main():
         for char in prot_ant_list:
             training_data = []
             fit_set = []
-            with open('../tagging/phonemefreq/masterData.csv', 'r') as csvFile:
+            with open('../../tagging/phonemefreq/masterData.csv', 'r') as csvFile:
                 reader = csv.reader(csvFile)
                 for row in reader:
                     if char != row[0] and row[0] in prot_ant_list:
                         training_data.append(list(map(lambda x: float(x), row[1:])))
             training_data = numpy.array(training_data)
 
-            with open('characteristics.csv', 'r') as csvFile:
+            with open('../characteristics.csv', 'r') as csvFile:
                 reader = csv.reader(csvFile)
                 for row in reader:
                     if char != row[0] and row[0] in prot_ant_list:
@@ -67,7 +67,7 @@ def main():
             gnb = GaussianNB()
             gnb.fit(training_data, fit_set)
 
-            predict_data = naive_bayes.get_new_data(char, 'C:/Accounts/bayere/Desktop/sonic_signatures/tagging/phonemefreq/masterData.csv')
+            predict_data = naive_bayes.get_new_data(char, '../../tagging/phonemefreq/masterData.csv')
             predict_data.reshape(1, -1)
             # predicted = mnb.predict(predict_data)
             predicted = gnb.predict(predict_data)
