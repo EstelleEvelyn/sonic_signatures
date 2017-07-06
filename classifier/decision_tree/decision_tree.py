@@ -1,7 +1,5 @@
 import numpy
-from sklearn.naive_bayes import GaussianNB
-from sklearn.naive_bayes import MultinomialNB
-from scipy.spatial.distance import hamming
+from sklearn import tree
 import csv
 import re
 import sys
@@ -9,11 +7,10 @@ import statistics
 import random
 
 '''
-naive_bayes.py
+single_SVM.py
 Estelle Bayer, Summer 2017
 A program to classify Shakespearean characters based on the phonetic features of
-their speech using Gaussian or multinomial naive Bayes classifiers, with multiple
-class designation options
+their speech using a support vector classifer
 '''
 
 GLOBAL_PLAY_LIST = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4',
@@ -175,15 +172,16 @@ def predict_data_char(char, trait, data_file):
     training_data = numpy.array(get_training_data_char(char, data_file))
     fit = numpy.array(get_fit_char(char, trait))
 
-    gnb = GaussianNB()
-    gnb.fit(training_data, fit)
-    # mnb  = MultinomialNB()
-    # mnb.fit(training_data, fit)
+    clf = tree.DecisionTreeClassifier(class_weight = 'balanced')
+    clf.fit(training_data, fit)
 
     predict_data = get_new_data(char, data_file)
     predict_data.reshape(1, -1)
-    # predicted = mnb.predict(predict_data)
-    predicted = gnb.predict(predict_data)
+    predicted = clf.predict(predict_data)
+    
+    with open("tree.dot", 'w') as f:
+        f = tree.export_graphviz(clf, out_file=f)
+
     actual = numpy.array(get_fit(char, trait))
 
     return predicted, actual
@@ -197,9 +195,7 @@ def print_confusion_matrix(confusion_dictionary, trait):
     Prints the given confusion dictionary to a csv file
     '''
     class_list = {0:'f', 1:'m', 2:'protag', 3:'antag', 4:'fool', 5:'other', 6:'comedy', 7:'tragedy', 8:'history'}
-    with open("confusion_matrix_{}.csv".format(trait), 'w') as result:
-        result.write('predicted')
-        print("wrote it")
+    with open("tree_confusion_matrix_{}.csv".format(trait), 'w') as result:
         for i in range(9):
             if i in confusion_dictionary:
                 result.write(','+class_list[i])
@@ -242,42 +238,33 @@ def main():
         data_file = "../../tagging/features/percentData.csv"
     else:
         while data_file is None:
-            data = input("Invalid data type. Please enter \"[p]honeme\" or \"[f]eature\" ")
+            data = input("Invalid data type. Please enter \"[p]honeme\" or \"[f]eature\"")
             if data[0].lower() == 'p':
                 data_file = "../../tagging/phonemefreq/masterData.csv"
             elif data[0].lower() == 'f':
                 data_file = "../../tagging/features/percentData.csv"
 
-    if "_" in play_code:
-        ret_dict = {}
-        with open('../characteristics.csv', 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row[0] != "character":
-                    char = row[0]
-                    predicted, actual = predict_data_char(char, trait, data_file)
-                    if actual[0] not in ret_dict:
-                        ret_dict[actual[0]] = {}
-                        ret_dict[actual[0]][predicted[0]] = 1
-                    elif predicted[0] not in ret_dict[actual[0]]:
-                        ret_dict[actual[0]][predicted[0]] = 1
-                    else:
-                        ret_dict[actual[0]][predicted[0]] += 1
-        for value in ret_dict:
-            for possible in ret_dict:
-                if possible not in ret_dict[value]:
-                    ret_dict[value][possible] = 0
-        print_confusion_matrix(ret_dict, trait)
+    ret_dict = {}
+    with open('../characteristics.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if row[0] != "character":
+                char = row[0]
+                predicted, actual = predict_data_char(char, trait, data_file)
+                if actual[0] not in ret_dict:
+                    ret_dict[actual[0]] = {}
+                    ret_dict[actual[0]][predicted[0]] = 1
+                elif predicted[0] not in ret_dict[actual[0]]:
+                    ret_dict[actual[0]][predicted[0]] = 1
+                else:
+                    ret_dict[actual[0]][predicted[0]] += 1
+    for value in ret_dict:
+        for possible in ret_dict:
+            if possible not in ret_dict[value]:
+                ret_dict[value][possible] = 0
+    print_confusion_matrix(ret_dict, trait)
 
 
-    else:
-        hamm_dist = []
-        for play in GLOBAL_PLAY_LIST:
-            predicted, actual = predict_data_play(play, trait, data_file)
-            hamm_dist.append(hamming(predicted, actual))
-        print(statistics.mean(hamm_dist))
-    # print("Predicted:", gnb.predict(predict_data))
-    # print("Actual:", numpy.array(get_fit(play_code, trait))
 
 if __name__ == "__main__":
     main()

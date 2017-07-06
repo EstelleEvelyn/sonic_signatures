@@ -172,7 +172,7 @@ def predict_data_char(char, trait, data_file):
     training_data = numpy.array(get_training_data_char(char, data_file))
     fit = numpy.array(get_fit_char(char, trait))
 
-    lin_clf = svm.LinearSVC()
+    lin_clf = svm.LinearSVC(class_weight = 'balanced')
     lin_clf.fit(training_data, fit)
     # mnb  = MultinomialNB()
     # mnb.fit(training_data, fit)

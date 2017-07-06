@@ -1,6 +1,5 @@
 import numpy
-from sklearn.svm import SVC
-from sklearn.svm import LinearSVC
+from sklearn import tree
 from scipy.spatial.distance import hamming
 import csv
 import re
@@ -8,9 +7,9 @@ import sys
 
 
 '''
-double_SVM.py
+double_tree.py
 Estelle Bayer, Summer 2017
-A program designed to classify roles in Shakespearean plays by two SVM
+A program designed to classify roles in Shakespearean plays by two decision
 iterations: the first to determine whether a character is a special role, and the
 second performed only on that subset to classify which role those characters fill
 '''
@@ -131,7 +130,7 @@ def predict_data_char(char, data_file):
     training_data_initial = numpy.array(get_training_data_initial(char, data_file))
     fit_initial, remaining = get_fit_initial(char)
 
-    clf = LinearSVC(class_weight='balanced')
+    clf = tree.DecisionTreeClassifier(class_weight='balanced')
     clf.fit(training_data_initial, fit_initial)
     # mnb  = MultinomialNB()
     # mnb.fit(training_data, fit)
@@ -169,7 +168,7 @@ def print_confusion_matrix(confusion_dictionary):
     '''
     class_list = {1:'protag', 2:'antag', 3:'fool', 0:'other'}
     # with open("confusion_matrix_double.csv", 'w') as result:
-    with open("svm_confusion_matrix_double_combined.csv", 'w') as result:
+    with open("tree_confusion_matrix_double.csv", 'w') as result:
         for i in range(4):
             result.write(','+class_list[i])
         result.write('\n')
