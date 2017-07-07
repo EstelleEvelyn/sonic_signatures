@@ -21,6 +21,20 @@ GLOBAL_PLAY_LIST = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4
                         'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Oth', 'Per', 'R2', 'R3', 'Rom',
                         'Shr', 'Tmp', 'Tim', 'Tit', 'Tro', 'TN', 'TGV', 'TNK', 'WT']
 
+def get_sample_weight(char):
+    '''
+    @param char: the character withheld
+    @return weight_list: the size for a given role, used to weight the training sample
+    '''
+    weight_list = []
+    with open('../../tagging/phonemefreq/masterCounts.csv', 'r') as weightfile:
+        reader = csv.reader(weightfile)
+        for row in reader:
+            if row[0] != 'filename' and row[0] != char:
+                size = sum(list(map(lambda x: float(x), row[1:])))
+                weight_list.append(size)
+    return numpy.array(weight_list)
+
 def get_training_data_play(training_play, data_file):
     '''
     @param training_play: a string play code in the training data
@@ -162,7 +176,7 @@ def predict_data_play(play, trait, data_file):
 
     return predicted, actual
 
-def predict_data_char(char, trait, data_file):
+def predict_data_char(char, trait, data_file, weighted):
     '''
     @param char: the char whose class we wish to predict
     @param trait: the trait we are attempting to classify
@@ -178,7 +192,12 @@ def predict_data_char(char, trait, data_file):
     fit = numpy.array(get_fit_char(char, trait))
 
     gnb = GaussianNB()
-    gnb.fit(training_data, fit)
+    if weighted == "True":
+        sample_weight = get_sample_weight(char)
+        gnb.fit(training_data, fit, sample_weight=sample_weight)
+    else:
+        gnb.fit(training_data, fit)
+
     # mnb  = MultinomialNB()
     # mnb.fit(training_data, fit)
 
@@ -190,7 +209,7 @@ def predict_data_char(char, trait, data_file):
 
     return predicted, actual
 
-def print_confusion_matrix(confusion_dictionary, trait):
+def print_confusion_matrix(confusion_dictionary, trait, weighted):
     '''
     @param confusion_dictionary: a dictionary containing the tallies of actual and
     predicted values for a data set. Format: {actual1:{predicted1:#, predicted2:#,...},actual2:{predicted1:#, ...},...}
@@ -199,7 +218,7 @@ def print_confusion_matrix(confusion_dictionary, trait):
     Prints the given confusion dictionary to a csv file
     '''
     class_list = {0:'f', 1:'m', 2:'protag', 3:'antag', 4:'fool', 5:'other', 6:'comedy', 7:'tragedy', 8:'history'}
-    with open("confusion_matrix_{}.csv".format(trait), 'w') as result:
+    with open("confusion_matrices/{0}_{1}_weighted.csv".format(trait, weighted), 'w') as result:
         result.write('predicted')
         for i in range(9):
             if i in confusion_dictionary:
@@ -228,10 +247,10 @@ def main():
     '''
     if len(sys.argv) < 4:
         #this is kind of a lie with the current state of my main but w/e w/e
-        print("Usage: naive_bayes.py <play_code or character> <characteristic> <[p]honeme or [f]eature>")
+        print("Usage: naive_bayes.py <weighted> <characteristic> <[p]honeme, [f]eature, or [c]ombined>")
         sys.exit()
     else:
-        play_code = sys.argv[1]
+        weight = sys.argv[1]
         trait = sys.argv[2]
         data = sys.argv[3]
 
@@ -241,42 +260,49 @@ def main():
         data_file = "../../tagging/phonemefreq/masterData.csv"
     elif data[0].lower() == 'f':
         data_file = "../../tagging/features/percentData.csv"
+    elif data[0].lower() == 'c':
+        data_file = '../../tagging/combinedData.csv'
     else:
         while data_file is None:
-            data = input("Invalid data type. Please enter \"[p]honeme\" or \"[f]eature\" ")
+            data = input("Invalid data type. Please enter \"[p]honeme\", \"[f]eature\", or \"[c]ombined\" ")
             if data[0].lower() == 'p':
                 data_file = "../../tagging/phonemefreq/masterData.csv"
             elif data[0].lower() == 'f':
                 data_file = "../../tagging/features/percentData.csv"
+            elif data[0].lower() == 'c':
+                data_file = '../../tagging/combinedData.csv'
 
-    if "_" in play_code:
-        ret_dict = {}
-        with open('../characteristics.csv', 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row[0] != "character":
-                    char = row[0]
-                    predicted, actual = predict_data_char(char, trait, data_file)
-                    if actual[0] not in ret_dict:
-                        ret_dict[actual[0]] = {}
-                        ret_dict[actual[0]][predicted[0]] = 1
-                    elif predicted[0] not in ret_dict[actual[0]]:
-                        ret_dict[actual[0]][predicted[0]] = 1
-                    else:
-                        ret_dict[actual[0]][predicted[0]] += 1
-        for value in ret_dict:
-            for possible in ret_dict:
-                if possible not in ret_dict[value]:
-                    ret_dict[value][possible] = 0
-        print_confusion_matrix(ret_dict, trait)
+    # if "_" in play_code:
+    ret_dict = {}
+    with open('../characteristics.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if row[0] != "character":
+                char = row[0]
+                predicted, actual = predict_data_char(char, trait, data_file, weight)
+                if actual[0] not in ret_dict:
+                    ret_dict[actual[0]] = {}
+                    ret_dict[actual[0]][predicted[0]] = 1
+                elif predicted[0] not in ret_dict[actual[0]]:
+                    ret_dict[actual[0]][predicted[0]] = 1
+                else:
+                    ret_dict[actual[0]][predicted[0]] += 1
+    for value in ret_dict:
+        for possible in ret_dict:
+            if possible not in ret_dict[value]:
+                ret_dict[value][possible] = 0
+    print_confusion_matrix(ret_dict, trait, weight)
 
 
-    else:
-        hamm_dist = []
-        for play in GLOBAL_PLAY_LIST:
-            predicted, actual = predict_data_play(play, trait, data_file)
-            hamm_dist.append(hamming(predicted, actual))
-        print(statistics.mean(hamm_dist))
+    '''
+    Holdover from by-play training option
+    '''
+    # else:
+    #     hamm_dist = []
+    #     for play in GLOBAL_PLAY_LIST:
+    #         predicted, actual = predict_data_play(play, trait, data_file)
+    #         hamm_dist.append(hamming(predicted, actual))
+    #     print(statistics.mean(hamm_dist))
     # print("Predicted:", gnb.predict(predict_data))
     # print("Actual:", numpy.array(get_fit(play_code, trait))
 

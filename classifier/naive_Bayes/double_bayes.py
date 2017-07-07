@@ -161,7 +161,7 @@ class DoubleBayes:
 
         return predicted, actual
 
-    def print_confusion_matrix(self, confusion_dictionary):
+    def print_confusion_matrix(self, confusion_dictionary, weighted, data):
         '''
         @param confusion_dictionary: a dictionary containing the tallies of actual and
         predicted values for a data set. Format: {actual1:{predicted1:#, predicted2:#,...},actual2:{predicted1:#, ...},...}
@@ -169,7 +169,7 @@ class DoubleBayes:
         Prints the given confusion dictionary to a csv file
         '''
         class_list = {1:'protag', 2:'antag', 3:'fool', 0:'other'}
-        with open("confusion_matrix_double_weighted.csv", 'w') as result:
+        with open("confusion_matrices/double_{0}_{1}.csv".format(data, weighted), 'w') as result:
         # with open("confusion_matrix_double_combined.csv", 'w') as result:
             result.write('predicted')
             for i in range(4):
@@ -189,10 +189,13 @@ class DoubleBayes:
         '''
         if len(sys.argv) < 2:
             #this is kind of a lie with the current state of my main but w/e w/e
-            print("Usage: naive_bayes.py <[p]honeme, [f]eature, or [c]ombined>")
+            print("Usage: naive_bayes.py <weighted> <[p]honeme, [f]eature, or [c]ombined>")
             sys.exit()
-        else:
+        elif len(sys.argv) == 2:
             data = sys.argv[1]
+        else:
+            data = sys.argv[2]
+            weighted = sys.argv[1]
 
         data_file = None
 
@@ -235,7 +238,7 @@ class DoubleBayes:
             for possible in ret_dict:
                 if possible not in ret_dict[value]:
                     ret_dict[value][possible] = 0
-        self.print_confusion_matrix(ret_dict)
+        self.print_confusion_matrix(ret_dict, data, weighted)
         return predicted_list, actual_list
 
 def main():

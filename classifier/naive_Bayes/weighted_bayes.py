@@ -5,6 +5,14 @@ import csv
 import math
 import sys
 
+'''
+weighted_bayes.py
+Estelle Bayer, Summer 2017
+A program designed to weight the training samples for a naive Bayes classifier by
+size of the character's speaking part. Eventually integrated into naive_bayes.py
+and double_bayes.py
+'''
+
 def get_sample_weight(char):
     '''
     @param char: the character withheld
