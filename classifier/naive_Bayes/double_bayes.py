@@ -16,6 +16,20 @@ second performed only on that subset to classify which role those characters fil
 '''
 class DoubleBayes:
 
+    def get_sample_weight(self, char):
+        '''
+        @param char: the character withheld
+        @return weight_list: the size for a given role, used to weight the training sample
+        '''
+        weight_list = []
+        with open('../../tagging/phonemefreq/masterCounts.csv', 'r') as weightfile:
+            reader = csv.reader(weightfile)
+            for row in reader:
+                if row[0] != 'filename' and row[0] != char:
+                    size = sum(list(map(lambda x: float(x), row[1:])))
+                    weight_list.append(size)
+        return numpy.array(weight_list)
+
     def get_training_data_initial(self,char, data_file):
         '''
         @param char: the string char being withheld
@@ -24,13 +38,16 @@ class DoubleBayes:
         @return training: a list of percent distributions for every character other than
             the withheld char
         '''
+        withheld = []
         training = []
         with open(data_file, 'r') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 if char != row[0] and row[0] != 'filename':
                     training.append(list(map(lambda x: float(x), row[1:])))
-        return training
+                elif row[0] != 'filename':
+                    withheld.append(list(map(lambda x: float(x), row[1:])))
+        return numpy.array(withheld), numpy.array(training)
 
     def get_training_data_reserved(self, remaining_chars, data_file):
         '''
@@ -103,24 +120,7 @@ class DoubleBayes:
                     break
         return actual_set
 
-    def get_new_data(self, char, data_file):
-        '''
-        @param char: a string of the char to be predicted by the naive Bayes
-        @param data_file: a string of either the feature or phoneme percent file,
-            specified in the arguments to main
-        @return new_data: an array of the percent distribution(s) for the selected
-            character
-        '''
-        new_data = []
-        with open(data_file, 'r') as csvFile:
-            reader = csv.reader(csvFile)
-            for row in reader:
-                if char == row[0]:
-                    new_data.append(list(map(lambda x: float(x), (row[1:]))))
-                    break
-        return numpy.array(new_data)
-
-    def predict_data_char(self, char, data_file):
+    def predict_data_char(self, char, data_file, weighted):
         '''
         @param char: the char whose class we wish to predict
         @param data_file: the file containing either phoneme or feature data
@@ -129,17 +129,17 @@ class DoubleBayes:
         @return actual: an int of the actual classifications for that characters
         '''
 
-        training_data_initial = numpy.array(self.get_training_data_initial(char, data_file))
+        prediction_data, training_data_initial = self.get_training_data_initial(char, data_file)
         fit_initial, remaining = self.get_fit_initial(char)
 
         gnb = GaussianNB()
-        gnb.fit(training_data_initial, fit_initial)
-        # mnb  = MultinomialNB()
-        # mnb.fit(training_data, fit)
+        if weighted:
+            sample_weight = self.get_sample_weight(char)
+            gnb.fit(training_data_initial, fit_initial, sample_weight = sample_weight)
+        else:
+            gnb.fit(training_data_initial, fit_initial)
 
-        prediction_data = self.get_new_data(char, data_file)
         prediction_data.reshape(1, -1)
-        # predicted = mnb.predict(predict_data)
         initial_predicted = gnb.predict(prediction_data)
 
         if initial_predicted == 1:
@@ -169,7 +169,7 @@ class DoubleBayes:
         Prints the given confusion dictionary to a csv file
         '''
         class_list = {1:'protag', 2:'antag', 3:'fool', 0:'other'}
-        with open("confusion_matrix_double.csv", 'w') as result:
+        with open("confusion_matrix_double_weighted.csv", 'w') as result:
         # with open("confusion_matrix_double_combined.csv", 'w') as result:
             result.write('predicted')
             for i in range(4):
@@ -181,7 +181,7 @@ class DoubleBayes:
                     result.write(','+str(confusion_dictionary[i][j]))
                 result.write('\n')
 
-    def generate_predictions(self):
+    def generate_predictions(self, weighted = False):
         '''
         First classifies whether every given character is a special role or "other".
         In the special case, then classifies which role the character fills.
@@ -220,7 +220,7 @@ class DoubleBayes:
             for row in reader:
                 if row[0] != "character":
                     char = row[0]
-                    predicted, actual = self.predict_data_char(char, data_file)
+                    predicted, actual = self.predict_data_char(char, data_file, weighted)
                     actual_list.extend(actual)
                     predicted_list.extend(predicted)
                     if actual[0] not in ret_dict:

@@ -40,18 +40,20 @@ def get_training_data_play(training_play, data_file):
 def get_training_data_char(char, data_file):
     '''
     @param char: the string char being withheld
-    @param data_file: a tring of either the phoneme percent or feature percent file,
-        determined by arguments to main
-    @return training: a list of percent distributions for every character other than
+    @return training: a list of nasal feature percent for every character other than
         the withheld char
+    @return withheld: the nasal feature percent for the withheld character
     '''
     training = []
+    withheld = []
     with open(data_file, 'r') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             if char != row[0] and row[0] != 'filename':
                 training.append(list(map(lambda x: float(x), row[1:])))
-    return training
+            elif char == row[0] and row[0] != 'filename':
+                withheld.append(list(map(lambda x: float(x), row[1:])))
+    return numpy.array(withheld), numpy.array(training)
 
 def get_fit(target, trait):
     '''
@@ -172,7 +174,7 @@ def predict_data_char(char, trait, data_file):
     # random_training = random.randint(0,37)
     # training_play = training_choices[random_training]
 
-    training_data = numpy.array(get_training_data_char(char, data_file))
+    predict_data, training_data = get_training_data_char(char, data_file)
     fit = numpy.array(get_fit_char(char, trait))
 
     gnb = GaussianNB()
@@ -180,7 +182,7 @@ def predict_data_char(char, trait, data_file):
     # mnb  = MultinomialNB()
     # mnb.fit(training_data, fit)
 
-    predict_data = get_new_data(char, data_file)
+    # predict_data = get_new_data(char, data_file)
     predict_data.reshape(1, -1)
     # predicted = mnb.predict(predict_data)
     predicted = gnb.predict(predict_data)
@@ -199,7 +201,6 @@ def print_confusion_matrix(confusion_dictionary, trait):
     class_list = {0:'f', 1:'m', 2:'protag', 3:'antag', 4:'fool', 5:'other', 6:'comedy', 7:'tragedy', 8:'history'}
     with open("confusion_matrix_{}.csv".format(trait), 'w') as result:
         result.write('predicted')
-        print("wrote it")
         for i in range(9):
             if i in confusion_dictionary:
                 result.write(','+class_list[i])

@@ -43,7 +43,7 @@ def plot_confusion_matrix(cm, classes,
 
 def get_confusion_matrix():
     db = DoubleBayes()
-    predicted, actual = db.generate_predictions()
+    predicted, actual = db.generate_predictions(weighted=True)
     cnf_matrix = confusion_matrix(actual, predicted)
     return cnf_matrix
 
