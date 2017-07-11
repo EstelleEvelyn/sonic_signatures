@@ -48,7 +48,7 @@
   <div>
     Compare<br>
     <select id="Play", onchange="onSelect()">
-      <option value="">Play</option>
+      <option value="default">Play</option>
       <option value="AWW">All's Well That Ends Well</option>
       <option value="Ant">Antony and Cleopatra</option>
       <option value="AYL">As You Like It</option>
@@ -89,8 +89,8 @@
       <option value="WT">The Winter's Tale</option>
     </select>
 
-    <select id="Character">
-      <option value = "">Character</option>
+    <select id="Character", onchange ="compare()">
+      <option value = "default">Character</option>
     </select>
 
   </div>
@@ -106,15 +106,24 @@
       var dataURL = '/options/' + play
       d3.json(dataURL, function(error, data) {
         var data = data;
-        d3.select('#Character')
-          .selectAll('option')
-          .data(data)
-          .enter()
-          .append('option')
-          .text(function(d) { return d; })
-          .property('value', function(d) {
-            return play + "_" + d;
-          })
+        if (data[0] != 'Character') {
+          d3.select('#Character')
+            .selectAll('option')
+            .data(data)
+            .enter()
+            .append('option')
+            .text(function(d) { return d; })
+            .property('value', function(d) {
+              return play + "_" + d;
+            })
+        }
+        else {
+          d3.select('#Character')
+            .append('option')
+            .text('Character')
+            .property('value', 'default')
+          compare();
+        }
       });
     }
 
@@ -144,17 +153,26 @@
 
     var segment = (svgHeight - 2*buffer) / (features.length)
 
-    var featureBox = d3.select('svg')
-                        .selectAll('rect')
+    var featureGroup = d3.select('svg')
+                        .selectAll('g')
                         .data(features)
                         .enter()
-                        .append('rect')
-                        .attr('y', function(d, i) { return buffer + (segment * i)/*TODO determine how this should scale*/ ; })
-                        .attr('x', function(d, i) { return 0 /*TODO determine if/how this should scale*/; })
-                        .attr('width', svgWidth)
-                        .attr('height', segment)
+                        .append('g')
+                        .property('id', function(d) {return d; })
+                        // .attr('y', function(d, i) { return buffer + (segment * i)/*TODO determine how this should scale*/ ; })
+                        // .attr('x', function(d, i) { return 0 /*TODO determine if/how this should scale*/; })
+                        // .attr('width', svgWidth)
+                        // .attr('height', segment)
+                        // .style('fill', 'white');
+
+    var boxLabel = d3.select('svg')
+                        .selectAll('text')
+                        .data(features)
+                        .enter()
+                        .append('text')
                         .text(function(d) { return d; })
-                        .style('fill', 'white')
+                        .attr('y', function(d, i) { return buffer + (segment * i) + 10; })
+                        .attr('x', function(d, i) { return 5; });
 
     var topLine = d3.select('svg')
                         .selectAll('line')
@@ -167,13 +185,109 @@
                         .attr('y2', function(d, i) { return buffer + (segment * i); })
                         .style('stroke', 'black');
 
-      var pivotLine = d3.select('svg')
+    var pivotLine = d3.select('svg')
                         .append('line')
                         .attr('x1', svgWidth / 2)
                         .attr('x2', svgWidth / 2)
                         .attr('y1', svgHeight - buffer)
                         .attr('y2', buffer)
                         .style('stroke', 'black')
+
+    function onLoad() {
+      var dataURL = '/feature_data'
+      d3.json(dataURL, function(error, data){
+        var zdata = data
+
+        for (var i = 0; i < features.length; i++) {
+          var bars =   d3.select('#'+features[i])
+                          .selectAll('rect')
+                          .data(obj = zdata[features[i]])
+                          .enter()
+                          .append('rect')
+                          .property('id', function(d, j) {
+                            if (j == 0) {
+                              return features[i] + '_prot';
+                            } else if (j == 1) {
+                              return features[i] + '_ant';
+                            } else {
+                              return features[i] + '_fool';
+                            }
+                          })
+                          .attr('x', function (d) {
+                              if (d > 0) {
+                                return pos = svgWidth / 2;
+                              } else {
+                                norm = 1+d;
+                                return pos = svgWidth / 2 * (norm);
+                              }
+                            })
+                          .attr('y', function(d, j) { return i * segment + j * segment / 3 + buffer * 1.25; })
+                          .attr('width', function(d) {return Math.abs(d * svgWidth / 2); })
+                          .attr('height', segment / 3 - buffer / 2)
+                          .attr('class', function (d, j) {
+                            if (j == 0) {
+                              return 'prot';
+                            } else if (j == 1) {
+                              return 'ant';
+                            } else {
+                              return 'fool';
+                            }
+                          })
+                          .style('fill', function(d, j) {
+                            if (j == 0) {
+                              return '#E68BFF';
+                            } else if (j == 1) {
+                              return '#3ECC97';
+                            } else {
+                              return '#FFDB83';
+                            }
+                          })
+        }
+      })
+    }
+
+    onLoad();
+
+    function compare() {
+
+      var dataURL = '/compare/'+document.getElementById('Character').value
+      d3.json(dataURL, function(error, data){
+
+      if (data.length != 0) {
+          var feat_data = data['features']
+          var phon_data = data['phonemes']
+      }
+
+        for (var i = 0; i < features.length; i++) {
+          d3.select('#'+features[i]).selectAll('line').remove();
+
+          if (data.length != 0){
+            var feat_line = d3.select('#'+features[i])
+                          .append('line')
+                          .property('id', document.getElementById('Character'.value))
+                          .attr('x1', function() { return svgWidth / 2* (1 + feat_data[features[i]])})
+                          .attr('x2', function() { return svgWidth / 2 * (1 + feat_data[features[i]])})
+                          .attr('y1',  buffer + (segment * i))
+                          .attr('y2', buffer + (segment * (i + 1)))
+                          .style('stroke', 'black')
+          }
+        }
+      })
+    }
+
+
+    function drawUndraw() {
+      onLoad();
+
+      vals = document.getElementById('show').elements
+      if (!vals[0].checked){
+        d3.selectAll('.prot').remove()
+      } if (!vals[1].checked){
+        d3.selectAll('.ant').remove()
+      } if (!vals[2].checked){
+        d3.selectAll('.fool').remove()
+      }
+    }
 
   </script>
 
