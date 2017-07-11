@@ -39,7 +39,7 @@
   </div>
   <div>
     Show
-    <form id = "show", onchange = "drawUndraw()">  <br>
+    <form id = "show", onchange = "onLoad()">  <br>
       <input type = "checkbox" value = "protag" checked> Protagonist<br>
       <input type = "checkbox" value = "antag" checked> Antagonist<br>
       <input type = "checkbox" value = "fool" checked> Fool
@@ -242,6 +242,14 @@
                               return '#FFDB83';
                             }
                           })
+            vals = document.getElementById('show').elements
+            if (!vals[0].checked){
+              d3.selectAll('.prot').remove()
+            } if (!vals[1].checked){
+              d3.selectAll('.ant').remove()
+            } if (!vals[2].checked){
+              d3.selectAll('.fool').remove()
+            }
         }
       })
     }
@@ -253,10 +261,10 @@
       var dataURL = '/compare/'+document.getElementById('Character').value
       d3.json(dataURL, function(error, data){
 
-      if (data.length != 0) {
-          var feat_data = data['features']
-          var phon_data = data['phonemes']
-      }
+        if (data.length != 0) {
+            var feat_data = data['features']
+            var phon_data = data['phonemes']
+        }
 
         for (var i = 0; i < features.length; i++) {
           d3.select('#'+features[i]).selectAll('line').remove();
@@ -273,20 +281,6 @@
           }
         }
       })
-    }
-
-
-    function drawUndraw() {
-      onLoad();
-
-      vals = document.getElementById('show').elements
-      if (!vals[0].checked){
-        d3.selectAll('.prot').remove()
-      } if (!vals[1].checked){
-        d3.selectAll('.ant').remove()
-      } if (!vals[2].checked){
-        d3.selectAll('.fool').remove()
-      }
     }
 
   </script>
