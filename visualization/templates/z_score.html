@@ -357,7 +357,7 @@
             if (data.length != 0){
               var feat_line = d3.select('#'+features[i])
                             .append('line')
-                            .property('id', document.getElementById('fCharacter'.value))
+                            .property('id', document.getElementById('Character'.value))
                             .attr('x1', function() { return svgWidth / 2* (1 + feat_data[features[i]])})
                             .attr('x2', function() { return svgWidth / 2 * (1 + feat_data[features[i]])})
                             .attr('y1',  buffer + (segment * i))
