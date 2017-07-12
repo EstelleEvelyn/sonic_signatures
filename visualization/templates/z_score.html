@@ -29,25 +29,95 @@
 </head>
 
 <body>
-  <div>
-    Sort by
-    <form id="sort", onchange = "sortOrder()"> <br>
-      <input id = 'psort' type="radio" name="role" value="protag" checked> Protagonist<br>
-      <input id = 'asort' type="radio" name="role" value="antag"> Antagonist<br>
-      <input id = 'fsort' type="radio" name="role" value="fool"> Fool
-    </form>
-  </div>
-  <div>
-    Show
-    <form id = "show", onchange = "loadData()">  <br>
-      <input type = "checkbox" value = "protag" checked> Protagonist<br>
-      <input type = "checkbox" value = "antag" checked> Antagonist<br>
-      <input type = "checkbox" value = "fool" checked> Fool
-    </form>
-  </div>
-  <div>
-    Compare<br>
-    <select id="Play", onchange="onSelect()">
+  <div style = 'width:100%;'>
+    <div style = 'width:50%; float: left;'>
+        Sort by
+        <form id="fsort", onchange = "sortOrder()"> <br>
+          <input id = 'f_psort' type="radio" name="role" value="protag" checked> Protagonist<br>
+          <input id = 'f_asort' type="radio" name="role" value="antag"> Antagonist<br>
+          <input id = 'f_fsort' type="radio" name="role" value="fool"> Fool
+        </form>
+      </div>
+      <div style = 'margin-left:50%;'>
+          Sort by
+          <form id="psort", onchange = "sortOrder()"> <br>
+            <input id = 'p_psort' type="radio" name="role" value="protag" checked> Protagonist<br>
+            <input id = 'p_asort' type="radio" name="role" value="antag"> Antagonist<br>
+            <input id = 'p_fsort' type="radio" name="role" value="fool"> Fool
+          </form>
+      </div>
+    </div>
+    <div style = 'width:100%;'>
+      <div style = 'width:50%; float:left;'>
+        Show
+        <form id = "fshow", onchange = "loadData()">  <br>
+          <input type = "checkbox" value = "protag" checked> Protagonist<br>
+          <input type = "checkbox" value = "antag" checked> Antagonist<br>
+          <input type = "checkbox" value = "fool" checked> Fool
+        </form>
+      </div>
+      <div style = 'margin-left:50%;'>
+        Show
+        <form id = "pshow", onchange = "loadData()">  <br>
+          <input type = "checkbox" value = "protag" checked> Protagonist<br>
+          <input type = "checkbox" value = "antag" checked> Antagonist<br>
+          <input type = "checkbox" value = "fool" checked> Fool
+        </form>
+      </div>
+    </div>
+    <div style = 'width:100%;'>
+      <div style = 'width:50%; float: left;'>
+      Compare features<br>
+      <select id="fPlay", onchange="onSelect()">
+        <option value="default">Play</option>
+        <option value="AWW">All's Well That Ends Well</option>
+        <option value="Ant">Antony and Cleopatra</option>
+        <option value="AYL">As You Like It</option>
+        <option value="Err">The Comedy of Errors</option>
+        <option value="Cor">Coriolanus</option>
+        <option value="Cym">Cymbeline</option>
+        <option value="Ham">Hamlet</option>
+        <option value="1H4">Henry IV, Part 1</option>
+        <option value="2H4">Henry IV, Part 2</option>
+        <option value="H5">Henry V</option>
+        <option value="1H6">Henry VI, Part 1</option>
+        <option value="2H6">Henry VI, Part 2</option>
+        <option value="3H6">Henry VI, Part 3</option>
+        <option value="H8">Henry VIII</option>
+        <option value="JC">Julius Caesar</option>
+        <option value="Jn">King John</option>
+        <option value="Lr">King Lear</option>
+        <option value="LLL">Love's Labor's Lost</option>
+        <option value="Mac">Macbeth</option>
+        <option value="MM">Measure for Measure</option>
+        <option value="MV">The Merchant of Venice</option>
+        <option value="Wiv">The Merry Wives of Windsor</option>
+        <option value="MND">A Midsummer Night's Dream</option>
+        <option value="Ado">Much Ado About Nothing</option>
+        <option value="Oth">Othello</option>
+        <option value="Per">Pericles</option>
+        <option value="R2">Richard II</option>
+        <option value="R3">Richard III</option>
+        <option value="Rom">Romeo and Juliet</option>
+        <option value="Shr">The Taming of the Shrew</option>
+        <option value="Tmp">The Tempest</option>
+        <option value="Tim">Timon of Athens</option>
+        <option value="Tit">Titus Andronicus</option>
+        <option value="Tro">Troilus and Cressida</option>
+        <option value="TN">Twelfth Night</option>
+        <option value="TGV">The Two Gentlemen of Verona</option>
+        <option value="TNK">The Two Noble Kinsmen</option>
+        <option value="WT">The Winter's Tale</option>
+      </select>
+
+      <select id="fCharacter", onchange ="compare()">
+        <option value = "default">Character</option>
+      </select>
+
+    </div>
+    <div style = 'margin-left:50%;'>
+    Compare phonemes<br>
+    <select id="pPlay", onchange="onSelect()">
       <option value="default">Play</option>
       <option value="AWW">All's Well That Ends Well</option>
       <option value="Ant">Antony and Cleopatra</option>
@@ -89,25 +159,26 @@
       <option value="WT">The Winter's Tale</option>
     </select>
 
-    <select id="Character", onchange ="compare()">
+    <select id="pCharacter", onchange ="compare()">
       <option value = "default">Character</option>
     </select>
 
+  </div>
   </div>
 </body>
 
   <script type = "text/javascript">
     function onSelect() {
-      d3.select('#Character')
+      d3.select('#fCharacter')
         .selectAll('option')
         .remove();
 
-      var play = document.getElementById('Play').value
+      var play = document.getElementById('fPlay').value
       var dataURL = '/options/' + play
       d3.json(dataURL, function(error, data) {
         var data = data;
         if (data[0] != 'Character') {
-          d3.select('#Character')
+          d3.select('#fCharacter')
             .selectAll('option')
             .data(data)
             .enter()
@@ -118,7 +189,7 @@
             })
         }
         else {
-          d3.select('#Character')
+          d3.select('#fCharacter')
             .append('option')
             .text('Character')
             .property('value', 'reset')
@@ -237,11 +308,11 @@
                           .attr('height', segment / 3 - buffer / 2)
                           .attr('class', function (d, j) {
                             if (j == 0) {
-                              return 'prot';
+                              return 'fprot';
                             } else if (j == 1) {
-                              return 'ant';
+                              return 'fant';
                             } else {
-                              return 'fool';
+                              return 'ffool';
                             }
                           })
                           .style('fill', function(d, j) {
@@ -254,13 +325,13 @@
                             }
                           })
         }
-        vals = document.getElementById('show').elements
+        vals = document.getElementById('fshow').elements
         if (!vals[0].checked){
-          d3.selectAll('.prot').remove()
+          d3.selectAll('.fprot').remove()
         } if (!vals[1].checked){
-          d3.selectAll('.ant').remove()
+          d3.selectAll('.fant').remove()
         } if (!vals[2].checked){
-          d3.selectAll('.fool').remove()
+          d3.selectAll('.ffool').remove()
         }
         compare();
       })
@@ -270,9 +341,9 @@
 
     function compare() {
 
-      if (document.getElementById('Character').value != 'default') {
+      if (document.getElementById('fCharacter').value != 'default') {
 
-        var dataURL = '/compare/'+document.getElementById('Character').value
+        var dataURL = '/compare/'+document.getElementById('fCharacter').value
         d3.json(dataURL, function(error, data){
 
           if (data.length != 0) {
@@ -286,7 +357,7 @@
             if (data.length != 0){
               var feat_line = d3.select('#'+features[i])
                             .append('line')
-                            .property('id', document.getElementById('Character'.value))
+                            .property('id', document.getElementById('fCharacter'.value))
                             .attr('x1', function() { return svgWidth / 2* (1 + feat_data[features[i]])})
                             .attr('x2', function() { return svgWidth / 2 * (1 + feat_data[features[i]])})
                             .attr('y1',  buffer + (segment * i))
@@ -310,10 +381,10 @@
           var new_tuple
 
 
-          if (document.getElementById('psort').checked) {
+          if (document.getElementById('f_psort').checked) {
               new_tuple = [z_vals[0],  currFeat]
 
-          } else if (document.getElementById('asort').checked) {
+          } else if (document.getElementById('f_asort').checked) {
               new_tuple = [z_vals[1], currFeat]
 
           } else {
