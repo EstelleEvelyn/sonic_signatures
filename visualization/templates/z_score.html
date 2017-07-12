@@ -33,24 +33,24 @@
     <div style = 'width:50%; float: left;'>
         Sort by
         <form id="fsort", onchange = "sortOrder()"> <br>
-          <input id = 'f_psort' type="radio" name="role" value="protag" checked> Protagonist<br>
-          <input id = 'f_asort' type="radio" name="role" value="antag"> Antagonist<br>
-          <input id = 'f_fsort' type="radio" name="role" value="fool"> Fool
+          <input id = 'f_psort' type="radio"  value="protag" checked> Protagonist<br>
+          <input id = 'f_asort' type="radio"  value="antag"> Antagonist<br>
+          <input id = 'f_fsort' type="radio"  value="fool"> Fool
         </form>
       </div>
       <div style = 'margin-left:50%;'>
           Sort by
           <form id="psort", onchange = "sortOrder()"> <br>
-            <input id = 'p_psort' type="radio" name="role" value="protag" checked> Protagonist<br>
-            <input id = 'p_asort' type="radio" name="role" value="antag"> Antagonist<br>
-            <input id = 'p_fsort' type="radio" name="role" value="fool"> Fool
+            <input id = 'p_psort' type="radio"  value="protag" checked> Protagonist<br>
+            <input id = 'p_asort' type="radio"  value="antag"> Antagonist<br>
+            <input id = 'p_fsort' type="radio"  value="fool"> Fool
           </form>
       </div>
     </div>
     <div style = 'width:100%;'>
       <div style = 'width:50%; float:left;'>
         Show
-        <form id = "fshow", onchange = "loadData()">  <br>
+        <form id = "fshow", onchange = "onLoad()">  <br>
           <input type = "checkbox" value = "protag" checked> Protagonist<br>
           <input type = "checkbox" value = "antag" checked> Antagonist<br>
           <input type = "checkbox" value = "fool" checked> Fool
@@ -58,7 +58,7 @@
       </div>
       <div style = 'margin-left:50%;'>
         Show
-        <form id = "pshow", onchange = "loadData()">  <br>
+        <form id = "pshow", onchange = "onLoad()">  <br>
           <input type = "checkbox" value = "protag" checked> Protagonist<br>
           <input type = "checkbox" value = "antag" checked> Antagonist<br>
           <input type = "checkbox" value = "fool" checked> Fool
