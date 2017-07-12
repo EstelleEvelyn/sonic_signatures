@@ -19,7 +19,6 @@ def data_load():
         'sibilant':[], 'nonsibilant':[], 'sonorant':[], 'nonsonorant':[], 'coronal':[],
         'noncoronal':[], 'monophthong':[], 'diphthong':[], 'central':[], 'front':[], 'back':[],
         'tense':[], 'lax':[], 'rounded':[], 'unrounded':[]}
-    roles = ['protagonist', 'antagonist', 'fool']
     with open('../classifier/feature_z_scores.csv', 'r') as featfile:
         reader = csv.reader(featfile)
         for row in reader:

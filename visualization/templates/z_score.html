@@ -32,14 +32,14 @@
   <div>
     Sort by
     <form id="sort", onchange = "sortOrder()"> <br>
-      <input type="radio" name="role" value="protag" checked> Protagonist<br>
-      <input type="radio" name="role" value="antag"> Antagonist<br>
-      <input type="radio" name="role" value="fool"> Fool
+      <input id = 'psort' type="radio" name="role" value="protag" checked> Protagonist<br>
+      <input id = 'asort' type="radio" name="role" value="antag"> Antagonist<br>
+      <input id = 'fsort' type="radio" name="role" value="fool"> Fool
     </form>
   </div>
   <div>
     Show
-    <form id = "show", onchange = "onLoad()">  <br>
+    <form id = "show", onchange = "loadData()">  <br>
       <input type = "checkbox" value = "protag" checked> Protagonist<br>
       <input type = "checkbox" value = "antag" checked> Antagonist<br>
       <input type = "checkbox" value = "fool" checked> Fool
@@ -153,26 +153,6 @@
 
     var segment = (svgHeight - 2*buffer) / (features.length)
 
-    var featureGroup = d3.select('svg')
-                        .selectAll('g')
-                        .data(features)
-                        .enter()
-                        .append('g')
-                        .property('id', function(d) {return d; })
-                        // .attr('y', function(d, i) { return buffer + (segment * i)/*TODO determine how this should scale*/ ; })
-                        // .attr('x', function(d, i) { return 0 /*TODO determine if/how this should scale*/; })
-                        // .attr('width', svgWidth)
-                        // .attr('height', segment)
-                        // .style('fill', 'white');
-
-    var boxLabel = d3.select('svg')
-                        .selectAll('text')
-                        .data(features)
-                        .enter()
-                        .append('text')
-                        .text(function(d) { return d; })
-                        .attr('y', function(d, i) { return buffer + (segment * i) + 10; })
-                        .attr('x', function(d, i) { return 5; });
 
     var topLine = d3.select('svg')
                         .selectAll('line')
@@ -193,7 +173,38 @@
                         .attr('y2', buffer)
                         .style('stroke', 'black')
 
+
     function onLoad() {
+
+      d3.selectAll('g').remove()
+    svg.selectAll('text').remove()
+
+      var featureGroup = d3.select('svg')
+                          .selectAll('g')
+                          .data(features)
+                          .enter()
+                          .append('g')
+                          .property('id', function(d) {return d; })
+                          // .attr('y', function(d, i) { return buffer + (segment * i)/*TODO determine how this should scale*/ ; })
+                          // .attr('x', function(d, i) { return 0 /*TODO determine if/how this should scale*/; })
+                          // .attr('width', svgWidth)
+                          // .attr('height', segment)
+                          // .style('fill', 'white');
+
+      var boxLabel = d3.select('svg')
+                          .selectAll('text')
+                          .data(features)
+                          .enter()
+                          .append('text')
+                          .text(function(d) { return d; })
+                          .attr('y', function(d, i) { return buffer + (segment * i) + 10; })
+                          .attr('x', function(d, i) { return 5; });
+
+      loadData();
+    }
+
+    function loadData() {
+
       var dataURL = '/feature_data'
       d3.json(dataURL, function(error, data){
         var zdata = data
@@ -280,6 +291,50 @@
                           .style('stroke', 'black')
           }
         }
+      })
+    }
+
+    function sortOrder() {
+      var dataURL = '/feature_data'
+
+      d3.json(dataURL, function(error, data){
+        var unordered_data = data
+        var new_dat = []
+        for (var i = 0; i < features.length; i++) {
+          var currFeat = features[i]
+          var z_vals = unordered_data[currFeat]
+          var new_tuple
+
+
+          if (document.getElementById('psort').checked) {
+              new_tuple = [z_vals[0],  currFeat]
+
+          } else if (document.getElementById('asort').checked) {
+              new_tuple = [z_vals[1], currFeat]
+
+          } else {
+              new_tuple = [z_vals[2], currFeat]
+          }
+          new_dat.push(new_tuple)
+        }
+
+        new_dat.sort(sortFunction);
+        new_dat
+
+        function sortFunction(a, b) {
+            if (a[0] === b[0]) {
+                return 0;
+            }
+            else {
+                return (a[0] < b[0]) ? -1 : 1;
+            }
+        }
+        var new_features = []
+        for (var j = new_dat.length - 1; j >= 0; j--) {
+          new_features.push(new_dat[j][1])
+        }
+        features = new_features
+        onLoad();
       })
     }
 
