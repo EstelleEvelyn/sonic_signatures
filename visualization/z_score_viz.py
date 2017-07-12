@@ -29,7 +29,7 @@ def data_load():
 
 @app.route('/compare/<char>')
 def comparison_value(char):
-    if char == 'default':
+    if char == 'reset':
         return flask.jsonify([])
     feat_dict = {}
     phon_dict = {}
@@ -39,14 +39,30 @@ def comparison_value(char):
             if frow['filename'] == char:
                 for feature in frow:
                     if feature != 'filename':
-                        feat_dict[feature] = float(frow[feature])
+                        char_feat_value = float(frow[feature])
+                        with open('../stats/feature_statistics.csv', 'r') as fstats:
+                            fsreader = csv.reader(fstats)
+                            for statrow in fsreader:
+                                if statrow[0] == feature:
+                                    z_val = (char_feat_value - float(statrow[1]))/float(statrow[2])
+                                    feat_dict[feature] = z_val
+                                    break
+
     with open('../tagging/phonemefreq/masterData.csv', 'r') as phon_file:
         preader = csv.DictReader(phon_file)
         for prow in preader:
             if prow['filename'] == char:
                 for phoneme in prow:
                     if phoneme != 'filename':
-                        phon_dict[phoneme] = float(prow[phoneme])
+                        char_phon_value = float(prow[phoneme])
+                        with open('../stats/phoneme_statistics.csv', 'r') as pstats:
+                            psreader = csv.reader(pstats)
+                            for statrow in psreader:
+                                if statrow[0] == phoneme:
+                                    z_val = (char_phon_value - float(statrow[1]))/float(statrow[2])
+                                    phon_dict[phoneme] = z_val
+                                    break
+
     ret_dict = {'features':feat_dict, 'phonemes':phon_dict}
     return flask.jsonify(ret_dict)
 

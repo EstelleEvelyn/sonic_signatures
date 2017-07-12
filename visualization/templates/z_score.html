@@ -121,7 +121,7 @@
           d3.select('#Character')
             .append('option')
             .text('Character')
-            .property('value', 'default')
+            .property('value', 'reset')
           compare();
         }
       });
@@ -177,7 +177,7 @@
     function onLoad() {
 
       d3.selectAll('g').remove()
-    svg.selectAll('text').remove()
+      svg.selectAll('text').remove()
 
       var featureGroup = d3.select('svg')
                           .selectAll('g')
@@ -253,15 +253,16 @@
                               return '#FFDB83';
                             }
                           })
-            vals = document.getElementById('show').elements
-            if (!vals[0].checked){
-              d3.selectAll('.prot').remove()
-            } if (!vals[1].checked){
-              d3.selectAll('.ant').remove()
-            } if (!vals[2].checked){
-              d3.selectAll('.fool').remove()
-            }
         }
+        vals = document.getElementById('show').elements
+        if (!vals[0].checked){
+          d3.selectAll('.prot').remove()
+        } if (!vals[1].checked){
+          d3.selectAll('.ant').remove()
+        } if (!vals[2].checked){
+          d3.selectAll('.fool').remove()
+        }
+        compare();
       })
     }
 
@@ -269,30 +270,33 @@
 
     function compare() {
 
-      var dataURL = '/compare/'+document.getElementById('Character').value
-      d3.json(dataURL, function(error, data){
+      if (document.getElementById('Character').value != 'default') {
 
-        if (data.length != 0) {
-            var feat_data = data['features']
-            var phon_data = data['phonemes']
-        }
+        var dataURL = '/compare/'+document.getElementById('Character').value
+        d3.json(dataURL, function(error, data){
 
-        for (var i = 0; i < features.length; i++) {
-          d3.select('#'+features[i]).selectAll('line').remove();
+          if (data.length != 0) {
+              var feat_data = data['features']
+              var phon_data = data['phonemes']
+          }
 
-          if (data.length != 0){
-            var feat_line = d3.select('#'+features[i])
-                          .append('line')
-                          .property('id', document.getElementById('Character'.value))
-                          .attr('x1', function() { return svgWidth / 2* (1 + feat_data[features[i]])})
-                          .attr('x2', function() { return svgWidth / 2 * (1 + feat_data[features[i]])})
-                          .attr('y1',  buffer + (segment * i))
-                          .attr('y2', buffer + (segment * (i + 1)))
-                          .style('stroke', 'black')
+          for (var i = 0; i < features.length; i++) {
+            d3.select('#'+features[i]).selectAll('line').remove();
+
+            if (data.length != 0){
+              var feat_line = d3.select('#'+features[i])
+                            .append('line')
+                            .property('id', document.getElementById('Character'.value))
+                            .attr('x1', function() { return svgWidth / 2* (1 + feat_data[features[i]])})
+                            .attr('x2', function() { return svgWidth / 2 * (1 + feat_data[features[i]])})
+                            .attr('y1',  buffer + (segment * i))
+                            .attr('y2', buffer + (segment * (i + 1)))
+                            .style('stroke', 'black')
           }
         }
       })
     }
+  }
 
     function sortOrder() {
       var dataURL = '/feature_data'
