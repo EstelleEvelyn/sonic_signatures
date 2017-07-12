@@ -31,25 +31,25 @@
 <body>
   <div style = 'width:100%;'>
     <div style = 'width:50%; float: left;'>
-        Sort by
+        Sort features by
         <form id="fsort", onchange = "sortOrder()"> <br>
-          <input id = 'f_psort' type="radio"  value="protag" checked> Protagonist<br>
-          <input id = 'f_asort' type="radio"  value="antag"> Antagonist<br>
-          <input id = 'f_fsort' type="radio"  value="fool"> Fool
+          <input id = 'f_psort' type="radio" name="role" value="protag" checked> Protagonist<br>
+          <input id = 'f_asort' type="radio" name="role" value="antag"> Antagonist<br>
+          <input id = 'f_fsort' type="radio" name="role" value="fool"> Fool
         </form>
       </div>
       <div style = 'margin-left:50%;'>
-          Sort by
+          Sort phonemes by
           <form id="psort", onchange = "sortOrder()"> <br>
-            <input id = 'p_psort' type="radio"  value="protag" checked> Protagonist<br>
-            <input id = 'p_asort' type="radio"  value="antag"> Antagonist<br>
-            <input id = 'p_fsort' type="radio"  value="fool"> Fool
+            <input id = 'p_psort' name="role" type="radio"  value="protag" checked> Protagonist<br>
+            <input id = 'p_asort' name="role" type="radio"  value="antag"> Antagonist<br>
+            <input id = 'p_fsort' name="role" type="radio"  value="fool"> Fool
           </form>
       </div>
     </div>
     <div style = 'width:100%;'>
       <div style = 'width:50%; float:left;'>
-        Show
+        Show features for
         <form id = "fshow", onchange = "onLoad()">  <br>
           <input type = "checkbox" value = "protag" checked> Protagonist<br>
           <input type = "checkbox" value = "antag" checked> Antagonist<br>
@@ -57,7 +57,7 @@
         </form>
       </div>
       <div style = 'margin-left:50%;'>
-        Show
+        Show phonemes for
         <form id = "pshow", onchange = "onLoad()">  <br>
           <input type = "checkbox" value = "protag" checked> Protagonist<br>
           <input type = "checkbox" value = "antag" checked> Antagonist<br>
@@ -169,51 +169,74 @@
 
   <script type = "text/javascript">
     function onSelect() {
-      d3.select('#fCharacter')
-        .selectAll('option')
-        .remove();
 
-      var play = document.getElementById('fPlay').value
-      var dataURL = '/options/' + play
-      d3.json(dataURL, function(error, data) {
-        var data = data;
-        if (data[0] != 'Character') {
-          d3.select('#fCharacter')
-            .selectAll('option')
-            .data(data)
-            .enter()
-            .append('option')
-            .text(function(d) { return d; })
-            .property('value', function(d) {
-              return play + "_" + d;
-            })
-        }
-        else {
-          d3.select('#fCharacter')
-            .append('option')
-            .text('Character')
-            .property('value', 'reset')
-          compare();
-        }
-      });
+        d3.select('#fCharacter')
+          .selectAll('option')
+          .remove();
+
+        var play = document.getElementById('fPlay').value
+        var dataURL = '/options/' + play
+        d3.json(dataURL, function(error, data) {
+          var data = data;
+          if (data[0] != 'Character') {
+            d3.select('#fCharacter')
+              .selectAll('option')
+              .data(data)
+              .enter()
+              .append('option')
+              .text(function(d) { return d; })
+              .property('value', function(d) {
+                return play + "_" + d;
+              })
+          }
+          else {
+            d3.select('#fCharacter')
+              .append('option')
+              .text('Character')
+              .property('value', 'reset')
+          }
+        });
+      // 
+      //   d3.select('#pCharacter')
+      //     .selectAll('option')
+      //     .remove();
+      //
+      //   var play = document.getElementById('pPlay').value
+      //   var dataURL = '/options/' + play
+      //   d3.json(dataURL, function(error, data) {
+      //     var data = data;
+      //     if (data[0] != 'Character') {
+      //       d3.select('#pCharacter')
+      //         .selectAll('option')
+      //         .data(data)
+      //         .enter()
+      //         .append('option')
+      //         .text(function(d) { return d; })
+      //         .property('value', function(d) {
+      //           return play + "_" + d;
+      //         })
+      //     }
+      //     else {
+      //       d3.select('#pCharacter')
+      //         .append('option')
+      //         .text('Character')
+      //         .property('value', 'reset')
+      //   }
+      // });
+      onLoad();
     }
 
-    var svgWidth = 400;
+
     var svgHeight = 3200;
     var buffer = 10;
 
     var svg = d3.select("body").append("svg")
-                .attr('width', svgWidth)
+                .attr('width', '100%')
                 .attr('height', svgHeight)
 
+    var featDiv = svg.append('g')
+                .property('id', 'feats')
 
-    var pivotLine = d3.select('svg')
-                      .append('line')
-                      .attr('x1', svgWidth / 2)
-                      .attr('x2', svgWidth / 2)
-                      .attr('y1', svgHeight - buffer)
-                      .attr('y2', buffer)
-                      .style('stroke', 'black')
 
     var features = ['fricative', 'affricate', 'glide', 'nasal', 'liquid',
             'stop', 'glottal', 'linguaalveolar', 'linguapalatal', 'labiodental',
@@ -222,68 +245,117 @@
             'noncoronal', 'monophthong', 'diphthong', 'central', 'front', 'back',
             'tense', 'lax', 'rounded', 'unrounded']
 
-    var segment = (svgHeight - 2*buffer) / (features.length)
+    var fSegment = (svgHeight - 2*buffer) / (features.length)
 
 
-    var topLine = d3.select('svg')
+    var fTopLine = d3.select('svg')
+                        .select('#feats')
                         .selectAll('line')
                         .data(features)
                         .enter()
                         .append('line')
-                        .attr('x1', 0)
-                        .attr('x2', svgWidth)
-                        .attr('y1', function(d, i) { return buffer + (segment * i); })
-                        .attr('y2', function(d, i) { return buffer + (segment * i); })
+                        .attr('x1', '0%')
+                        .attr('x2', '50%')
+                        .attr('y1', function(d, i) { return buffer + (fSegment * i); })
+                        .attr('y2', function(d, i) { return buffer + (fSegment * i); })
                         .style('stroke', 'black');
 
-    var pivotLine = d3.select('svg')
+    var fPivotLine = d3.select('svg')
+                        .select('#feats')
                         .append('line')
-                        .attr('x1', svgWidth / 2)
-                        .attr('x2', svgWidth / 2)
+                        .attr('x1', '25%')
+                        .attr('x2', '25%')
                         .attr('y1', svgHeight - buffer)
                         .attr('y2', buffer)
                         .style('stroke', 'black')
 
+    var phonDiv = svg.append('g')
+                .property('id', 'phons')
+
+    var phonemes = ['AA','AE','AH','AO','AW','AY','B','CH','D','DH','EH','ER','EY',
+        'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S','SH','T','TH',
+        'UH','UW','V','W','Y','Z','ZH']
+
+    var pSegment = (svgHeight - 2*buffer) / (phonemes.length)
+
+    var pPivotLine = d3.select('svg')
+                      .select('#phons')
+                      .append('line')
+                      .attr('x1', '75%')
+                      .attr('x2', '75%')
+                      .attr('y1', svgHeight - buffer)
+                      .attr('y2', buffer)
+                      .style('stroke', 'black')
+
+    var pTopLine = d3.select('svg')
+                        .select('#phons')
+                        .selectAll('line')
+                        .data(phonemes)
+                        .enter()
+                        .append('line')
+                        .attr('x1', '51%')
+                        .attr('x2', '100%')
+                        .attr('y1', function(d, i) { return buffer + (pSegment * i); })
+                        .attr('y2', function(d, i) { return buffer + (pSegment * i); })
+                        .style('stroke', 'black');
+
 
     function onLoad() {
 
-      d3.selectAll('g').remove()
-      svg.selectAll('text').remove()
+      svg.select('#feats').selectAll('g').remove()
+      svg.select('#feats').selectAll('text').remove()
 
-      var featureGroup = d3.select('svg')
+      svg.select('#phons').selectAll('g').remove()
+      svg.select('#phons').selectAll('text').remove()
+
+      var featureGroup = svg.select('#feats')
                           .selectAll('g')
                           .data(features)
                           .enter()
                           .append('g')
                           .property('id', function(d) {return d; })
-                          // .attr('y', function(d, i) { return buffer + (segment * i)/*TODO determine how this should scale*/ ; })
-                          // .attr('x', function(d, i) { return 0 /*TODO determine if/how this should scale*/; })
-                          // .attr('width', svgWidth)
-                          // .attr('height', segment)
-                          // .style('fill', 'white');
 
-      var boxLabel = d3.select('svg')
+
+      var fBoxLabel = svg.select('#feats')
                           .selectAll('text')
                           .data(features)
                           .enter()
                           .append('text')
                           .text(function(d) { return d; })
-                          .attr('y', function(d, i) { return buffer + (segment * i) + 10; })
-                          .attr('x', function(d, i) { return 5; });
+                          .attr('y', function(d, i) { return buffer + (fSegment * i) + 10; })
+                          .attr('x', '1%');
+
+      var phonemeGroup = svg.select('#phons')
+                          .selectAll('g')
+                          .data(phonemes)
+                          .enter()
+                          .append('g')
+                          .property('id', function(d) {return d; })
+
+
+      var pBoxLabel = svg.select('#phons')
+                          .selectAll('text')
+                          .data(phonemes)
+                          .enter()
+                          .append('text')
+                          .text(function(d) { return d; })
+                          .attr('y', function(d, i) { return buffer + (pSegment * i) + 10; })
+                          .attr('x', '51%');
 
       loadData();
     }
 
     function loadData() {
 
-      var dataURL = '/feature_data'
+      var dataURL = '/data'
       d3.json(dataURL, function(error, data){
-        var zdata = data
+        var fdata = data['features']
+        var pdata = data['phonemes']
 
         for (var i = 0; i < features.length; i++) {
-          var bars =   d3.select('#'+features[i])
+          var feat_bars =   d3.select('#'+features[i])
                           .selectAll('rect')
-                          .data(obj = zdata[features[i]])
+                          .data(obj = fdata[features[i]])
                           .enter()
                           .append('rect')
                           .property('id', function(d, j) {
@@ -297,15 +369,19 @@
                           })
                           .attr('x', function (d) {
                               if (d > 0) {
-                                return pos = svgWidth / 2;
+                                return pos = '25%';
                               } else {
                                 norm = 1+d;
-                                return pos = svgWidth / 2 * (norm);
+                                pos = 25 * (norm);
+                                return pos.toString()+'%'
                               }
                             })
-                          .attr('y', function(d, j) { return i * segment + j * segment / 3 + buffer * 1.25; })
-                          .attr('width', function(d) {return Math.abs(d * svgWidth / 2); })
-                          .attr('height', segment / 3 - buffer / 2)
+                          .attr('y', function(d, j) { return i * fSegment + j * fSegment / 3 + buffer * 1.25; })
+                          .attr('width', function(d) {
+                            pos = Math.abs(d * 25)
+                            return pos.toString()+'%';
+                          })
+                          .attr('height', fSegment / 3 - buffer / 2)
                           .attr('class', function (d, j) {
                             if (j == 0) {
                               return 'fprot';
@@ -333,6 +409,64 @@
         } if (!vals[2].checked){
           d3.selectAll('.ffool').remove()
         }
+
+        for (var i = 0; i < phonemes.length; i++) {
+          var phon_bars =   d3.select('#'+phonemes[i])
+                          .selectAll('rect')
+                          .data(obj = pdata[phonemes[i]])
+                          .enter()
+                          .append('rect')
+                          .property('id', function(d, j) {
+                            if (j == 0) {
+                              return phonemes[i] + '_prot';
+                            } else if (j == 1) {
+                              return phonemes[i] + '_ant';
+                            } else {
+                              return phonemes[i] + '_fool';
+                            }
+                          })
+                          .attr('x', function (d) {
+                              if (d > 0) {
+                                return pos = '75%';
+                              } else {
+                                norm = 1+d;
+                                pos = 25 * (norm) + 50;
+                                return pos.toString()+'%'
+                              }
+                            })
+                          .attr('y', function(d, j) { return i * pSegment + j * pSegment / 3 + buffer * 1.25; })
+                          .attr('width', function(d) {
+                            pos = Math.abs(d * 25)
+                            return pos.toString()+'%';
+                          })
+                          .attr('height', pSegment / 3 - buffer / 2)
+                          .attr('class', function (d, j) {
+                            if (j == 0) {
+                              return 'pprot';
+                            } else if (j == 1) {
+                              return 'pant';
+                            } else {
+                              return 'pfool';
+                            }
+                          })
+                          .style('fill', function(d, j) {
+                            if (j == 0) {
+                              return '#E68BFF';
+                            } else if (j == 1) {
+                              return '#3ECC97';
+                            } else {
+                              return '#FFDB83';
+                            }
+                          })
+        }
+        pvals = document.getElementById('pshow').elements
+        if (!pvals[0].checked){
+          d3.selectAll('.pprot').remove()
+        } if (!pvals[1].checked){
+          d3.selectAll('.pant').remove()
+        } if (!pvals[2].checked){
+          d3.selectAll('.pfool').remove()
+        }
         compare();
       })
     }
@@ -348,7 +482,6 @@
 
           if (data.length != 0) {
               var feat_data = data['features']
-              var phon_data = data['phonemes']
           }
 
           for (var i = 0; i < features.length; i++) {
@@ -357,44 +490,101 @@
             if (data.length != 0){
               var feat_line = d3.select('#'+features[i])
                             .append('line')
-                            .property('id', document.getElementById('Character'.value))
-                            .attr('x1', function() { return svgWidth / 2* (1 + feat_data[features[i]])})
-                            .attr('x2', function() { return svgWidth / 2 * (1 + feat_data[features[i]])})
-                            .attr('y1',  buffer + (segment * i))
-                            .attr('y2', buffer + (segment * (i + 1)))
+                            .property('id', document.getElementById('fCharacter'.value))
+                            .attr('x1', function() {
+                              pos = 25 * (1 + feat_data[features[i]])
+                              return pos.toString()+'%'
+                            })
+                            .attr('x2', function() {
+                              pos = 25 * (1 + feat_data[features[i]])
+                              return pos.toString()+'%'
+                            })
+                            .attr('y1',  buffer + (fSegment * i))
+                            .attr('y2', buffer + (fSegment * (i + 1)))
                             .style('stroke', 'black')
           }
         }
       })
     }
+
+  //   if (document.getElementById('pCharacter').value != 'default') {
+  //
+  //     var dataURL = '/compare/'+document.getElementById('pCharacter').value
+  //     d3.json(dataURL, function(error, data){
+  //
+  //       if (data.length != 0) {
+  //           var phon_data = data['phonemes']
+  //       }
+  //
+  //       for (var i = 0; i < phonemes.length; i++) {
+  //         d3.select('#'+phonemes[i]).selectAll('line').remove();
+  //
+  //         if (data.length != 0){
+  //           var feat_line = d3.select('#'+phonemes[i])
+  //                         .append('line')
+  //                         .property('id', document.getElementById('pCharacter'.value))
+  //                         .attr('x1', function() {
+  //                           pos = 50 + 25 * (1 + phon_data[phonemes[i]])
+  //                           return pos.toString()+'%'
+  //                         })
+  //                         .attr('x2', function() {
+  //                           pos = 50 + 25 * (1 + phon_data[phonemes[i]])
+  //                           return pos.toString()+'%'
+  //                         })
+  //                         .attr('y1',  buffer + (pSegment * i))
+  //                         .attr('y2', buffer + (pSegment * (i + 1)))
+  //                         .style('stroke', 'black')
+  //       }
+  //     }
+  //   })
+  // }
   }
 
     function sortOrder() {
-      var dataURL = '/feature_data'
+      var dataURL = '/data'
 
       d3.json(dataURL, function(error, data){
-        var unordered_data = data
-        var new_dat = []
+        var unordered_fdata = data['features']
+        var unordered_pdata = data['phonemes']
+        var new_fdat = []
+        var new_pdat = []
         for (var i = 0; i < features.length; i++) {
           var currFeat = features[i]
-          var z_vals = unordered_data[currFeat]
-          var new_tuple
+          var z_vals = unordered_fdata[currFeat]
+          var new_ftuple
 
 
           if (document.getElementById('f_psort').checked) {
-              new_tuple = [z_vals[0],  currFeat]
+              new_ftuple = [z_vals[0],  currFeat]
 
           } else if (document.getElementById('f_asort').checked) {
-              new_tuple = [z_vals[1], currFeat]
+              new_ftuple = [z_vals[1], currFeat]
 
           } else {
-              new_tuple = [z_vals[2], currFeat]
+              new_ftuple = [z_vals[2], currFeat]
           }
-          new_dat.push(new_tuple)
+          new_fdat.push(new_ftuple)
+        }
+        for (var i = 0; i < phonemes.length; i++) {
+          var currPhon = phonemes[i]
+          var z_vals = unordered_pdata[currPhon]
+          var new_ptuple
+
+
+          if (document.getElementById('p_psort').checked) {
+              new_ptuple = [z_vals[0],  currPhon]
+
+          } else if (document.getElementById('p_asort').checked) {
+              new_ptuple = [z_vals[1], currPhon]
+
+          } else {
+              new_ptuple = [z_vals[2], currPhon]
+          }
+          new_pdat.push(new_ptuple)
         }
 
-        new_dat.sort(sortFunction);
-        new_dat
+        new_fdat.sort(sortFunction);
+        new_pdat.sort(sortFunction);
 
         function sortFunction(a, b) {
             if (a[0] === b[0]) {
@@ -405,10 +595,15 @@
             }
         }
         var new_features = []
-        for (var j = new_dat.length - 1; j >= 0; j--) {
-          new_features.push(new_dat[j][1])
+        var new_phonemes = []
+        for (var j = new_fdat.length - 1; j >= 0; j--) {
+          new_features.push(new_fdat[j][1])
+        }
+        for (var j = new_pdat.length - 1; j >= 0; j--) {
+          new_phonemes.push(new_pdat[j][1])
         }
         features = new_features
+        phonemes = new_phonemes
         onLoad();
       })
     }

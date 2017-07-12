@@ -11,7 +11,7 @@ app = flask.Flask(__name__)
 def default():
     return flask.render_template("z_score.html")
 
-@app.route('/feature_data')
+@app.route('/data')
 def data_load():
     features = {'fricative':[], 'affricate':[], 'glide':[], 'nasal':[], 'liquid':[],
         'stop':[], 'glottal':[], 'linguaalveolar':[], 'linguapalatal':[], 'labiodental':[],
@@ -25,12 +25,28 @@ def data_load():
             if row[0] != 'feature':
                 for i in range(1, 4):
                     features[row[0]].append(float(row[i]))
-    return flask.jsonify(features)
+
+    phonemes = {'AA':[], 'AE':[], 'AH':[], 'AO':[], 'AW':[], 'AY':[], 'B':[], 'CH':[],
+    'D':[], 'DH':[], 'EH':[], 'ER':[], 'EY':[], 'F':[], 'G':[], 'HH':[], 'IH':[],
+    'IY':[], 'JH':[], 'K':[], 'L':[], 'M':[], 'N':[], 'NG':[], 'OW':[], 'OY':[],
+    'P':[], 'R':[], 'S':[], 'SH':[], 'T':[], 'TH':[], 'UH':[], 'UW':[], 'V':[],
+    'W':[], 'Y':[], 'Z':[], 'ZH':[]}
+
+    with open('../classifier/phoneme_z_scores.csv', 'r') as phonfile:
+        reader = csv.reader(phonfile)
+        for row in reader:
+            if row[0] != 'phoneme':
+                for i in range(1, 4):
+                    phonemes[row[0]].append(float(row[i]))
+
+    ret = {'features':features, 'phonemes':phonemes}
+    return flask.jsonify(ret)
 
 @app.route('/compare/<char>')
 def comparison_value(char):
     if char == 'reset':
         return flask.jsonify([])
+
     feat_dict = {}
     phon_dict = {}
     with open('../tagging/features/percentData.csv', 'r') as feat_file:
@@ -46,6 +62,7 @@ def comparison_value(char):
                                 if statrow[0] == feature:
                                     z_val = (char_feat_value - float(statrow[1]))/float(statrow[2])
                                     feat_dict[feature] = z_val
+                                    print(feat_dict)
                                     break
 
     with open('../tagging/phonemefreq/masterData.csv', 'r') as phon_file:
