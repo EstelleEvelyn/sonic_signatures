@@ -44,6 +44,8 @@ def data_load():
 
 @app.route('/compare/<char>')
 def comparison_value(char):
+
+    print(char)
     if char == 'reset':
         return flask.jsonify([])
 
@@ -62,7 +64,6 @@ def comparison_value(char):
                                 if statrow[0] == feature:
                                     z_val = (char_feat_value - float(statrow[1]))/float(statrow[2])
                                     feat_dict[feature] = z_val
-                                    print(feat_dict)
                                     break
 
     with open('../tagging/phonemefreq/masterData.csv', 'r') as phon_file:
