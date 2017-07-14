@@ -45,9 +45,8 @@ def data_load():
 @app.route('/compare/<char>')
 def comparison_value(char):
 
-    print(char)
     if char == 'reset':
-        return flask.jsonify([])
+        return flask.jsonify({'features':[], 'phonemes':[]})
 
     feat_dict = {}
     phon_dict = {}
