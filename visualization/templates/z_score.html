@@ -7,6 +7,7 @@
     <title>Plotting Z-Scores</title>
     <meta name="description" content="">
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <style type="text/css">
     body {
         font: 10px sans-serif;
@@ -29,6 +30,16 @@
 </head>
 
 <body>
+  <style>
+    .d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+  }
+  </style>
   <div style = 'width:100%;'>
     <div style = 'width:50%; float: left;'>
         Sort features by
@@ -229,6 +240,12 @@
       loadData();
     }
 
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        return "<strong>"+d+"</strong>";
+      })
 
     var svgHeight = 3200;
     var buffer = 10;
@@ -236,6 +253,16 @@
     var svg = d3.select("body").append("svg")
                 .attr('width', '100%')
                 .attr('height', svgHeight)
+
+    svg.call(tip);
+
+    var featScale = d3.scale.linear()
+                .domain([-2, 2])
+                .range([0, 50])
+
+    var phonScale = d3.scale.linear()
+                .domain([-2, 2])
+                .range([51, 100])
 
     var featDiv = svg.append('g')
                 .property('id', 'feats')
@@ -297,8 +324,8 @@
       var pPivotLine = d3.select('svg')
                         .select('#phons')
                         .append('line')
-                        .attr('x1', '75%')
-                        .attr('x2', '75%')
+                        .attr('x1', '75.5%')
+                        .attr('x2', '75.5%')
                         .attr('y1', svgHeight - buffer)
                         .attr('y2', buffer)
                         .style('stroke', 'black')
@@ -371,18 +398,28 @@
                             }
                           })
                           .attr('x', function (d) {
-                              // if (d > 0) {
-                                return pos = '25%';
-                              // } else {
-                              //   norm = 1+d;
-                              //   pos = 25 * (norm);
-                              //   return pos.toString()+'%'
-                              // }
+                              if (d > 0) {
+                                return('25%')
+                              } else {
+                                // norm = 1+d;
+                                // pos = 25 * (norm);
+                                pos = featScale(d3.max([-2, d]))
+                                return(pos.toString()+'%')
+
+                              }
                             })
                           .attr('y', function(d, j) { return i * fSegment + j * fSegment / 3 + buffer * 1.25; })
                           .attr('width', function(d) {
-                            pos = Math.abs(d * 25)
-                            return pos.toString()+'%';
+                            // pos = Math.abs(d * 25)
+                            // return pos.toString()+'%';
+                            if (d > 0) {
+                              pos = featScale(d3.min([2, d])) - 25
+                              return(pos.toString()+'%')
+                              // return pos = '25%';
+                            } else {
+                              pos = 25 - Math.abs(featScale(d3.max([-2, d])))
+                              return (pos.toString()+'%')
+                            }
                           })
                           .attr('height', fSegment / 3 - buffer / 2)
                           .attr('class', function (d, j) {
@@ -396,25 +433,43 @@
                           })
                           .style('fill', function(d, j) {
                             if (j == 0) {
-                              if (d < 0) {
-                                return '#9216B2';
-                              } else {
+                              // if (d < 0) {
+                              //   return '#9216B2';
+                              // } else {
                                 return '#E68BFF';
-                              }
+                              // }
                             } else if (j == 1) {
-                              if (d < 0) {
-                                return '#034F34';
-                              } else {
+                              // if (d < 0) {
+                              //   return '#034F34';
+                              // } else {
                                 return '#3ECC97';
-                              }
+                              // }
                             } else {
-                              if (d < 0) {
-                                return '7F6118';
-                              } else {
+                              // if (d < 0) {
+                              //   return '7F6118';
+                              // } else {
                                 return '#FFDB83';
-                              }
+                              // }
                             }
                           })
+                          // .style('stroke', function(d) {
+                          //   if (d < 0) {
+                          //     return 'red';
+                          //   } else {
+                          //     return 'black'
+                          //   }
+                          // })
+                          .on("mouseover", function(d){
+                              d3.select(this).style("fill", d3.rgb(d3.select(this).style("fill")).darker());
+                              tip.show(d);
+                          })
+                          .on("mouseout", function(d){
+                              tip.hide(d);
+                              d3.select(this).style("fill", function() {
+                                  return d3.rgb(d3.select(this).style("fill")).brighter();
+                              });
+                          });
+
         }
         vals = document.getElementById('fshow').elements
 
@@ -487,18 +542,24 @@
                             }
                           })
                           .attr('x', function (d) {
-                              // if (d > 0) {
-                                return pos = '75%';
-                              // } else {
-                              //   norm = 1+d;
-                              //   pos = 25 * (norm) + 50;
-                              //   return pos.toString()+'%'
-                              // }
+                              if (d > 0) {
+                                return pos = '75.5%';
+                              } else {
+                                // norm = 1+d;
+                                // pos = 25 * (norm) + 50;
+                                pos = phonScale(d3.max([-2, d]))
+                                return pos.toString()+'%'
+                              }
                             })
                           .attr('y', function(d, j) { return i * pSegment + j * pSegment / 3 + buffer * 1.25; })
                           .attr('width', function(d) {
-                            pos = Math.abs(d * 25)
-                            return pos.toString()+'%';
+                            if (d > 0) {
+                              pos = phonScale(d3.min([2, d])) - 75.5;
+                            // pos = Math.abs(d * 25)
+                            } else {
+                              pos = 75.5 - Math.abs(phonScale(d3.max([-2, d])));
+                            }
+                            return (pos.toString()+'%');
                           })
                           .attr('height', pSegment / 3 - buffer / 2)
                           .attr('class', function (d, j) {
@@ -512,25 +573,42 @@
                           })
                           .style('fill', function(d, j) {
                             if (j == 0) {
-                              if (d < 0) {
-                                return '#9216B2';
-                              } else {
+                              // if (d < 0) {
+                              //   return '#9216B2';
+                              // } else {
                                 return '#E68BFF';
-                              }
+                              // }
                             } else if (j == 1) {
-                              if (d < 0) {
-                                return '#034F34';
-                              } else {
+                              // if (d < 0) {
+                              //   return '#034F34';
+                              // } else {
                                 return '#3ECC97';
-                              }
+                              // }
                             } else {
-                              if (d < 0) {
-                                return '7F6118';
-                              } else {
+                              // if (d < 0) {
+                              //   return '7F6118';
+                              // } else {
                                 return '#FFDB83';
-                              }
+                              // }
                             }
                           })
+                          // .style('stroke', function(d) {
+                          //   if (d < 0) {
+                          //     return 'red';
+                          //   } else {
+                          //     return 'black'
+                          //   }
+                          // })
+                          .on("mouseover", function(d){
+                              d3.select(this).style("fill", d3.rgb(d3.select(this).style("fill")).darker());
+                              tip.show(d);
+                          })
+                          .on("mouseout", function(d){
+                              tip.hide(d);
+                              d3.select(this).style("fill", function() {
+                                  return d3.rgb(d3.select(this).style("fill")).brighter();
+                              });
+                          });
         }
 
         vals = document.getElementById('pshow').elements
@@ -609,16 +687,31 @@
                             .append('line')
                             .property('id', document.getElementById('fCharacter'.value))
                             .attr('x1', function() {
-                              pos = 25 * (1 + feat_data[features[i]])
+                              if (feat_data[features[i]] > 0) {
+                                pos = featScale(d3.min([2, feat_data[features[i]]]))
+                              } else {
+                                pos = featScale(d3.max([-2, feat_data[features[i]]]))
+                              }
                               return pos.toString()+'%'
                             })
                             .attr('x2', function() {
-                              pos = 25 * (1 + feat_data[features[i]])
+                              if (feat_data[features[i]] > 0) {
+                                pos = featScale(d3.min([2, feat_data[features[i]]]))
+                              } else {
+                                pos = featScale(d3.max([-2, feat_data[features[i]]]))
+                              }
                               return pos.toString()+'%'
                             })
                             .attr('y1',  buffer + (fSegment * i))
                             .attr('y2', buffer + (fSegment * (i + 1)))
-                            .style('stroke', 'black')
+                            .style('stroke', 'black');
+                            // .style('stroke', function(){
+                            //   if (feat_data[features[i]] < 0) {
+                            //     return 'red';
+                            //   } else {
+                            //     return 'black';
+                            //   }
+                            // })
           }
         }
       })
@@ -641,16 +734,31 @@
                           .append('line')
                           .property('id', document.getElementById('pCharacter'.value))
                           .attr('x1', function() {
-                            pos = 50 + 25 * (1 + phon_data[phonemes[i]])
+                            if (phon_data[phonemes[i]] > 0) {
+                              pos = phonScale(d3.min([2, phon_data[phonemes[i]]]))
+                            } else {
+                              pos = phonScale(d3.max([-2, phon_data[phonemes[i]]]))
+                            }
                             return pos.toString()+'%'
                           })
                           .attr('x2', function() {
-                            pos = 50 + 25 * (1 + phon_data[phonemes[i]])
+                            if (phon_data[phonemes[i]] > 0) {
+                              pos = phonScale(d3.min([2, phon_data[phonemes[i]]]))
+                            } else {
+                              pos = phonScale(d3.max([-2, phon_data[phonemes[i]]]))
+                            }
                             return pos.toString()+'%'
                           })
                           .attr('y1',  buffer + (pSegment * i))
                           .attr('y2', buffer + (pSegment * (i + 1)))
-                          .style('stroke', 'black')
+                          .style('stroke', 'black');
+                          // .style('stroke', function(){
+                          //   if (phon_data[phonemes[i]] < 0) {
+                          //     return 'red';
+                          //   } else {
+                          //     return 'black';
+                          //   }
+                          // })
         }
       }
     })
