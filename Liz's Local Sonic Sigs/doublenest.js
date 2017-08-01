@@ -18,81 +18,92 @@ var margin = {top: 10, right: 10, bottom: 15, left: 10},
 var x = d3.scaleBand(),         
     y = d3.scaleLinear().rangeRound([height, 0]);
 
-var tip = d3.select("body").append("div").attr("class", "toolTip")
+var tip = d3.select("body").append("div").attr("class", "toolTip");
 
 // added just to have another svg         
-var svg = d3.select("body")
-    .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g") // TODO: is this still needed?
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
               
-d3.csv("charPhoneZScoresNumlines.csv", function(d) {
-  d.zscore = parseFloat(d.zscore);
-  d.numlines = +d.numlines;
-  //console.log(d.numlines);
-  if (!(plays.indexOf(d.play) > -1)) {
-   plays.push(d.play);
-   }
-   return d;},
-  //  if (d.play == "1H4" && phonemes.hasOwnProperty(d.phoneme) && d.numlines > 1000) {
-//       return d;
-//    }},
- function(error, data) {
-  if (error) throw error;
- 
- var playCharNest = d3.nest()
-    .key(function(data) {
-        return data.play;
-      })
-    .key(function(data){
-        return data.character;
-    })
-    .entries(data)
- 
- var playGroups = svg.selectAll(".playGroups")
-     .data(playCharNest)
-     .enter()
-     .append("g")
- 
- var playMenu = d3.select('body')
-     .append("select")
-     .selectAll("option")
-         .data(playCharNest)
-         .enter()
-         .append("option")
-         .attr("value", function(d){
-             return d.key;
-         })
-         .text(function(d){
-             return d.key;
-         })
+d3.csv("charPhoneZScoresNumlines.csv",
+    function(d) {
+        d.zscore = parseFloat(d.zscore);
+        d.numlines = +d.numlines;
+        //console.log(d.numlines);
+        if (!(plays.indexOf(d.play) > -1)) {
+            plays.push(d.play);
+        }
+        return d;
+        //if (d.play == "1H4" && phonemes.hasOwnProperty(d.phoneme) && d.numlines > 1000) {
+        //  return d;
+        //}
+    },
+    function(error, data) {
+        if (error) throw error;
+        var playCharNest = d3.nest()
+            .key(function (data) {
+                return data.play;
+            })
+            .key(function (data) {
+                return data.character;
+            })
+            .entries(data);
 
-// var initialGraph = function(play) {     
-//       var selectPlay = playCharNest.filter(function(d){
-//          return d.key == play;
-//       })
-      
-     //  var selectPlayGroups = svg.selectAll(".playGroups")
-//           .data(selectPlay, function(d){
-//               return d ? d.key : this.key;
-//           })
-//           .enter()
-//           .append("g")
-//           .attr("class","playGroups")
-         
-var circles = playGroups.selectAll("circle")
-        .data(function(d) {return d.values;})
-        .enter()
-        .append("circle")
-        .attr("cy",60)
-        .attr("cx",function(d,i) {return i * 100 + 30; })
-        .attr("r", function(d) {return phonemes[d.phoneme + 30];});
-      // } 
-// initialGraph("1H4")  
-})
+        var playGroups = svg.selectAll(".playGroups")
+            //.data(playCharNest)
+            .data(playCharNest[0].values)
+            .enter()
+            .append("g");
+
+        var playMenu = d3.select('body')
+            .append("select")
+            .selectAll("option")
+            .data(playCharNest)
+            .enter()
+            .append("option")
+            .attr("value", function (d) {
+                return d.key;
+            })
+            .text(function (d) {
+                return d.key;
+            });
+
+        // var initialGraph = function(play) {
+        //       var selectPlay = playCharNest.filter(function(d){
+        //          return d.key == play;
+        //       })
+
+        //  var selectPlayGroups = svg.selectAll(".playGroups")
+        //           .data(selectPlay, function(d){
+        //               return d ? d.key : this.key;
+        //           })
+        //           .enter()
+        //           .append("g")
+        //           .attr("class","playGroups")
+
+        var circles = playGroups.selectAll("circle")
+            .data(function (d) {
+                return d.values;
+            })
+            .enter()
+            .append("circle")
+            .attr("cy", 60)
+            .attr("cx", function (d, i) {
+                return i * 100 + 30;
+            })
+            .attr("r", function (d) {
+                if (phonemeOrder.indexOf(d.phoneme) != -1) {
+                    return phonemes[d.phoneme] + 30;
+                } else {
+                    return 0;
+                }
+            });
+        // }
+        // initialGraph("1H4")
+    }
+);
 
 
  // var charSVG = playGroups.selectAll("svg")
