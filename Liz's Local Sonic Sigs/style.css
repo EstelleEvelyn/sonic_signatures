@@ -1,0 +1,44 @@
+html, body {
+  margin: 0;
+  height: 100%;
+}
+ 
+.chart rect {
+  fill: lightcoral;
+}
+
+.chart text {
+  fill: cornflowerblue;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.chart rect:hover {
+  fill: coral;
+}
+
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 14px;
+  text-align: center;
+}
+
+/* 
+line{
+  stroke: red;
+}
+
+g.tick line {
+  stroke: blue;
+}
+
+g.hidden line,
+g.hidden path{
+display: none;
+}
+ */
