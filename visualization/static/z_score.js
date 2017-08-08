@@ -196,6 +196,13 @@ function loadData() {
   d3.selectAll('.fant_bar').remove()
   d3.selectAll('.ffool_bar').remove()
 
+  d3.selectAll('.pant').remove()
+  d3.selectAll('.pfool').remove()
+  d3.selectAll('.pprot').remove()
+  d3.selectAll('.pprot_bar').remove()
+  d3.selectAll('.pant_bar').remove()
+  d3.selectAll('.pfool_bar').remove()
+
   var dataURL = '/data'
   d3.json(dataURL, function(error, data){
     var fdata = data['features']
@@ -482,24 +489,54 @@ function loadData() {
       } else if (show[0].value == 'antag') {
         d3.selectAll('.pprot').remove()
         d3.selectAll('.pfool').remove()
-        d3.selectAll('.pant').attr('transform', 'translate(0,' + ( - pSegment/3) + ')').attr('height', pSegment - buffer/2)
+        d3.selectAll('.pant')//.attr('transform', 'translate(0,' + ( - pSegment/3) + ')')
+          .attr('height', pSegment - buffer/2)
+          .attr('y', function() {
+            blah = (d3.select(this).attr('y'))
+            return (parseFloat(blah) - pSegment/3)
+          })
       } else {
         d3.selectAll('.pprot').remove()
         d3.selectAll('.pant').remove()
-        d3.selectAll('.pfool').attr('transform', 'translate(0,' + ( - 2 * pSegment/3) + ')').attr('height', pSegment - buffer/2)
+        d3.selectAll('.pfool')//.attr('transform', 'translate(0,' + ( - 2 * pSegment/3) + ')')
+          .attr('height', pSegment - buffer/2)
+          .attr('y', function() {
+            blah = (d3.select(this).attr('y'))
+            return (parseFloat(blah) - 2 * pSegment/3)
+          })
       }
     } else if (hide.length == 1) {
       if (hide[0].value == 'protag') {
         d3.selectAll('.pprot').remove()
-        d3.selectAll('.pant').attr('transform', 'translate(0,' + ( - pSegment/3) + ')').attr('height', pSegment/2 - buffer/2)
-        d3.selectAll('.pfool').attr('transform', 'translate(0,'+(- pSegment/6)+')').attr('height', pSegment/2 - buffer/2)
+        d3.selectAll('.pant')//.attr('transform', 'translate(0,' + ( - pSegment/3) + ')')
+          .attr('height', pSegment/2 - buffer/2)
+          .attr('y', function() {
+            blah = (d3.select(this).attr('y'))
+            return (parseFloat(blah) - pSegment/3)
+          })
+        d3.selectAll('.pfool')//.attr('transform', 'translate(0,'+(- pSegment/6)+')')
+          .attr('height', pSegment/2 - buffer/2)
+          .attr('y', function() {
+            blah = (d3.select(this).attr('y'))
+            return (parseFloat(blah) - pSegment/6)
+          })
       } else if (hide[0].value == 'antag') {
         d3.selectAll('.pant').remove()
         d3.selectAll('.pprot').attr('height', pSegment/2 - buffer/2)
-        d3.selectAll('.pfool').attr('transform', 'translate(0,'+(- pSegment/6)+')').attr('height', pSegment/2 - buffer/2)
+        d3.selectAll('.pfool')//.attr('transform', 'translate(0,'+(- pSegment/6)+')')
+          .attr('height', pSegment/2 - buffer/2)
+          .attr('y', function() {
+            blah = (d3.select(this).attr('y'))
+            return (parseFloat(blah) - pSegment/6)
+          })
       } else {
         d3.selectAll('.pfool').remove()
-        d3.selectAll('.pant').attr('transform', 'translate(0,' + ( + pSegment/6) + ')').attr('height', pSegment/2 - buffer/2)
+        d3.selectAll('.pant')//.attr('transform', 'translate(0,' + ( + pSegment/6) + ')')
+          .attr('height', pSegment/2 - buffer/2)
+          .attr('y', function() {
+            blah = (d3.select(this).attr('y'))
+            return (parseFloat(blah) + pSegment/6)
+          })
         d3.selectAll('.pprot').attr('height', pSegment/2 - buffer/2)
       }
     }
@@ -546,9 +583,9 @@ function compare() {
           }
 
           if (feat_data[features[i]] > 0) {
-            pos = featScale(d3.min([2, feat_data[features[i]]]));
+            fpos = featScale(d3.min([2, feat_data[features[i]]]));
           } else {
-            pos = featScale(d3.max([-2, feat_data[features[i]]]));
+            fpos = featScale(d3.max([-2, feat_data[features[i]]]));
           }
 
           if(document.getElementById(features[i]+'_prot')) {
@@ -558,17 +595,17 @@ function compare() {
                           .attr('class', 'fprot_bar')
                           .attr('x', function() {
                             if (fprot_pos != 25) { //bar negative
-                              if (pos - fprot_pos > 0) { //char >bar
+                              if (fpos - fprot_pos > 0) { //char >bar
                                 start = fprot_pos; //bar
                               } else {
-                                start = pos; //char
+                                start = fpos; //char
                               }
                             } else { //bar positive
                               width = parseFloat(document.getElementById(features[i]+'_prot').getAttribute('width'))
-                              if (pos - (fprot_pos + width) > 0) { //char > bar
+                              if (fpos - (fprot_pos + width) > 0) { //char > bar
                                 start = fprot_pos + width; //bar + width
                               } else { //char < bar
-                                start = pos; //char
+                                start = fpos; //char
                               }
                             }
                             return start.toString()+'%';
@@ -579,13 +616,13 @@ function compare() {
                           .attr('width',  function() {
                             fprotextra = parseFloat(document.getElementById(features[i]+'_prot').getAttribute('width'))
                             if (fprot_pos == 25) { //bar pos
-                              if (pos > 25 + fprotextra) { //char > bar
-                                fprot_width = pos - (25  + fprotextra) //char - (bar+width)
+                              if (fpos > 25 + fprotextra) { //char > bar
+                                fprot_width = fpos - (25  + fprotextra) //char - (bar+width)
                               } else { //bar > char
-                                fprot_width = 25 + fprotextra - pos
+                                fprot_width = 25 + fprotextra - fpos
                               }
                             } else { //bar neg
-                              fprot_width = Math.abs(pos-fprot_pos)
+                              fprot_width = Math.abs(fpos-fprot_pos)
                             }
                             return foo = fprot_width.toString()+'%';
                           })
@@ -625,17 +662,17 @@ function compare() {
                         .attr('class', 'fant_bar')
                         .attr('x', function() {
                           if (fant_pos != 25) { //bar negative
-                            if (pos - fant_pos > 0) { //char >bar
+                            if (fpos - fant_pos > 0) { //char >bar
                               start = fant_pos; //bar
                             } else {
-                              start = pos; //char
+                              start = fpos; //char
                             }
                           } else { //bar positive
                             width = parseFloat(document.getElementById(features[i]+'_ant').getAttribute('width'))
-                            if (pos - (fant_pos + width) > 0) { //char > bar
+                            if (fpos - (fant_pos + width) > 0) { //char > bar
                               start = fant_pos + width; //bar + width
                             } else { //char < bar
-                              start = pos; //char
+                              start = fpos; //char
                             }
                           }
                           return start.toString()+'%';
@@ -646,13 +683,13 @@ function compare() {
                         .attr('width',  function() {
                           fantextra = parseFloat(document.getElementById(features[i]+'_ant').getAttribute('width'))
                           if (fant_pos == 25) { //bar pos
-                            if (pos > 25 + fantextra) { //char > bar
-                              fant_width = pos - (25  + fantextra) //char - (bar+width)
+                            if (fpos > 25 + fantextra) { //char > bar
+                              fant_width = fpos - (25  + fantextra) //char - (bar+width)
                             } else { //bar > char
-                              fant_width = 25 + fantextra - pos
+                              fant_width = 25 + fantextra - fpos
                             }
                           } else { //bar neg
-                            fant_width = Math.abs(pos-fant_pos)
+                            fant_width = Math.abs(fpos-fant_pos)
                           }
                           return fant_width.toString()+'%';
                         })
@@ -670,17 +707,17 @@ function compare() {
                         .attr('class', 'ffool_bar')
                         .attr('x', function() {
                           if (ffool_pos != 25) { //bar negative
-                            if (pos - ffool_pos > 0) { //char >bar
+                            if (fpos - ffool_pos > 0) { //char >bar
                               start = ffool_pos; //bar
                             } else {
-                              start = pos; //char
+                              start = fpos; //char
                             }
                           } else { //bar positive
                             width = parseFloat(document.getElementById(features[i]+'_fool').getAttribute('width'))
-                            if (pos - (ffool_pos + width) > 0) { //char > bar
+                            if (fpos - (ffool_pos + width) > 0) { //char > bar
                               start = ffool_pos + width; //bar + width
                             } else { //char < bar
-                              start = pos; //char
+                              start = fpos; //char
                             }
                           }
                           return start.toString()+'%';
@@ -691,13 +728,13 @@ function compare() {
                         .attr('width',  function() {
                           ffoolextra = parseFloat(document.getElementById(features[i]+'_fool').getAttribute('width'))
                           if (ffool_pos == 25) { //bar pos
-                            if (pos > 25 + ffoolextra) { //char > bar
-                              ffool_width = pos - (25  + ffoolextra) //char - (bar+width)
+                            if (fpos > 25 + ffoolextra) { //char > bar
+                              ffool_width = fpos - (25  + ffoolextra) //char - (bar+width)
                             } else { //bar > char
-                              ffool_width = 25 + ffoolextra - pos
+                              ffool_width = 25 + ffoolextra - fpos
                             }
                           } else { //bar neg
-                            ffool_width = Math.abs(pos-ffool_pos)
+                            ffool_width = Math.abs(fpos-ffool_pos)
                           }
                           return ffool_width.toString()+'%';
                         })
@@ -723,38 +760,188 @@ function compare() {
       }
 
       for (var i = 0; i < phonemes.length; i++) {
-        d3.select('#'+phonemes[i]).selectAll('line').remove();
+        d3.select('#'+phonemes[i]).selectAll('.pprot_bar').remove();
+        d3.select('#'+phonemes[i]).selectAll('.pant_bar').remove();
+        d3.select('#'+phonemes[i]).selectAll('.pfool_bar').remove();
+
 
         if (phon_data.length != 0){
-          var phon_line = d3.select('#'+phonemes[i])
-                        .append('line')
-                        .property('id', document.getElementById('pCharacter'.value))
-                        .attr('x1', function() {
-                          if (phon_data[phonemes[i]] > 0) {
-                            pos = phonScale(d3.min([2, phon_data[phonemes[i]]]))
-                          } else {
-                            pos = phonScale(d3.max([-2, phon_data[phonemes[i]]]))
+          if(document.getElementById(phonemes[i]+'_prot')) {
+            var pprot_pos = document.getElementById(phonemes[i]+'_prot').getAttribute('x')
+            pprot_pos = parseFloat(pprot_pos)
+          }
+          if (document.getElementById(phonemes[i]+'_ant')) {
+            var pant_pos = document.getElementById(phonemes[i]+'_ant').getAttribute('x')
+            pant_pos = parseFloat(pant_pos)
+          }
+          if (document.getElementById(phonemes[i]+'_fool')) {
+            var pfool_pos = document.getElementById(phonemes[i]+'_fool').getAttribute('x')
+            pfool_pos = parseFloat(pfool_pos)
+          }
+
+          if (phon_data[phonemes[i]] > 0) {
+            ppos = phonScale(d3.min([2, phon_data[phonemes[i]]]));
+          } else {
+            ppos = phonScale(d3.max([-2, phon_data[phonemes[i]]]));
+          }
+
+          if(document.getElementById(phonemes[i]+'_prot')) {
+            var pprot_rect = d3.select('#'+phonemes[i])
+                          .append('rect')
+                          .property('id', document.getElementById('pCharacter').value)
+                          .attr('class', 'pprot_bar')
+                          .attr('x', function() {
+                            if (pprot_pos != 25) { //bar negative
+                              if (ppos - pprot_pos > 0) { //char >bar
+                                start = pprot_pos; //bar
+                              } else {
+                                start = ppos; //char
+                              }
+                            } else { //bar positive
+                              width = parseFloat(document.getElementById(phonemes[i]+'_prot').getAttribute('width'))
+                              if (ppos - (pprot_pos + width) > 0) { //char > bar
+                                start = pprot_pos + width; //bar + width
+                              } else { //char < bar
+                                start = ppos; //char
+                              }
+                            }
+                            return start.toString()+'%';
+                          })
+                          .attr('y', function() {
+                            return ugh = document.getElementById(phonemes[i]+'_prot').getAttribute('y');
+                          })
+                          .attr('width',  function() {
+                            pprotextra = parseFloat(document.getElementById(phonemes[i]+'_prot').getAttribute('width'))
+                            if (pprot_pos == 25) { //bar pos
+                              if (ppos > 25 + pprotextra) { //char > bar
+                                pprot_width = ppos - (25  + pprotextra) //char - (bar+width)
+                              } else { //bar > char
+                                pprot_width = 25 + pprotextra - ppos
+                              }
+                            } else { //bar neg
+                              pprot_width = Math.abs(ppos-pprot_pos)
+                            }
+                            return foo = pprot_width.toString()+'%';
+                          })
+                          .attr('height', function() {
+                          return bar = document.getElementById(phonemes[i]+'_prot').getAttribute('height');
+                          })
+                          .style('stroke', 'black')
+                          .style('opacity', '0.5')
+                          .style('fill', 'blue')
+                          // .style('fill', function() {
+                          //   if (pprot_pos != 25) {
+                          //     if (pos - pprot_pos > 0) {
+                          //       return('blue');
+                          //     } else {
+                          //       return('red');
+                          //     }
+                          //   } else {
+                          //     if (pos - pprot_pos > 0) {
+                          //       return('blue');
+                          //     } else {
+                          //       return('red');
+                          //     }
+                          //   }
+                          // });
+                          // .style('stroke', function(){
+                          //   if (phon_data[phonemes[i]] < 0) {
+                          //     return 'red';
+                          //   } else {
+                          //     return 'black';
+                          //   }
+                          // })
+          }
+          if(document.getElementById(phonemes[i]+'_ant')) {
+            var pant_rect = d3.select('#'+phonemes[i])
+                        .append('rect')
+                        .property('id', document.getElementById('pCharacter').value)
+                        .attr('class', 'pant_bar')
+                        .attr('x', function() {
+                          if (pant_pos != 25) { //bar negative
+                            if (ppos - pant_pos > 0) { //char >bar
+                              start = pant_pos; //bar
+                            } else {
+                              start = ppos; //char
+                            }
+                          } else { //bar positive
+                            width = parseFloat(document.getElementById(phonemes[i]+'_ant').getAttribute('width'))
+                            if (ppos - (pant_pos + width) > 0) { //char > bar
+                              start = pant_pos + width; //bar + width
+                            } else { //char < bar
+                              start = ppos; //char
+                            }
                           }
-                          return pos.toString()+'%'
+                          return start.toString()+'%';
                         })
-                        .attr('x2', function() {
-                          if (phon_data[phonemes[i]] > 0) {
-                            pos = phonScale(d3.min([2, phon_data[phonemes[i]]]))
-                          } else {
-                            pos = phonScale(d3.max([-2, phon_data[phonemes[i]]]))
+                        .attr('y', function() {
+                          return baz = document.getElementById(phonemes[i]+'_ant').getAttribute('y');
+                        })
+                        .attr('width',  function() {
+                          pantextra = parseFloat(document.getElementById(phonemes[i]+'_ant').getAttribute('width'))
+                          if (pant_pos == 25) { //bar pos
+                            if (ppos > 25 + pantextra) { //char > bar
+                              pant_width = ppos - (25  + pantextra) //char - (bar+width)
+                            } else { //bar > char
+                              pant_width = 25 + pantextra - ppos
+                            }
+                          } else { //bar neg
+                            pant_width = Math.abs(ppos-pant_pos)
                           }
-                          return pos.toString()+'%'
+                          return pant_width.toString()+'%';
                         })
-                        .attr('y1',  buffer + (pSegment * i))
-                        .attr('y2', buffer + (pSegment * (i + 1)))
-                        .style('stroke', 'black');
-                        // .style('stroke', function(){
-                        //   if (phon_data[phonemes[i]] < 0) {
-                        //     return 'red';
-                        //   } else {
-                        //     return 'black';
-                        //   }
-                        // })
+                        .attr('height', function() {
+                        return document.getElementById(phonemes[i]+'_ant').getAttribute('height');
+                        })
+                        .style('stroke', 'black')
+                        .style('opacity', '0.5')
+                        .style('fill', 'blue')
+          }
+          if(document.getElementById(phonemes[i]+'_fool')) {
+            var pfool_rect = d3.select('#'+phonemes[i])
+                        .append('rect')
+                        .property('id', document.getElementById('pCharacter').value)
+                        .attr('class', 'pfool_bar')
+                        .attr('x', function() {
+                          if (pfool_pos != 25) { //bar negative
+                            if (ppos - pfool_pos > 0) { //char >bar
+                              start = pfool_pos; //bar
+                            } else {
+                              start = ppos; //char
+                            }
+                          } else { //bar positive
+                            width = parseFloat(document.getElementById(phonemes[i]+'_fool').getAttribute('width'))
+                            if (ppos - (pfool_pos + width) > 0) { //char > bar
+                              start = pfool_pos + width; //bar + width
+                            } else { //char < bar
+                              start = ppos; //char
+                            }
+                          }
+                          return start.toString()+'%';
+                        })
+                        .attr('y', function() {
+                          return document.getElementById(phonemes[i]+'_fool').getAttribute('y');
+                        })
+                        .attr('width',  function() {
+                          pfoolextra = parseFloat(document.getElementById(phonemes[i]+'_fool').getAttribute('width'))
+                          if (pfool_pos == 25) { //bar pos
+                            if (ppos > 25 + pfoolextra) { //char > bar
+                              pfool_width = ppos - (25  + pfoolextra) //char - (bar+width)
+                            } else { //bar > char
+                              pfool_width = 25 + pfoolextra - ppos
+                            }
+                          } else { //bar neg
+                            pfool_width = Math.abs(ppos-pfool_pos)
+                          }
+                          return pfool_width.toString()+'%';
+                        })
+                        .attr('height', function() {
+                        return document.getElementById(phonemes[i]+'_fool').getAttribute('height');
+                        })
+                        .style('stroke', 'black')
+                        .style('opacity', '0.5')
+                        .style('fill', 'blue')
+          }
         }
       }
     })
