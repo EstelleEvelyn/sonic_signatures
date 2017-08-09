@@ -8,7 +8,6 @@
     <meta name="description" content="">
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script type = "text/javascript" src="../static/z_score.js"></script>
     <style type="text/css">
     body {
         font: 10px sans-serif;
@@ -51,12 +50,12 @@
         </form>
       </div>
       <div style = 'margin-left:50%;'>
-          Sort phonemes by
-          <form id="psort", onchange = "sortOrder()"> <br>
-            <input id = 'p_psort' name="role" type="radio"  value="protag"> Protagonist<br>
-            <input id = 'p_asort' name="role" type="radio"  value="antag"> Antagonist<br>
-            <input id = 'p_fsort' name="role" type="radio"  value="fool"> Fool
-          </form>
+        Sort phonemes by
+        <form id="psort", onchange = "sortOrder()"> <br>
+          <input id = 'p_psort' name="role" type="radio"  value="protag"> Protagonist<br>
+          <input id = 'p_asort' name="role" type="radio"  value="antag"> Antagonist<br>
+          <input id = 'p_fsort' name="role" type="radio"  value="fool"> Fool
+        </form>
       </div>
     </div>
     <div style = 'width:100%;'>
@@ -128,151 +127,58 @@
 
     </div>
     <div style = 'margin-left:50%;'>
-    Compare phonemes<br>
-    <select id="pPlay", onchange="onpSelect()">
-      <option value="default">Play</option>
-      <option value="AWW">All's Well That Ends Well</option>
-      <option value="Ant">Antony and Cleopatra</option>
-      <option value="AYL">As You Like It</option>
-      <option value="Err">The Comedy of Errors</option>
-      <option value="Cor">Coriolanus</option>
-      <option value="Cym">Cymbeline</option>
-      <option value="Ham">Hamlet</option>
-      <option value="1H4">Henry IV, Part 1</option>
-      <option value="2H4">Henry IV, Part 2</option>
-      <option value="H5">Henry V</option>
-      <option value="1H6">Henry VI, Part 1</option>
-      <option value="2H6">Henry VI, Part 2</option>
-      <option value="3H6">Henry VI, Part 3</option>
-      <option value="H8">Henry VIII</option>
-      <option value="JC">Julius Caesar</option>
-      <option value="Jn">King John</option>
-      <option value="Lr">King Lear</option>
-      <option value="LLL">Love's Labor's Lost</option>
-      <option value="Mac">Macbeth</option>
-      <option value="MM">Measure for Measure</option>
-      <option value="MV">The Merchant of Venice</option>
-      <option value="Wiv">The Merry Wives of Windsor</option>
-      <option value="MND">A Midsummer Night's Dream</option>
-      <option value="Ado">Much Ado About Nothing</option>
-      <option value="Oth">Othello</option>
-      <option value="Per">Pericles</option>
-      <option value="R2">Richard II</option>
-      <option value="R3">Richard III</option>
-      <option value="Rom">Romeo and Juliet</option>
-      <option value="Shr">The Taming of the Shrew</option>
-      <option value="Tmp">The Tempest</option>
-      <option value="Tim">Timon of Athens</option>
-      <option value="Tit">Titus Andronicus</option>
-      <option value="Tro">Troilus and Cressida</option>
-      <option value="TN">Twelfth Night</option>
-      <option value="TGV">The Two Gentlemen of Verona</option>
-      <option value="TNK">The Two Noble Kinsmen</option>
-      <option value="WT">The Winter's Tale</option>
-    </select>
+      Compare phonemes<br>
+      <select id="pPlay", onchange="onpSelect()">
+        <option value="default">Play</option>
+        <option value="AWW">All's Well That Ends Well</option>
+        <option value="Ant">Antony and Cleopatra</option>
+        <option value="AYL">As You Like It</option>
+        <option value="Err">The Comedy of Errors</option>
+        <option value="Cor">Coriolanus</option>
+        <option value="Cym">Cymbeline</option>
+        <option value="Ham">Hamlet</option>
+        <option value="1H4">Henry IV, Part 1</option>
+        <option value="2H4">Henry IV, Part 2</option>
+        <option value="H5">Henry V</option>
+        <option value="1H6">Henry VI, Part 1</option>
+        <option value="2H6">Henry VI, Part 2</option>
+        <option value="3H6">Henry VI, Part 3</option>
+        <option value="H8">Henry VIII</option>
+        <option value="JC">Julius Caesar</option>
+        <option value="Jn">King John</option>
+        <option value="Lr">King Lear</option>
+        <option value="LLL">Love's Labor's Lost</option>
+        <option value="Mac">Macbeth</option>
+        <option value="MM">Measure for Measure</option>
+        <option value="MV">The Merchant of Venice</option>
+        <option value="Wiv">The Merry Wives of Windsor</option>
+        <option value="MND">A Midsummer Night's Dream</option>
+        <option value="Ado">Much Ado About Nothing</option>
+        <option value="Oth">Othello</option>
+        <option value="Per">Pericles</option>
+        <option value="R2">Richard II</option>
+        <option value="R3">Richard III</option>
+        <option value="Rom">Romeo and Juliet</option>
+        <option value="Shr">The Taming of the Shrew</option>
+        <option value="Tmp">The Tempest</option>
+        <option value="Tim">Timon of Athens</option>
+        <option value="Tit">Titus Andronicus</option>
+        <option value="Tro">Troilus and Cressida</option>
+        <option value="TN">Twelfth Night</option>
+        <option value="TGV">The Two Gentlemen of Verona</option>
+        <option value="TNK">The Two Noble Kinsmen</option>
+        <option value="WT">The Winter's Tale</option>
+      </select>
 
-    <select id="pCharacter", onchange ="compare()">
-      <option value = "default">Character</option>
-    </select>
+      <select id="pCharacter", onchange ="compare()">
+        <option value = "default">Character</option>
+      </select>
 
+    </div>
   </div>
-  </div>
+  <script type = "text/javascript" src="../static/z_score.js"> </script>
+
 </body>
 
-  <script type = "text/javascript">
-
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .offset([-10, 0])
-      .html(function(d) {
-        return "<strong>"+d+"</strong>";
-      })
-
-    var svgHeight = 3200;
-    var buffer = 10;
-
-    var svg = d3.select("body").append("svg")
-                .attr('width', '100%')
-                .attr('height', svgHeight)
-
-    svg.call(tip);
-
-    var featScale = d3.scale.linear()
-                .domain([-2, 2])
-                .range([0, 50])
-
-    var phonScale = d3.scale.linear()
-                .domain([-2, 2])
-                .range([51, 100])
-
-    var featDiv = svg.append('g')
-                .property('id', 'feats')
-
-
-    var features = ['fricative', 'affricate', 'glide', 'nasal', 'liquid',
-            'stop', 'glottal', 'linguaalveolar', 'linguapalatal', 'labiodental',
-            'bilabial', 'linguavelar','linguadental', 'voiced', 'voiceless',
-            'sibilant', 'nonsibilant', 'sonorant', 'nonsonorant', 'coronal',
-            'noncoronal', 'monophthong', 'diphthong', 'central', 'front', 'back',
-            'tense', 'lax', 'rounded', 'unrounded']
-
-    var fSegment = (svgHeight - 2*buffer) / (features.length)
-
-
-    var fTopLine = d3.select('svg')
-                        .select('#feats')
-                        .selectAll('line')
-                        .data(features)
-                        .enter()
-                        .append('line')
-                        .attr('x1', '0%')
-                        .attr('x2', '50%')
-                        .attr('y1', function(d, i) { return h = buffer + (fSegment * i); })
-                        .attr('y2', function(d, i) { return h = buffer + (fSegment * i); })
-                        .style('stroke', 'black');
-
-    var fPivotLine = d3.select('svg')
-                        .select('#feats')
-                        .append('line')
-                        .attr('x1', '25%')
-                        .attr('x2', '25%')
-                        .attr('y1', svgHeight - buffer)
-                        .attr('y2', buffer)
-                        .style('stroke', 'black')
-
-    var phonDiv = svg.append('g')
-                .property('id', 'phons')
-
-    var phonemes = ['AA','AE','AH','AO','AW','AY','B','CH','D','DH','EH','ER','EY',
-        'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S','SH','T','TH',
-        'UH','UW','V','W','Y','Z','ZH']
-
-    var pSegment = (svgHeight - 2*buffer) / (phonemes.length)
-
-    var pTopLine = d3.select('svg')
-                        .select('#phons')
-                        .selectAll('line')
-                        .data(phonemes)
-                        .enter()
-                        .append('line')
-                        .attr('x1', '51%')
-                        .attr('x2', '100%')
-                        .attr('y1', function(d, i) { return h = buffer + (pSegment * i); })
-                        .attr('y2', function(d, i) { return h = buffer + (pSegment * i); })
-                        .style('stroke', 'black');
-
-
-      var pPivotLine = d3.select('svg')
-                        .select('#phons')
-                        .append('line')
-                        .attr('x1', '75.5%')
-                        .attr('x2', '75.5%')
-                        .attr('y1', svgHeight - buffer)
-                        .attr('y2', buffer)
-                        .style('stroke', 'black')
-
-    onLoad();
-
-  </script>
 
 </html>

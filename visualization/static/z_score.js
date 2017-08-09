@@ -1,5 +1,8 @@
-var svgHeight = 3200;
-var buffer = 10;
+var svgHeight = 3200
+var buffer = 10
+
+var colors = ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0',
+              '#225ea8', '#0c2c84']
 
 var svg = d3.select("body").append("svg")
             .attr('width', '100%')
@@ -78,7 +81,6 @@ var pTopLine = d3.select('svg')
                     .attr('y1', svgHeight - buffer)
                     .attr('y2', buffer)
                     .style('stroke', 'black')
-
 onLoad();
 
 function onfSelect() {
@@ -285,16 +287,14 @@ function loadData() {
                       //     return 'black'
                       //   }
                       // })
-                      .on("mouseover", function(d){
-                          d3.select(this).style("fill", d3.rgb(d3.select(this).style("fill")).darker());
-                          tip.show(d);
-                      })
-                      .on("mouseout", function(d){
-                          tip.hide(d);
-                          d3.select(this).style("fill", function() {
-                              return d3.rgb(d3.select(this).style("fill")).brighter();
-                          });
-                      });
+                      // .on("mouseover", function(d){
+                      //     d3.select(this).style("fill", d3.rgb(d3.select(this).style("fill")).darker());
+                      // })
+                      // .on("mouseout", function(d){
+                      //     d3.select(this).style("fill", function() {
+                      //         return d3.rgb(d3.select(this).style("fill")).brighter();
+                      //     });
+                      // });
 
     }
     vals = document.getElementById('fshow').elements
@@ -454,17 +454,15 @@ function loadData() {
                       //   } else {
                       //     return 'black'
                       //   }
+                      // // })
+                      // .on("mouseover", function(d){
+                      //     d3.select(this).style("fill", d3.rgb(d3.select(this).style("fill")).darker());
                       // })
-                      .on("mouseover", function(d){
-                          d3.select(this).style("fill", d3.rgb(d3.select(this).style("fill")).darker());
-                          tip.show(d);
-                      })
-                      .on("mouseout", function(d){
-                          tip.hide(d);
-                          d3.select(this).style("fill", function() {
-                              return d3.rgb(d3.select(this).style("fill")).brighter();
-                          });
-                      });
+                      // .on("mouseout", function(d){
+                      //     d3.select(this).style("fill", function() {
+                      //         return d3.rgb(d3.select(this).style("fill")).brighter();
+                      //     });
+                      // });
     }
 
     vals = document.getElementById('pshow').elements
@@ -631,7 +629,36 @@ function compare() {
                           })
                           .style('stroke', 'black')
                           .style('opacity', '0.5')
-                          .style('fill', 'blue')
+                          .style('fill', function() {
+                            var dist = parseFloat(d3.select(this).attr('width'))
+                            switch(true) {
+                              case (6.25 < dist && dist <= 12.5):
+                                  ind = 1;
+                                  break;
+                              case (12.5 < dist && dist <= 17.75):
+                                  ind = 2;
+                                  break;
+                              case (17.75 < dist && dist <= 25):
+                                  ind = 3;
+                                  break;
+                              case (25 < dist && dist <= 31.25):
+                                  ind = 4;
+                                  break;
+                              case (31.25 < dist && dist <= 37.5):
+                                  ind = 5;
+                                  break;
+                              case (37.5 < dist && dist <= 43.75):
+                                  ind = 6;
+                                  break;
+                              case (43.75 < dist && dist <= 50):
+                                  ind = 7;
+                                  break;
+                              default:
+                                  ind = 0;
+                                  break;
+                            }
+                            return colors[ind];
+                          })
                           // .style('fill', function() {
                           //   if (fprot_pos != 25) {
                           //     if (pos - fprot_pos > 0) {
@@ -698,7 +725,36 @@ function compare() {
                         })
                         .style('stroke', 'black')
                         .style('opacity', '0.5')
-                        .style('fill', 'blue')
+                        .style('fill', function() {
+                          var dist = parseFloat(d3.select(this).attr('width'))
+                          switch(true) {
+                            case (6.25 < dist && dist <= 12.5):
+                                ind = 1;
+                                break;
+                            case (12.5 < dist && dist <= 17.75):
+                                ind = 2;
+                                break;
+                            case (17.75 < dist && dist <= 25):
+                                ind = 3;
+                                break;
+                            case (25 < dist && dist <= 31.25):
+                                ind = 4;
+                                break;
+                            case (31.25 < dist && dist <= 37.5):
+                                ind = 5;
+                                break;
+                            case (37.5 < dist && dist <= 43.75):
+                                ind = 6;
+                                break;
+                            case (43.75 < dist && dist <= 50):
+                                ind = 7;
+                                break;
+                            default:
+                                ind = 0;
+                                break;
+                          }
+                          return colors[ind];
+                        })
           }
           if(document.getElementById(features[i]+'_fool')) {
             var ffool_rect = d3.select('#'+features[i])
@@ -743,7 +799,36 @@ function compare() {
                         })
                         .style('stroke', 'black')
                         .style('opacity', '0.5')
-                        .style('fill', 'blue')
+                        .style('fill', function() {
+                          var dist = parseFloat(d3.select(this).attr('width'))
+                          switch(true) {
+                            case (6.25 < dist && dist <= 12.5):
+                                ind = 1;
+                                break;
+                            case (12.5 < dist && dist <= 17.75):
+                                ind = 2;
+                                break;
+                            case (17.75 < dist && dist <= 25):
+                                ind = 3;
+                                break;
+                            case (25 < dist && dist <= 31.25):
+                                ind = 4;
+                                break;
+                            case (31.25 < dist && dist <= 37.5):
+                                ind = 5;
+                                break;
+                            case (37.5 < dist && dist <= 43.75):
+                                ind = 6;
+                                break;
+                            case (43.75 < dist && dist <= 50):
+                                ind = 7;
+                                break;
+                            default:
+                                ind = 0;
+                                break;
+                          }
+                          return colors[ind];
+                        })
           }
         }
       }
@@ -828,7 +913,36 @@ function compare() {
                           })
                           .style('stroke', 'black')
                           .style('opacity', '0.5')
-                          .style('fill', 'blue')
+                          .style('fill', function() {
+                            var dist = parseFloat(d3.select(this).attr('width'))
+                            switch(true) {
+                              case (6.25 < dist && dist <= 12.5):
+                                  ind = 1;
+                                  break;
+                              case (12.5 < dist && dist <= 17.75):
+                                  ind = 2;
+                                  break;
+                              case (17.75 < dist && dist <= 25):
+                                  ind = 3;
+                                  break;
+                              case (25 < dist && dist <= 31.25):
+                                  ind = 4;
+                                  break;
+                              case (31.25 < dist && dist <= 37.5):
+                                  ind = 5;
+                                  break;
+                              case (37.5 < dist && dist <= 43.75):
+                                  ind = 6;
+                                  break;
+                              case (43.75 < dist && dist <= 50):
+                                  ind = 7;
+                                  break;
+                              default:
+                                  ind = 0;
+                                  break;
+                            }
+                            return colors[ind];
+                          })
                           // .style('fill', function() {
                           //   if (pprot_pos != 25) {
                           //     if (pos - pprot_pos > 0) {
@@ -895,7 +1009,36 @@ function compare() {
                         })
                         .style('stroke', 'black')
                         .style('opacity', '0.5')
-                        .style('fill', 'blue')
+                        .style('fill', function() {
+                          var dist = parseFloat(d3.select(this).attr('width'))
+                          switch(true) {
+                            case (6.25 < dist && dist <= 12.5):
+                                ind = 1;
+                                break;
+                            case (12.5 < dist && dist <= 17.75):
+                                ind = 2;
+                                break;
+                            case (17.75 < dist && dist <= 25):
+                                ind = 3;
+                                break;
+                            case (25 < dist && dist <= 31.25):
+                                ind = 4;
+                                break;
+                            case (31.25 < dist && dist <= 37.5):
+                                ind = 5;
+                                break;
+                            case (37.5 < dist && dist <= 43.75):
+                                ind = 6;
+                                break;
+                            case (43.75 < dist && dist <= 50):
+                                ind = 7;
+                                break;
+                            default:
+                                ind = 0;
+                                break;
+                          }
+                          return colors[ind];
+                        })
           }
           if(document.getElementById(phonemes[i]+'_fool')) {
             var pfool_rect = d3.select('#'+phonemes[i])
@@ -940,7 +1083,36 @@ function compare() {
                         })
                         .style('stroke', 'black')
                         .style('opacity', '0.5')
-                        .style('fill', 'blue')
+                        .style('fill', function() {
+                          var dist = parseFloat(d3.select(this).attr('width'))
+                          switch(true) {
+                            case (6.25 < dist && dist <= 12.5):
+                                ind = 1;
+                                break;
+                            case (12.5 < dist && dist <= 17.75):
+                                ind = 2;
+                                break;
+                            case (17.75 < dist && dist <= 25):
+                                ind = 3;
+                                break;
+                            case (25 < dist && dist <= 31.25):
+                                ind = 4;
+                                break;
+                            case (31.25 < dist && dist <= 37.5):
+                                ind = 5;
+                                break;
+                            case (37.5 < dist && dist <= 43.75):
+                                ind = 6;
+                                break;
+                            case (43.75 < dist && dist <= 50):
+                                ind = 7;
+                                break;
+                            default:
+                                ind = 0;
+                                break;
+                          }
+                          return colors[ind];
+                        })
           }
         }
       }
