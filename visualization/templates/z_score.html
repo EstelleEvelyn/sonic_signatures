@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Plotting Z-Scores</title>
     <meta name="description" content="">
+    <link rel = "stylesheet" type = "text/css" href = "../static/z_score.css">
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <style type="text/css">
@@ -41,7 +42,7 @@
   }
   </style>
   <div style = 'width:100%;'>
-    <div style = 'width:50%; float: left;'>
+    <div style = 'width:50%; float: left;' class = ''>
         Sort features by
         <form id="fsort", onchange = "sortOrder()"> <br>
           <input id = 'f_psort' type="radio" name="role" value="protag"> Protagonist<br>
@@ -124,7 +125,18 @@
       <select id="fCharacter", onchange ="compare()">
         <option value = "default">Character</option>
       </select>
-
+      <!-- <br>
+      <br>
+      OR
+      <br>
+      <br>
+      <div>
+        <textarea id="free_comp" name="message" rows="10" cols="30">
+        </textarea>
+        <button onclick="freeComp()">
+          Compare
+        </button>
+      </div> -->
     </div>
     <div style = 'margin-left:50%;'>
       Compare phonemes<br>

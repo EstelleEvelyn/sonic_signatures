@@ -7,6 +7,7 @@ var colors = ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0',
 var svg = d3.select("body").append("svg")
             .attr('width', '100%')
             .attr('height', svgHeight)
+            .property('id', 'canvas')
 
 var featScale = d3.scale.linear()
             .domain([-2, 2])
@@ -16,9 +17,16 @@ var phonScale = d3.scale.linear()
             .domain([-2, 2])
             .range([51, 100])
 
-var featDiv = svg.append('g')
+var featDiv = svg.append('svg')
             .property('id', 'feats')
-
+            .attr('width', '100%')
+            .attr('height', svgHeight)
+var midBar = svg.append('rect')
+            .attr('x', '50%')
+            .attr('y', 0)
+            .attr('height', svgHeight)
+            .attr('width', '1%')
+            .style('fill','#7fcdbb')
 
 var features = ['fricative', 'affricate', 'glide', 'nasal', 'liquid',
         'stop', 'glottal', 'linguaalveolar', 'linguapalatal', 'labiodental',
@@ -51,8 +59,12 @@ var fPivotLine = d3.select('svg')
                     .attr('y2', buffer)
                     .style('stroke', 'black')
 
-var phonDiv = svg.append('g')
+var phonDiv = svg.append('svg')
             .property('id', 'phons')
+            .attr('width', '100%')
+            .attr('height', svgHeight)
+            // .style("margin-left","50%")
+
 
 var phonemes = ['AA','AE','AH','AO','AW','AY','B','CH','D','DH','EH','ER','EY',
     'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S','SH','T','TH',
@@ -1186,6 +1198,10 @@ function sortOrder() {
     phonemes = new_phonemes
     onLoad();
   })
+}
+
+function freeComp() {
+  var datURL =  ""
 }
 
 

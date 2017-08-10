@@ -1,0 +1,22 @@
+body {
+  background-color: #7fcdbb;
+}
+
+#canvas {
+  background-color: white;
+  margin:5px;
+}
+
+#phons {
+  margin: 5px;
+  background-color: white;
+  border-color: blue;
+  border:3px;
+}
+
+#feats {
+  margin: 5px;
+  background-color: white;
+  border-color: blue;
+  border:3px;
+}
