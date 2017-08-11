@@ -5,7 +5,11 @@ var colors = ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0',
               '#225ea8', '#0c2c84']
 
 var svg = d3.select("body").append("svg")
+            .style('width', '78%')
             .attr('width', '100%')
+            .style('margin', '1%')
+            .style('margin-top', '0')
+            .style('margin-right', '0')
             .attr('height', svgHeight)
             .property('id', 'canvas')
 
@@ -26,6 +30,13 @@ var midBar = svg.append('rect')
             .attr('y', 0)
             .attr('height', svgHeight)
             .attr('width', '1%')
+            .style('fill','#7fcdbb')
+
+var topBar = svg.append('rect')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('height', buffer)
+            .attr('width', '100%')
             .style('fill','#7fcdbb')
 
 var features = ['fricative', 'affricate', 'glide', 'nasal', 'liquid',

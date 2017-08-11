@@ -7,16 +7,118 @@ body {
   margin:5px;
 }
 
-#phons {
-  margin: 5px;
-  background-color: white;
-  border-color: blue;
-  border:3px;
+
+ul {
+  float: left;
+  background-color: #ffffd9;
+  padding: 10px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-bottom: 0px;
+  margin: 0px;
+  height: 3200px;
 }
 
-#feats {
+header {
+  padding-top: 0.5%;
+  padding-left: 24%;
+  background-color: #ffffd9;
+  height: 100%;
+  text-align: left;
+  color: #0c2c84;
+  /*line-height: 40px;*/
+  font-size: 30px;
+}
+
+.features {
+  border-left: 10px solid #1d91c0;
+  padding: 5px;
+  padding-top: 0px;
   margin: 5px;
-  background-color: white;
-  border-color: blue;
-  border:3px;
+  margin-left: 0px;
+  font-size:20px;
+  color: #1d91c0;
+  /*text-align: center;*/
+}
+
+.phonemes {
+  border-left: 10px solid #41b6c4;
+  padding: 5px;
+  padding-top: 0px;
+  margin: 5px;
+  margin-left: 0px;
+  font-size:20px;
+  color: #41b6c4;
+  /*text-align: center;*/
+}
+
+.info {
+  border-left: 10px solid #225ea8;
+  padding: 5px;
+  padding-top: 0px;
+  margin: 5px;
+  margin-left: 0px;
+  font-size:10px;
+  color: #225ea8;
+}
+
+h3 {
+  font-size: 20px;
+}
+/*
+input[type = 'radio'] {
+  font-size: 10px;
+}
+
+input[type= 'checkbox']{
+  font-size: 10px;
+}*/
+
+form {
+  font-size:10px;
+  text-align: left;
+}
+
+option {
+  padding: 0;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    width: 200%;
+    top: 100%;
+    /*left: 0%;*/
+    /*margin-left: 0%;*/
+    visibility: hidden;
+    background-color: #7fcdbb;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 5%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #7fcdbb transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }
