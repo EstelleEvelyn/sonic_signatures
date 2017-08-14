@@ -207,7 +207,7 @@ function onLoad() {
                       .append('text')
                       .text(function(d) { return d; })
                       .attr('y', function(d, i) { return buffer + (pSegment * i) + 10; })
-                      .attr('x', '51%');
+                      .attr('x', '52%');
 
   loadData();
 }
@@ -282,6 +282,7 @@ function loadData() {
                           return 'ffool';
                         }
                       })
+                      .style('fill', '#770D7F')
                       // .style('fill', function(d, j) {
                       //   if (j == 0) {
                       //     // if (d < 0) {
@@ -394,16 +395,62 @@ function loadData() {
       }
     }
 
-    // if (!vals[0].checked){
-    //   // d3.selectAll('.fprot').remove()
-    //   d3.selectAll('.fprot').style('visibility','hidden')
-    // } if (!vals[1].checked){
-    //   // d3.selectAll('.fant').remove()
-    //   d3.selectAll('.fant').style('visibility','hidden')
-    // } if (!vals[2].checked){
-    //   // d3.selectAll('.ffool').remove()
-    //   d3.selectAll('.ffool').style('visibility','hidden')
-    // }
+    for (var i = 0; i < features.length; i++) {
+      if (d3.select('#'+features[i]+'_prot')[0][0] != null) {
+        var fprot_labels = d3.select('#'+features[i])
+                      .append('text')
+                      .attr('x', function() {
+                        bar = d3.select('#'+features[i]+'_prot');
+                        raw_val = parseFloat(bar.attr('x')) + .5;
+                        return raw_val+'%';
+                      })
+                      .attr('y', function() {
+                        bar = d3.select('#'+features[i]+'_prot');
+                        raw_val = parseFloat(bar.attr('y')) + 10;
+                        return raw_val;
+                      })
+                      .text('Protagonists')
+                      .style('color', '#0c2c84h')
+
+
+      }
+      if (d3.select('#'+features[i]+'_ant')[0][0] != null) {
+        var fant_labels = d3.select('#'+features[i])
+                      .append('text')
+                      .attr('x', function() {
+                        bar = d3.select('#'+features[i]+'_ant')
+                        raw_val = parseFloat(bar.attr('x')) + .5
+                        return raw_val+'%'
+                      })
+                      .attr('y', function() {
+                        bar = d3.select('#'+features[i]+'_ant')
+                        raw_val = parseFloat(bar.attr('y')) + 10
+                        return raw_val
+                      })
+                      .text('Antagonists')
+                      .style('color', '#0c2c84h')
+
+      }
+      if (d3.select('#'+features[i]+'_fool')[0][0] != null) {
+        var ffool_labels = d3.select('#'+features[i])
+                      .append('text')
+                      .attr('x', function() {
+                        bar = d3.select('#'+features[i]+'_fool')
+                        raw_val = parseFloat(bar.attr('x')) + .5
+                        return raw_val+'%'
+                      })
+                      .attr('y', function() {
+                        bar = d3.select('#'+features[i]+'_fool')
+                        raw_val = parseFloat(bar.attr('y')) + 10
+                        return raw_val
+                      })
+                      .text('Fools')
+                      .style('color', '#0c2c84h')
+
+      }
+    }
+
+
 
     for (var i = 0; i < phonemes.length; i++) {
       var phon_bars =   d3.select('#'+phonemes[i])
@@ -450,6 +497,7 @@ function loadData() {
                           return 'pfool';
                         }
                       })
+                      .style('fill', '#BC00CC')
                       // .style('fill', function(d, j) {
                       //   if (j == 0) {
                       //     // if (d < 0) {
@@ -559,6 +607,60 @@ function loadData() {
             return (parseFloat(blah) + pSegment/6)
           })
         d3.selectAll('.pprot').attr('height', pSegment/2 - buffer/2)
+      }
+    }
+
+    for (var i = 0; i < phonemes.length; i++) {
+      if (d3.select('#'+phonemes[i]+'_prot')[0][0] != null) {
+        var pprot_labels = d3.select('#'+phonemes[i])
+                      .append('text')
+                      .attr('x', function() {
+                        bar = d3.select('#'+phonemes[i]+'_prot');
+                        raw_val = parseFloat(bar.attr('x')) + .5;
+                        return raw_val+'%';
+                      })
+                      .attr('y', function() {
+                        bar = d3.select('#'+phonemes[i]+'_prot');
+                        raw_val = parseFloat(bar.attr('y')) + 10;
+                        return raw_val;
+                      })
+                      .text('Protagonists')
+                      .style('color', '#0c2c84h')
+
+      }
+      if (d3.select('#'+phonemes[i]+'_ant')[0][0] != null) {
+        var pant_labels = d3.select('#'+phonemes[i])
+                      .append('text')
+                      .attr('x', function() {
+                        bar = d3.select('#'+phonemes[i]+'_ant')
+                        raw_val = parseFloat(bar.attr('x')) + .5
+                        return raw_val+'%'
+                      })
+                      .attr('y', function() {
+                        bar = d3.select('#'+phonemes[i]+'_ant')
+                        raw_val = parseFloat(bar.attr('y')) + 10
+                        return raw_val
+                      })
+                      .text('Antagonists')
+                      .style('color', '#0c2c84h')
+
+      }
+      if (d3.select('#'+phonemes[i]+'_fool')[0][0] != null) {
+        var pfool_labels = d3.select('#'+phonemes[i])
+                      .append('text')
+                      .attr('x', function() {
+                        bar = d3.select('#'+phonemes[i]+'_fool')
+                        raw_val = parseFloat(bar.attr('x')) + .5
+                        return raw_val+'%'
+                      })
+                      .attr('y', function() {
+                        bar = d3.select('#'+phonemes[i]+'_fool')
+                        raw_val = parseFloat(bar.attr('y')) + 10
+                        return raw_val
+                      })
+                      .text('Fools')
+                      .style('color', '#0c2c84h')
+
       }
     }
     // pvals = document.getElementById('pshow').elements
@@ -899,7 +1001,7 @@ function compare() {
                           .property('id', document.getElementById('pCharacter').value)
                           .attr('class', 'pprot_bar')
                           .attr('x', function() {
-                            if (pprot_pos != 25) { //bar negative
+                            if (pprot_pos != 75.5) { //bar negative
                               if (ppos - pprot_pos > 0) { //char >bar
                                 start = pprot_pos; //bar
                               } else {
@@ -920,11 +1022,11 @@ function compare() {
                           })
                           .attr('width',  function() {
                             pprotextra = parseFloat(document.getElementById(phonemes[i]+'_prot').getAttribute('width'))
-                            if (pprot_pos == 25) { //bar pos
-                              if (ppos > 25 + pprotextra) { //char > bar
-                                pprot_width = ppos - (25  + pprotextra) //char - (bar+width)
+                            if (pprot_pos == 75.5) { //bar pos
+                              if (ppos > 75.5 + pprotextra) { //char > bar
+                                pprot_width = ppos - (75.5  + pprotextra) //char - (bar+width)
                               } else { //bar > char
-                                pprot_width = 25 + pprotextra - ppos
+                                pprot_width = 75.5 + pprotextra - ppos
                               }
                             } else { //bar neg
                               pprot_width = Math.abs(ppos-pprot_pos)
@@ -995,7 +1097,7 @@ function compare() {
                         .property('id', document.getElementById('pCharacter').value)
                         .attr('class', 'pant_bar')
                         .attr('x', function() {
-                          if (pant_pos != 25) { //bar negative
+                          if (pant_pos != 75.5) { //bar negative
                             if (ppos - pant_pos > 0) { //char >bar
                               start = pant_pos; //bar
                             } else {
@@ -1016,11 +1118,11 @@ function compare() {
                         })
                         .attr('width',  function() {
                           pantextra = parseFloat(document.getElementById(phonemes[i]+'_ant').getAttribute('width'))
-                          if (pant_pos == 25) { //bar pos
-                            if (ppos > 25 + pantextra) { //char > bar
-                              pant_width = ppos - (25  + pantextra) //char - (bar+width)
+                          if (pant_pos == 75.5) { //bar pos
+                            if (ppos > 75.5 + pantextra) { //char > bar
+                              pant_width = ppos - (75.5  + pantextra) //char - (bar+width)
                             } else { //bar > char
-                              pant_width = 25 + pantextra - ppos
+                              pant_width = 75.5 + pantextra - ppos
                             }
                           } else { //bar neg
                             pant_width = Math.abs(ppos-pant_pos)
@@ -1069,7 +1171,7 @@ function compare() {
                         .property('id', document.getElementById('pCharacter').value)
                         .attr('class', 'pfool_bar')
                         .attr('x', function() {
-                          if (pfool_pos != 25) { //bar negative
+                          if (pfool_pos != 75.5) { //bar negative
                             if (ppos - pfool_pos > 0) { //char >bar
                               start = pfool_pos; //bar
                             } else {
@@ -1090,11 +1192,11 @@ function compare() {
                         })
                         .attr('width',  function() {
                           pfoolextra = parseFloat(document.getElementById(phonemes[i]+'_fool').getAttribute('width'))
-                          if (pfool_pos == 25) { //bar pos
-                            if (ppos > 25 + pfoolextra) { //char > bar
-                              pfool_width = ppos - (25  + pfoolextra) //char - (bar+width)
+                          if (pfool_pos == 75.5) { //bar pos
+                            if (ppos > 75.5 + pfoolextra) { //char > bar
+                              pfool_width = ppos - (75.5  + pfoolextra) //char - (bar+width)
                             } else { //bar > char
-                              pfool_width = 25 + pfoolextra - ppos
+                              pfool_width = 75.5 + pfoolextra - ppos
                             }
                           } else { //bar neg
                             pfool_width = Math.abs(ppos-pfool_pos)
@@ -1209,10 +1311,6 @@ function sortOrder() {
     phonemes = new_phonemes
     onLoad();
   })
-}
-
-function freeComp() {
-  var datURL =  ""
 }
 
 

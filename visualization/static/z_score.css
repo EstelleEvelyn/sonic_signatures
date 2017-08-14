@@ -2,16 +2,17 @@ body {
   background-color: #7fcdbb;
 }
 
-#canvas {
+svg {
   background-color: white;
   margin:5px;
+  color: #081d58
 }
 
 
 ul {
   float: left;
   background-color: #ffffd9;
-  padding: 10px;
+  padding: 1%;
   padding-top: 0px;
   padding-left: 0px;
   padding-bottom: 0px;
@@ -21,13 +22,13 @@ ul {
 
 header {
   padding-top: 0.5%;
-  padding-left: 24%;
+  padding-left: 21%;
   background-color: #ffffd9;
   height: 100%;
   text-align: left;
   color: #0c2c84;
   /*line-height: 40px;*/
-  font-size: 30px;
+  font-size: 25px;
 }
 
 .features {
@@ -58,7 +59,7 @@ header {
   padding-top: 0px;
   margin: 5px;
   margin-left: 0px;
-  font-size:10px;
+  font-size:15px;
   color: #225ea8;
 }
 
@@ -75,7 +76,7 @@ input[type= 'checkbox']{
 }*/
 
 form {
-  font-size:10px;
+  font-size:15px;
   text-align: left;
 }
 
@@ -91,16 +92,20 @@ option {
 
 /* Tooltip text */
 .tooltip .tooltiptext {
-    width: 200%;
+    width: 175%;
     top: 100%;
     /*left: 0%;*/
     /*margin-left: 0%;*/
     visibility: hidden;
     background-color: #7fcdbb;
+    border-color: #081d58;
+    border-style: solid;
+    border-width: 2px;
     color: #fff;
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
+    font-size: 15px;
 
     /* Position the tooltip text - see examples below! */
     position: absolute;
