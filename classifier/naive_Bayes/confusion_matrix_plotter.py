@@ -2,14 +2,14 @@ from double_bayes import DoubleBayes
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
-
+from naive_bayes import Naive_Bayes
 from sklearn import svm, datasets
 from sklearn.metrics import confusion_matrix
 
 
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
-                          title='Confusion matrix',
+                          title='Gender Classification',
                           cmap=plt.cm.Blues):
     """
     This function prints and plots the confusion matrix.
@@ -42,13 +42,16 @@ def plot_confusion_matrix(cm, classes,
 
 
 def get_confusion_matrix():
-    db = DoubleBayes()
-    predicted, actual = db.generate_predictions(weighted=True)
+#    db = DoubleBayes()
+#    predicted, actual = db.generate_predictions(weighted=True)
+    nb = Naive_Bayes()
+    predicted, actual = nb.generate_predictions()
     cnf_matrix = confusion_matrix(actual, predicted)
     return cnf_matrix
 
 def main():
-    class_names = ["Other Characters", "Protagonists", "Antagonists", "Fool"]
+#    class_names = ["Other Characters", "Protagonists", "Antagonists", "Fool"]
+    class_names = ["Female", "Male"]
     cnf_matrix = get_confusion_matrix()
     np.set_printoptions(precision=2)
     plt.figure()
