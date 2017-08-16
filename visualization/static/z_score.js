@@ -399,11 +399,12 @@ function loadData() {
       if (d3.select('#'+features[i]+'_prot')[0][0] != null) {
         var fprot_labels = d3.select('#'+features[i])
                       .append('text')
-                      .attr('x', function() {
-                        bar = d3.select('#'+features[i]+'_prot');
-                        raw_val = parseFloat(bar.attr('x')) + .5;
-                        return raw_val+'%';
-                      })
+//                      .attr('x', function() {
+//                        bar = d3.select('#'+features[i]+'_prot');
+//                        raw_val = parseFloat(bar.attr('x')) + .5;
+//                        return raw_val+'%';
+//                      })
+                      .attr('x', '25.5%')
                       .attr('y', function() {
                         bar = d3.select('#'+features[i]+'_prot');
                         raw_val = parseFloat(bar.attr('y')) + 10;
@@ -417,11 +418,12 @@ function loadData() {
       if (d3.select('#'+features[i]+'_ant')[0][0] != null) {
         var fant_labels = d3.select('#'+features[i])
                       .append('text')
-                      .attr('x', function() {
-                        bar = d3.select('#'+features[i]+'_ant')
-                        raw_val = parseFloat(bar.attr('x')) + .5
-                        return raw_val+'%'
-                      })
+                      .attr('x', '25.5%')
+//                      .attr('x', function() {
+//                        bar = d3.select('#'+features[i]+'_ant')
+//                        raw_val = parseFloat(bar.attr('x')) + .5
+//                        return raw_val+'%'
+//                      })
                       .attr('y', function() {
                         bar = d3.select('#'+features[i]+'_ant')
                         raw_val = parseFloat(bar.attr('y')) + 10
@@ -434,11 +436,12 @@ function loadData() {
       if (d3.select('#'+features[i]+'_fool')[0][0] != null) {
         var ffool_labels = d3.select('#'+features[i])
                       .append('text')
-                      .attr('x', function() {
-                        bar = d3.select('#'+features[i]+'_fool')
-                        raw_val = parseFloat(bar.attr('x')) + .5
-                        return raw_val+'%'
-                      })
+                      .attr('x', '25.5%')
+//                      .attr('x', function() {
+//                        bar = d3.select('#'+features[i]+'_fool')
+//                        raw_val = parseFloat(bar.attr('x')) + .5
+//                        return raw_val+'%'
+//                      })
                       .attr('y', function() {
                         bar = d3.select('#'+features[i]+'_fool')
                         raw_val = parseFloat(bar.attr('y')) + 10
@@ -614,11 +617,12 @@ function loadData() {
       if (d3.select('#'+phonemes[i]+'_prot')[0][0] != null) {
         var pprot_labels = d3.select('#'+phonemes[i])
                       .append('text')
-                      .attr('x', function() {
-                        bar = d3.select('#'+phonemes[i]+'_prot');
-                        raw_val = parseFloat(bar.attr('x')) + .5;
-                        return raw_val+'%';
-                      })
+                      .attr('x', '76%')
+//                      .attr('x', function() {
+//                        bar = d3.select('#'+phonemes[i]+'_prot');
+//                        raw_val = parseFloat(bar.attr('x')) + .5;
+//                        return raw_val+'%';
+//                      })
                       .attr('y', function() {
                         bar = d3.select('#'+phonemes[i]+'_prot');
                         raw_val = parseFloat(bar.attr('y')) + 10;
@@ -631,11 +635,12 @@ function loadData() {
       if (d3.select('#'+phonemes[i]+'_ant')[0][0] != null) {
         var pant_labels = d3.select('#'+phonemes[i])
                       .append('text')
-                      .attr('x', function() {
-                        bar = d3.select('#'+phonemes[i]+'_ant')
-                        raw_val = parseFloat(bar.attr('x')) + .5
-                        return raw_val+'%'
-                      })
+                      .attr('x', '76%')
+//                      .attr('x', function() {
+//                        bar = d3.select('#'+phonemes[i]+'_ant')
+//                        raw_val = parseFloat(bar.attr('x')) + .5
+//                        return raw_val+'%'
+//                      })
                       .attr('y', function() {
                         bar = d3.select('#'+phonemes[i]+'_ant')
                         raw_val = parseFloat(bar.attr('y')) + 10
@@ -648,11 +653,12 @@ function loadData() {
       if (d3.select('#'+phonemes[i]+'_fool')[0][0] != null) {
         var pfool_labels = d3.select('#'+phonemes[i])
                       .append('text')
-                      .attr('x', function() {
-                        bar = d3.select('#'+phonemes[i]+'_fool')
-                        raw_val = parseFloat(bar.attr('x')) + .5
-                        return raw_val+'%'
-                      })
+                      .attr('x', '76%')
+//                      .attr('x', function() {
+//                        bar = d3.select('#'+phonemes[i]+'_fool')
+//                        raw_val = parseFloat(bar.attr('x')) + .5
+//                        return raw_val+'%'
+//                      })
                       .attr('y', function() {
                         bar = d3.select('#'+phonemes[i]+'_fool')
                         raw_val = parseFloat(bar.attr('y')) + 10
