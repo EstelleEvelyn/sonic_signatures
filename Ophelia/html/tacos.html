@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>example</title>
+      <link rel="stylesheet" type = "text/css" href = "../stylesheets/style.css">
+      <script type ="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Istok+Web|Ubuntu" rel="stylesheet">
+   </head>
+
+   <body>
+     <!-- <svg class="chart"></svg> -->
+     <!-- <svg width="120" height="100"></svg> -->
+     <!--  <script type="text/javascript" src="bar.js"></script> -->
+
+     <div id = "header">
+     <h3>OPHELIA'S OH</h3>
+     </div>
+
+     <div id = "navbar">
+        <div id = "rangeSliderGroup">
+            <label for = "rangeSlider">Filter by Number of Lines</label>
+            <input type = "range" min = "0" max = "20000" value = "0" id ="rangeSlider"
+             oninput="outputUpdate(value)">
+            <output for = "rangeSlider" id = "numlines">0</output>
+        </div>
+     </div>
+
+     <div id="sideleft">
+        <fieldset id = "characterChecklist">
+            <legend>Filter Characters</legend>
+        </fieldset>
+        <div id="sidebar-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+     </div>
+
+
+
+     <div class="sideright">
+
+         <h2>About</h2>
+         <p> The idea that sounds have an inherent emotional quality, that vowels
+         and consonants convey meaning beyond the words in which they find themselves,
+         is known as "sound symbolism." </p>
+         <p>  </p>
+     </div>
+
+     <div class = "main">
+
+         <p>
+            Use the slider and dropdown to adjust and filter the data.
+         </p>
+
+     </div>
+
+
+   </body>
+      <script type="text/javascript" src="../JavaScript/doublenestFinalStages.js"></script>
+</html>

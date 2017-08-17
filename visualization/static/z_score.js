@@ -408,8 +408,9 @@ function loadData() {
                       .attr('x', '25.5%')
                       .attr('y', function() {
                         bar = d3.select('#'+features[i]+'_prot');
-                        raw_val = parseFloat(bar.attr('y')) + 10;
-                        return raw_val;
+                        raw_val = parseFloat(bar.attr('y'));
+                        b_height = parseFloat(bar.attr('height'))
+                        return raw_val + b_height / 2;
                       })
                       .text('Protagonists')
                       .style('color', '#0c2c84h')
@@ -427,8 +428,9 @@ function loadData() {
 //                      })
                       .attr('y', function() {
                         bar = d3.select('#'+features[i]+'_ant')
-                        raw_val = parseFloat(bar.attr('y')) + 10
-                        return raw_val
+                        raw_val = parseFloat(bar.attr('y'));
+                        b_height = parseFloat(bar.attr('height'))
+                        return raw_val + b_height / 2;
                       })
                       .text('Antagonists')
                       .style('color', '#0c2c84h')
@@ -445,8 +447,9 @@ function loadData() {
 //                      })
                       .attr('y', function() {
                         bar = d3.select('#'+features[i]+'_fool')
-                        raw_val = parseFloat(bar.attr('y')) + 10
-                        return raw_val
+                        raw_val = parseFloat(bar.attr('y'));
+                        b_height = parseFloat(bar.attr('height'))
+                        return raw_val + b_height / 2;
                       })
                       .text('Fools')
                       .style('color', '#0c2c84h')
@@ -626,8 +629,10 @@ function loadData() {
 //                      })
                       .attr('y', function() {
                         bar = d3.select('#'+phonemes[i]+'_prot');
-                        raw_val = parseFloat(bar.attr('y')) + 10;
-                        return raw_val;
+                        raw_val = parseFloat(bar.attr('y'));
+                        b_height = parseFloat(bar.attr('height'))
+                        return raw_val + b_height / 2;
+
                       })
                       .text('Protagonists')
                       .style('color', '#0c2c84h')
@@ -644,8 +649,9 @@ function loadData() {
 //                      })
                       .attr('y', function() {
                         bar = d3.select('#'+phonemes[i]+'_ant')
-                        raw_val = parseFloat(bar.attr('y')) + 10
-                        return raw_val
+                        raw_val = parseFloat(bar.attr('y'));
+                        b_height = parseFloat(bar.attr('height'))
+                        return raw_val + b_height / 2;
                       })
                       .text('Antagonists')
                       .style('color', '#0c2c84h')
@@ -662,8 +668,9 @@ function loadData() {
 //                      })
                       .attr('y', function() {
                         bar = d3.select('#'+phonemes[i]+'_fool')
-                        raw_val = parseFloat(bar.attr('y')) + 10
-                        return raw_val
+                        raw_val = parseFloat(bar.attr('y'));
+                        b_height = parseFloat(bar.attr('height'))
+                        return raw_val + b_height / 2;
                       })
                       .text('Fools')
                       .style('color', '#0c2c84h')
