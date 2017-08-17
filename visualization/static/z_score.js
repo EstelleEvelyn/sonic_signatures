@@ -25,6 +25,7 @@ var featDiv = svg.append('svg')
             .property('id', 'feats')
             .attr('width', '100%')
             .attr('height', svgHeight)
+
 var midBar = svg.append('rect')
             .attr('x', '50%')
             .attr('y', 0)
@@ -32,12 +33,12 @@ var midBar = svg.append('rect')
             .attr('width', '1%')
             .style('fill','#7fcdbb')
 
-var topBar = svg.append('rect')
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('height', buffer)
-            .attr('width', '100%')
-            .style('fill','#7fcdbb')
+// var topBar = svg.append('rect')
+//             .attr('x', 0)
+//             .attr('y', 0)
+//             .attr('height', buffer)
+//             .attr('width', '100%')
+//             .style('fill','#7fcdbb')
 
 var features = ['fricative', 'affricate', 'glide', 'nasal', 'liquid',
         'stop', 'glottal', 'linguaalveolar', 'linguapalatal', 'labiodental',
@@ -57,8 +58,8 @@ var fTopLine = d3.select('svg')
                     .append('line')
                     .attr('x1', '0%')
                     .attr('x2', '50%')
-                    .attr('y1', function(d, i) { return h = buffer + (fSegment * i); })
-                    .attr('y2', function(d, i) { return h = buffer + (fSegment * i); })
+                    .attr('y1', function(d, i) { return (fSegment * i - 1); })
+                    .attr('y2', function(d, i) { return (fSegment * i - 1); })
                     .style('stroke', 'black');
 
 var fPivotLine = d3.select('svg')
@@ -66,8 +67,8 @@ var fPivotLine = d3.select('svg')
                     .append('line')
                     .attr('x1', '25%')
                     .attr('x2', '25%')
-                    .attr('y1', svgHeight - buffer)
-                    .attr('y2', buffer)
+                    .attr('y1', svgHeight)
+                    .attr('y2', 0)
                     .style('stroke', 'black')
 
 var phonDiv = svg.append('svg')
@@ -81,7 +82,7 @@ var phonemes = ['AA','AE','AH','AO','AW','AY','B','CH','D','DH','EH','ER','EY',
     'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S','SH','T','TH',
     'UH','UW','V','W','Y','Z','ZH']
 
-var pSegment = (svgHeight - 2*buffer) / (phonemes.length)
+var pSegment = (svgHeight) / (phonemes.length)
 
 var pTopLine = d3.select('svg')
                     .select('#phons')
@@ -91,8 +92,8 @@ var pTopLine = d3.select('svg')
                     .append('line')
                     .attr('x1', '51%')
                     .attr('x2', '100%')
-                    .attr('y1', function(d, i) { return h = buffer + (pSegment * i); })
-                    .attr('y2', function(d, i) { return h = buffer + (pSegment * i); })
+                    .attr('y1', function(d, i) { return (pSegment * i); })
+                    .attr('y2', function(d, i) { return (pSegment * i); })
                     .style('stroke', 'black');
 
 
@@ -101,8 +102,8 @@ var pTopLine = d3.select('svg')
                     .append('line')
                     .attr('x1', '75.5%')
                     .attr('x2', '75.5%')
-                    .attr('y1', svgHeight - buffer)
-                    .attr('y2', buffer)
+                    .attr('y1', svgHeight)
+                    .attr('y2', 0)
                     .style('stroke', 'black')
 onLoad();
 
@@ -189,7 +190,7 @@ function onLoad() {
                       .enter()
                       .append('text')
                       .text(function(d) { return d; })
-                      .attr('y', function(d, i) { return buffer + (fSegment * i) + 10; })
+                      .attr('y', function(d, i) { return (fSegment * i) + 10; })
                       .attr('x', '1%');
 
   var phonemeGroup = svg.select('#phons')
@@ -206,7 +207,7 @@ function onLoad() {
                       .enter()
                       .append('text')
                       .text(function(d) { return d; })
-                      .attr('y', function(d, i) { return buffer + (pSegment * i) + 10; })
+                      .attr('y', function(d, i) { return (pSegment * i) + 10; })
                       .attr('x', '52%');
 
   loadData();
@@ -259,7 +260,7 @@ function loadData() {
 
                           }
                         })
-                      .attr('y', function(d, j) { return i * fSegment + j * fSegment / 3 + buffer * 1.25; })
+                      .attr('y', function(d, j) { return i * fSegment + j * fSegment / 3 + buffer * .25; })
                       .attr('width', function(d) {
                         // pos = Math.abs(d * 25)
                         // return pos.toString()+'%';
@@ -480,7 +481,7 @@ function loadData() {
                             return pos.toString()+'%'
                           }
                         })
-                      .attr('y', function(d, j) { return i * pSegment + j * pSegment / 3 + buffer * 1.25; })
+                      .attr('y', function(d, j) { return i * pSegment + j * pSegment / 3 + buffer *.25; })
                       .attr('width', function(d) {
                         if (d > 0) {
                           pos = phonScale(d3.min([2, d])) - 75.5;
@@ -740,7 +741,7 @@ function compare() {
                             return start.toString()+'%';
                           })
                           .attr('y', function() {
-                            return ugh = document.getElementById(features[i]+'_prot').getAttribute('y');
+                            return parseFloat(document.getElementById(features[i]+'_prot').getAttribute('y')) +  document.getElementById(features[i]+'_prot').getAttribute('height') / 4;
                           })
                           .attr('width',  function() {
                             fprotextra = parseFloat(document.getElementById(features[i]+'_prot').getAttribute('width'))
@@ -756,32 +757,32 @@ function compare() {
                             return foo = fprot_width.toString()+'%';
                           })
                           .attr('height', function() {
-                          return bar = document.getElementById(features[i]+'_prot').getAttribute('height');
+                            return document.getElementById(features[i]+'_prot').getAttribute('height') / 2;
                           })
                           .style('stroke', 'black')
                           .style('opacity', '0.5')
                           .style('fill', function() {
                             var dist = parseFloat(d3.select(this).attr('width'))
                             switch(true) {
-                              case (6.25 < dist && dist <= 12.5):
+                              case (3.125 < dist && dist <= 6.25):
                                   ind = 1;
                                   break;
-                              case (12.5 < dist && dist <= 17.75):
+                              case (6.25 < dist && dist <= 9.375):
                                   ind = 2;
                                   break;
-                              case (17.75 < dist && dist <= 25):
+                              case (9.375 < dist && dist <= 12.5):
                                   ind = 3;
                                   break;
-                              case (25 < dist && dist <= 31.25):
+                              case (12.5 < dist && dist <= 18.75):
                                   ind = 4;
                                   break;
-                              case (31.25 < dist && dist <= 37.5):
+                              case (18.75 < dist && dist <= 28.125):
                                   ind = 5;
                                   break;
-                              case (37.5 < dist && dist <= 43.75):
+                              case (28.125 < dist && dist <= 37.5):
                                   ind = 6;
                                   break;
-                              case (43.75 < dist && dist <= 50):
+                              case (37.5 < dist && dist <= 50):
                                   ind = 7;
                                   break;
                               default:
@@ -836,7 +837,7 @@ function compare() {
                           return start.toString()+'%';
                         })
                         .attr('y', function() {
-                          return baz = document.getElementById(features[i]+'_ant').getAttribute('y');
+                          return parseFloat(document.getElementById(features[i]+'_ant').getAttribute('y')) +  document.getElementById(features[i]+'_ant').getAttribute('height') / 4;
                         })
                         .attr('width',  function() {
                           fantextra = parseFloat(document.getElementById(features[i]+'_ant').getAttribute('width'))
@@ -852,32 +853,32 @@ function compare() {
                           return fant_width.toString()+'%';
                         })
                         .attr('height', function() {
-                        return document.getElementById(features[i]+'_ant').getAttribute('height');
+                          return document.getElementById(features[i]+'_ant').getAttribute('height') / 2;
                         })
                         .style('stroke', 'black')
                         .style('opacity', '0.5')
                         .style('fill', function() {
                           var dist = parseFloat(d3.select(this).attr('width'))
                           switch(true) {
-                            case (6.25 < dist && dist <= 12.5):
+                            case (3.125 < dist && dist <= 6.25):
                                 ind = 1;
                                 break;
-                            case (12.5 < dist && dist <= 17.75):
+                            case (6.25 < dist && dist <= 9.375):
                                 ind = 2;
                                 break;
-                            case (17.75 < dist && dist <= 25):
+                            case (9.375 < dist && dist <= 12.5):
                                 ind = 3;
                                 break;
-                            case (25 < dist && dist <= 31.25):
+                            case (12.5 < dist && dist <= 18.75):
                                 ind = 4;
                                 break;
-                            case (31.25 < dist && dist <= 37.5):
+                            case (18.75 < dist && dist <= 28.125):
                                 ind = 5;
                                 break;
-                            case (37.5 < dist && dist <= 43.75):
+                            case (28.125 < dist && dist <= 37.5):
                                 ind = 6;
                                 break;
-                            case (43.75 < dist && dist <= 50):
+                            case (37.5 < dist && dist <= 50):
                                 ind = 7;
                                 break;
                             default:
@@ -910,7 +911,7 @@ function compare() {
                           return start.toString()+'%';
                         })
                         .attr('y', function() {
-                          return document.getElementById(features[i]+'_fool').getAttribute('y');
+                          return parseFloat(document.getElementById(features[i]+'_fool').getAttribute('y')) +  document.getElementById(features[i]+'_fool').getAttribute('height') / 4;
                         })
                         .attr('width',  function() {
                           ffoolextra = parseFloat(document.getElementById(features[i]+'_fool').getAttribute('width'))
@@ -926,32 +927,32 @@ function compare() {
                           return ffool_width.toString()+'%';
                         })
                         .attr('height', function() {
-                        return document.getElementById(features[i]+'_fool').getAttribute('height');
+                          return document.getElementById(features[i]+'_fool').getAttribute('height') / 2;
                         })
                         .style('stroke', 'black')
                         .style('opacity', '0.5')
                         .style('fill', function() {
                           var dist = parseFloat(d3.select(this).attr('width'))
                           switch(true) {
-                            case (6.25 < dist && dist <= 12.5):
+                            case (3.125 < dist && dist <= 6.25):
                                 ind = 1;
                                 break;
-                            case (12.5 < dist && dist <= 17.75):
+                            case (6.25 < dist && dist <= 9.375):
                                 ind = 2;
                                 break;
-                            case (17.75 < dist && dist <= 25):
+                            case (9.375 < dist && dist <= 12.5):
                                 ind = 3;
                                 break;
-                            case (25 < dist && dist <= 31.25):
+                            case (12.5 < dist && dist <= 18.75):
                                 ind = 4;
                                 break;
-                            case (31.25 < dist && dist <= 37.5):
+                            case (18.75 < dist && dist <= 28.125):
                                 ind = 5;
                                 break;
-                            case (37.5 < dist && dist <= 43.75):
+                            case (28.125 < dist && dist <= 37.5):
                                 ind = 6;
                                 break;
-                            case (43.75 < dist && dist <= 50):
+                            case (37.5 < dist && dist <= 50):
                                 ind = 7;
                                 break;
                             default:
@@ -1024,7 +1025,7 @@ function compare() {
                             return start.toString()+'%';
                           })
                           .attr('y', function() {
-                            return ugh = document.getElementById(phonemes[i]+'_prot').getAttribute('y');
+                            return parseFloat(document.getElementById(phonemes[i]+'_prot').getAttribute('y')) + document.getElementById(phonemes[i]+'_prot').getAttribute('height') / 4;
                           })
                           .attr('width',  function() {
                             pprotextra = parseFloat(document.getElementById(phonemes[i]+'_prot').getAttribute('width'))
@@ -1040,32 +1041,32 @@ function compare() {
                             return foo = pprot_width.toString()+'%';
                           })
                           .attr('height', function() {
-                          return bar = document.getElementById(phonemes[i]+'_prot').getAttribute('height');
+                            return document.getElementById(phonemes[i]+'_prot').getAttribute('height') / 2;
                           })
                           .style('stroke', 'black')
                           .style('opacity', '0.5')
                           .style('fill', function() {
                             var dist = parseFloat(d3.select(this).attr('width'))
                             switch(true) {
-                              case (6.25 < dist && dist <= 12.5):
+                              case (3.125 < dist && dist <= 6.25):
                                   ind = 1;
                                   break;
-                              case (12.5 < dist && dist <= 17.75):
+                              case (6.25 < dist && dist <= 9.375):
                                   ind = 2;
                                   break;
-                              case (17.75 < dist && dist <= 25):
+                              case (9.375 < dist && dist <= 12.5):
                                   ind = 3;
                                   break;
-                              case (25 < dist && dist <= 31.25):
+                              case (12.5 < dist && dist <= 18.75):
                                   ind = 4;
                                   break;
-                              case (31.25 < dist && dist <= 37.5):
+                              case (18.75 < dist && dist <= 28.125):
                                   ind = 5;
                                   break;
-                              case (37.5 < dist && dist <= 43.75):
+                              case (28.125 < dist && dist <= 37.5):
                                   ind = 6;
                                   break;
-                              case (43.75 < dist && dist <= 50):
+                              case (37.5 < dist && dist <= 50):
                                   ind = 7;
                                   break;
                               default:
@@ -1120,7 +1121,7 @@ function compare() {
                           return start.toString()+'%';
                         })
                         .attr('y', function() {
-                          return baz = document.getElementById(phonemes[i]+'_ant').getAttribute('y');
+                          return parseFloat(document.getElementById(phonemes[i]+'_ant').getAttribute('y')) + document.getElementById(phonemes[i]+'_ant').getAttribute('height') / 4;
                         })
                         .attr('width',  function() {
                           pantextra = parseFloat(document.getElementById(phonemes[i]+'_ant').getAttribute('width'))
@@ -1136,32 +1137,32 @@ function compare() {
                           return pant_width.toString()+'%';
                         })
                         .attr('height', function() {
-                        return document.getElementById(phonemes[i]+'_ant').getAttribute('height');
+                          return document.getElementById(phonemes[i]+'_ant').getAttribute('height') / 2;
                         })
                         .style('stroke', 'black')
                         .style('opacity', '0.5')
                         .style('fill', function() {
                           var dist = parseFloat(d3.select(this).attr('width'))
                           switch(true) {
-                            case (6.25 < dist && dist <= 12.5):
+                            case (3.125 < dist && dist <= 6.25):
                                 ind = 1;
                                 break;
-                            case (12.5 < dist && dist <= 17.75):
+                            case (6.25 < dist && dist <= 9.375):
                                 ind = 2;
                                 break;
-                            case (17.75 < dist && dist <= 25):
+                            case (9.375 < dist && dist <= 12.5):
                                 ind = 3;
                                 break;
-                            case (25 < dist && dist <= 31.25):
+                            case (12.5 < dist && dist <= 18.75):
                                 ind = 4;
                                 break;
-                            case (31.25 < dist && dist <= 37.5):
+                            case (18.75 < dist && dist <= 28.125):
                                 ind = 5;
                                 break;
-                            case (37.5 < dist && dist <= 43.75):
+                            case (28.125 < dist && dist <= 37.5):
                                 ind = 6;
                                 break;
-                            case (43.75 < dist && dist <= 50):
+                            case (37.5 < dist && dist <= 50):
                                 ind = 7;
                                 break;
                             default:
@@ -1194,7 +1195,7 @@ function compare() {
                           return start.toString()+'%';
                         })
                         .attr('y', function() {
-                          return document.getElementById(phonemes[i]+'_fool').getAttribute('y');
+                          return parseFloat(document.getElementById(phonemes[i]+'_fool').getAttribute('y')) + document.getElementById(phonemes[i]+'_fool').getAttribute('height') / 4;
                         })
                         .attr('width',  function() {
                           pfoolextra = parseFloat(document.getElementById(phonemes[i]+'_fool').getAttribute('width'))
@@ -1210,32 +1211,32 @@ function compare() {
                           return pfool_width.toString()+'%';
                         })
                         .attr('height', function() {
-                        return document.getElementById(phonemes[i]+'_fool').getAttribute('height');
+                        return document.getElementById(phonemes[i]+'_fool').getAttribute('height') / 2;
                         })
                         .style('stroke', 'black')
                         .style('opacity', '0.5')
                         .style('fill', function() {
                           var dist = parseFloat(d3.select(this).attr('width'))
                           switch(true) {
-                            case (6.25 < dist && dist <= 12.5):
+                            case (3.125 < dist && dist <= 6.25):
                                 ind = 1;
                                 break;
-                            case (12.5 < dist && dist <= 17.75):
+                            case (6.25 < dist && dist <= 9.375):
                                 ind = 2;
                                 break;
-                            case (17.75 < dist && dist <= 25):
+                            case (9.375 < dist && dist <= 12.5):
                                 ind = 3;
                                 break;
-                            case (25 < dist && dist <= 31.25):
+                            case (12.5 < dist && dist <= 18.75):
                                 ind = 4;
                                 break;
-                            case (31.25 < dist && dist <= 37.5):
+                            case (18.75 < dist && dist <= 28.125):
                                 ind = 5;
                                 break;
-                            case (37.5 < dist && dist <= 43.75):
+                            case (28.125 < dist && dist <= 37.5):
                                 ind = 6;
                                 break;
-                            case (43.75 < dist && dist <= 50):
+                            case (37.5 < dist && dist <= 50):
                                 ind = 7;
                                 break;
                             default:

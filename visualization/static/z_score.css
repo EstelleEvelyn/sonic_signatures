@@ -22,10 +22,10 @@ ul {
 
 header {
   padding-top: 0.5%;
-  padding-left: 21%;
+  border-bottom: 10px solid  #7fcdbb;
   background-color: #ffffd9;
   height: 100%;
-  text-align: left;
+  text-align: center;
   color: #0c2c84;
   /*line-height: 40px;*/
   font-size: 25px;
