@@ -31,6 +31,15 @@ header {
   font-size: 25px;
 }
 
+#toggle {
+  height : 20px;
+  background-color: #225ea8;
+  width: 105%;
+  text-align: center;
+  color: white;
+  padding-top: 5px;
+}
+
 .features {
   border-left: 10px solid #1d91c0;
   padding: 5px;
