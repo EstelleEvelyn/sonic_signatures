@@ -5,7 +5,7 @@ var colors = ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0',
               '#225ea8', '#0c2c84']
 
 var svg = d3.select("body").append("svg")
-            .style('width', '78%')
+            .style('width', '68%')
             .attr('width', '100%')
             .style('margin', '1%')
             .style('margin-top', '0')
@@ -324,14 +324,18 @@ function loadData() {
                       //     return 'black'
                       //   }
                       // })
-                      // .on("mouseover", function(d){
-                      //     d3.select(this).style("fill", d3.rgb(d3.select(this).style("fill")).darker());
-                      // })
-                      // .on("mouseout", function(d){
-                      //     d3.select(this).style("fill", function() {
-                      //         return d3.rgb(d3.select(this).style("fill")).brighter();
-                      //     });
-                      // });
+                      .on("mouseover", function(d){
+                          var barclass = d3.select(this).attr("class");
+                          d3.selectAll('.'+barclass).style("fill", function() {
+                            return d3.rgb(d3.select(this).style("fill")).darker();
+                          })
+                      })
+                      .on("mouseout", function(d){
+                          var barclass = d3.select(this).attr("class");
+                          d3.selectAll('.'+barclass).style("fill", function() {
+                              return d3.rgb(d3.select(this).style("fill")).brighter();
+                          });
+                      });
 
     }
     vals = document.getElementById('fshow').elements
@@ -408,63 +412,63 @@ function loadData() {
       }
     }
 
-    for (var i = 0; i < features.length; i++) {
-      if (d3.select('#'+features[i]+'_prot')[0][0] != null) {
-        var fprot_labels = d3.select('#'+features[i])
-                      .append('text')
-//                      .attr('x', function() {
-//                        bar = d3.select('#'+features[i]+'_prot');
-//                        raw_val = parseFloat(bar.attr('x')) + .5;
-//                        return raw_val+'%';
-//                      })
-                      .attr('x', '25.5%')
-                      .attr('y', function() {
-                        bar = d3.select('#'+features[i]+'_prot');
-                        raw_val = parseFloat(bar.attr('y')) + 0.5 * parseFloat(bar.attr('height')) + 5;
-                        return raw_val;
-                      })
-                      .text('Protagonists')
-                      .style('color', '#0c2c84h')
-
-
-      }
-      if (d3.select('#'+features[i]+'_ant')[0][0] != null) {
-        var fant_labels = d3.select('#'+features[i])
-                      .append('text')
-                      .attr('x', '25.5%')
-//                      .attr('x', function() {
-//                        bar = d3.select('#'+features[i]+'_ant')
-//                        raw_val = parseFloat(bar.attr('x')) + .5
-//                        return raw_val+'%'
-//                      })
-                      .attr('y', function() {
-                        bar = d3.select('#'+features[i]+'_ant')
-                        raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
-                        return raw_val
-                      })
-                      .text('Antagonists')
-                      .style('color', '#0c2c84h')
-
-      }
-      if (d3.select('#'+features[i]+'_fool')[0][0] != null) {
-        var ffool_labels = d3.select('#'+features[i])
-                      .append('text')
-                      .attr('x', '25.5%')
-//                      .attr('x', function() {
-//                        bar = d3.select('#'+features[i]+'_fool')
-//                        raw_val = parseFloat(bar.attr('x')) + .5
-//                        return raw_val+'%'
-//                      })
-                      .attr('y', function() {
-                        bar = d3.select('#'+features[i]+'_fool')
-                        raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
-                        return raw_val
-                      })
-                      .text('Fools')
-                      .style('color', '#0c2c84h')
-
-      }
-    }
+//     for (var i = 0; i < features.length; i++) {
+//       if (d3.select('#'+features[i]+'_prot')[0][0] != null) {
+//         var fprot_labels = d3.select('#'+features[i])
+//                       .append('text')
+// //                      .attr('x', function() {
+// //                        bar = d3.select('#'+features[i]+'_prot');
+// //                        raw_val = parseFloat(bar.attr('x')) + .5;
+// //                        return raw_val+'%';
+// //                      })
+//                       .attr('x', '25.5%')
+//                       .attr('y', function() {
+//                         bar = d3.select('#'+features[i]+'_prot');
+//                         raw_val = parseFloat(bar.attr('y')) + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         return raw_val;
+//                       })
+//                       .text('Protagonists')
+//                       .style('color', '#0c2c84h')
+//
+//
+//       }
+//       if (d3.select('#'+features[i]+'_ant')[0][0] != null) {
+//         var fant_labels = d3.select('#'+features[i])
+//                       .append('text')
+//                       .attr('x', '25.5%')
+// //                      .attr('x', function() {
+// //                        bar = d3.select('#'+features[i]+'_ant')
+// //                        raw_val = parseFloat(bar.attr('x')) + .5
+// //                        return raw_val+'%'
+// //                      })
+//                       .attr('y', function() {
+//                         bar = d3.select('#'+features[i]+'_ant')
+//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         return raw_val
+//                       })
+//                       .text('Antagonists')
+//                       .style('color', '#0c2c84h')
+//
+//       }
+//       if (d3.select('#'+features[i]+'_fool')[0][0] != null) {
+//         var ffool_labels = d3.select('#'+features[i])
+//                       .append('text')
+//                       .attr('x', '25.5%')
+// //                      .attr('x', function() {
+// //                        bar = d3.select('#'+features[i]+'_fool')
+// //                        raw_val = parseFloat(bar.attr('x')) + .5
+// //                        return raw_val+'%'
+// //                      })
+//                       .attr('y', function() {
+//                         bar = d3.select('#'+features[i]+'_fool')
+//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         return raw_val
+//                       })
+//                       .text('Fools')
+//                       .style('color', '#0c2c84h')
+//
+//       }
+//     }
 
 
 
@@ -542,14 +546,18 @@ function loadData() {
                       //     return 'black'
                       //   }
                       // // })
-                      // .on("mouseover", function(d){
-                      //     d3.select(this).style("fill", d3.rgb(d3.select(this).style("fill")).darker());
-                      // })
-                      // .on("mouseout", function(d){
-                      //     d3.select(this).style("fill", function() {
-                      //         return d3.rgb(d3.select(this).style("fill")).brighter();
-                      //     });
-                      // });
+                      .on("mouseover", function(d){
+                          var barclass = d3.select(this).attr("class");
+                          d3.selectAll('.'+barclass).style("fill", function() {
+                            return d3.rgb(d3.select(this).style("fill")).darker();
+                          })
+                      })
+                      .on("mouseout", function(d){
+                          var barclass = d3.select(this).attr("class");
+                          d3.selectAll('.'+barclass).style("fill", function() {
+                              return d3.rgb(d3.select(this).style("fill")).brighter();
+                          });
+                      });
     }
 
     vals = document.getElementById('pshow').elements
@@ -626,62 +634,62 @@ function loadData() {
       }
     }
 
-    for (var i = 0; i < phonemes.length; i++) {
-      if (d3.select('#'+phonemes[i]+'_prot')[0][0] != null) {
-        var pprot_labels = d3.select('#'+phonemes[i])
-                      .append('text')
-                      .attr('x', '76%')
-//                      .attr('x', function() {
-//                        bar = d3.select('#'+phonemes[i]+'_prot');
-//                        raw_val = parseFloat(bar.attr('x')) + .5;
-//                        return raw_val+'%';
-//                      })
-                      .attr('y', function() {
-                        bar = d3.select('#'+phonemes[i]+'_prot');
-                        raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
-                        return raw_val;
-                      })
-                      .text('Protagonists')
-                      .style('color', '#0c2c84h')
-
-      }
-      if (d3.select('#'+phonemes[i]+'_ant')[0][0] != null) {
-        var pant_labels = d3.select('#'+phonemes[i])
-                      .append('text')
-                      .attr('x', '76%')
-//                      .attr('x', function() {
-//                        bar = d3.select('#'+phonemes[i]+'_ant')
-//                        raw_val = parseFloat(bar.attr('x')) + .5
-//                        return raw_val+'%'
-//                      })
-                      .attr('y', function() {
-                        bar = d3.select('#'+phonemes[i]+'_ant')
-                        raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
-                        return raw_val
-                      })
-                      .text('Antagonists')
-                      .style('color', '#0c2c84h')
-
-      }
-      if (d3.select('#'+phonemes[i]+'_fool')[0][0] != null) {
-        var pfool_labels = d3.select('#'+phonemes[i])
-                      .append('text')
-                      .attr('x', '76%')
-//                      .attr('x', function() {
-//                        bar = d3.select('#'+phonemes[i]+'_fool')
-//                        raw_val = parseFloat(bar.attr('x')) + .5
-//                        return raw_val+'%'
-//                      })
-                      .attr('y', function() {
-                        bar = d3.select('#'+phonemes[i]+'_fool')
-                        raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
-                        return raw_val
-                      })
-                      .text('Fools')
-                      .style('color', '#0c2c84h')
-
-      }
-    }
+//     for (var i = 0; i < phonemes.length; i++) {
+//       if (d3.select('#'+phonemes[i]+'_prot')[0][0] != null) {
+//         var pprot_labels = d3.select('#'+phonemes[i])
+//                       .append('text')
+//                       .attr('x', '76%')
+// //                      .attr('x', function() {
+// //                        bar = d3.select('#'+phonemes[i]+'_prot');
+// //                        raw_val = parseFloat(bar.attr('x')) + .5;
+// //                        return raw_val+'%';
+// //                      })
+//                       .attr('y', function() {
+//                         bar = d3.select('#'+phonemes[i]+'_prot');
+//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         return raw_val;
+//                       })
+//                       .text('Protagonists')
+//                       .style('color', '#0c2c84h')
+//
+//       }
+//       if (d3.select('#'+phonemes[i]+'_ant')[0][0] != null) {
+//         var pant_labels = d3.select('#'+phonemes[i])
+//                       .append('text')
+//                       .attr('x', '76%')
+// //                      .attr('x', function() {
+// //                        bar = d3.select('#'+phonemes[i]+'_ant')
+// //                        raw_val = parseFloat(bar.attr('x')) + .5
+// //                        return raw_val+'%'
+// //                      })
+//                       .attr('y', function() {
+//                         bar = d3.select('#'+phonemes[i]+'_ant')
+//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         return raw_val
+//                       })
+//                       .text('Antagonists')
+//                       .style('color', '#0c2c84h')
+//
+//       }
+//       if (d3.select('#'+phonemes[i]+'_fool')[0][0] != null) {
+//         var pfool_labels = d3.select('#'+phonemes[i])
+//                       .append('text')
+//                       .attr('x', '76%')
+// //                      .attr('x', function() {
+// //                        bar = d3.select('#'+phonemes[i]+'_fool')
+// //                        raw_val = parseFloat(bar.attr('x')) + .5
+// //                        return raw_val+'%'
+// //                      })
+//                       .attr('y', function() {
+//                         bar = d3.select('#'+phonemes[i]+'_fool')
+//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         return raw_val
+//                       })
+//                       .text('Fools')
+//                       .style('color', '#0c2c84h')
+//
+//       }
+//     }
     // pvals = document.getElementById('pshow').elements
     // if (!pvals[0].checked){
     //   d3.selectAll('.pprot').remove()
