@@ -4,6 +4,16 @@ var phonemes = {"IH":0,"IY":.25,"EY":1.05,"AY":1.09,"AE":1.1,"UW":1.25,"UH":1.4,
 var phonemeOrder = ["IH","IY","EY","AY","AE","UW","UH","AA","AO"];
 // holds select menu values
 
+
+var playDict = {"AWW":"All's Well That Ends Well","Ant":"Antony and Cleopatra","AYL": "As You Like It",
+"Err":"The Comedy of Errors","Cor":"Coriolanus","Cym":"Cymbeline","Ham":"Hamlet","1H4":"Henry IV, Part 1"
+,"2H4":"Henry IV, Part 2","H5":"Henry V","1H6":"Henry VI, Part 1","2H6":"Henry VI, Part 2","3H6":"Henry VI, Part 3","H8":"Henry VIII",
+"JC":"Julius Caesar", "Jn":"King John","Lr":"King Lear","LLL":"Love's Labor's Lost","Mac":"Macbeth",
+"MM":"Measure for Measure","MV":"The Merchant of Venice","Wiv":"The Merry Wives of Windsor","MND":"A Midsummer Night's Dream",
+"Ado":"Much Ado About Nothing","Oth":"Othello","Per":"Pericles","R2":"Richard II","R3":"Richard III","Rom":"Romeo and Juliet",
+"Shr":"The Taming of the Shrew","Tmp":"The Tempest","Tim":"Timon of Athens","Tit":"Titus Andronicus","Tro":"Troilus and Cressida",
+"TN":"Twelfth Night","TGV":"Two Gentlemen of Verona","TNK":"Two Noble Kinsmen","WT":"The Winter's Tale"};
+
 //color scale
 var minimumColor = "#99D3DF";
 var maximumColor = "MidnightBlue";
@@ -22,12 +32,12 @@ var tip = d3.select("body").append("div").attr("class", "toolTip");
 
 var currentPlay = ""
 
-
 //update sliderbar value
-function outputUpdate(numlines) {
-	document.querySelector('#numlines').value = numlines;
-}
+// function outputUpdate(numlines) {
+// 	document.querySelector('#numlines').value = numlines;
+// }
 
+//open csv for processing
 d3.csv("../data/charPhoneZScoresNumlines.csv",
     function(d) {
         //parse numbers as numbers not strings
@@ -75,7 +85,6 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
         }
         
         playCharNest = calculateNest(data);
-        //console.log(playCharNest);
         
         //set up x axis scaling using array of phonemes
         x.domain(phonemeOrder).range([0,width]);
@@ -96,7 +105,8 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
             .enter()
             .append("option")
             .text(function (d) {
-                return d.key;
+                console.log(playDict[d.key]);
+                return playDict[d.key];
             })
             .attr("value", function (d) {
                 return d.key;
@@ -104,7 +114,7 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
         
         //create a checklist for the play options
         function characterChecklist(selectPlay) {
-           
+           //sort characters for checkboxes descending by number of lines
            selectPlay.sort(function(a, b){
                return b.values[0].numlines-a.values[0].numlines;
            });
@@ -160,8 +170,9 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
             d3.selectAll(".charGroups").remove();
             
             if (currentPlay != selectedPlay){
-                //console.log("currentplay doesn't equal selectedplay")
                 d3.selectAll(".characterCheckBoxes").remove();
+                checked = [];
+                numlines = "0";
                 initialGraph(selectedPlay,numlines);
             }
             else{   
@@ -169,9 +180,10 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
             }
                 
         };    
-
+        
+        //graph
         var initialGraph = function(play,numlines,checked) {
-           
+           //if no checkboxes due to recent change of play
            if (typeof checked === 'undefined'){
                filteredData = data.filter(function (d){
                    return (d.numlines >= numlines);
@@ -184,23 +196,28 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
                   }
               });
            }
-           
+           //create a nest
            playCharNest = calculateNest(filteredData);
            
+           //filter by selected play
            var selectPlay = playCharNest.filter(function(d){
                return (d.key == play);
            })
            
+           //sort play characters by number of lines
+           selectPlay[0].value.character.sort(function(a, b){
+               return b.values[0].numlines-a.values[0].numlines;
+           });
+           
+           //set the maximum value of the slider bar to the max numlines for a char of that play
            var sliderBarMax = d3.select("#rangeSlider")
                .attr("max", selectPlay[0].value.maxNumlines);
            
            if (currentPlay != play){
-               console.log(currentPlay);
-               console.log("current play does not equal play")
                var checkBoxes = characterChecklist(selectPlay[0].value.character)
                currentPlay = play;
            }
-                 
+           //create an svg for each character    
            var charGroups = d3.select(".main").selectAll("svg")
                .data(selectPlay[0].value.character)
                .enter().append("svg:svg")
@@ -210,11 +227,9 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
                .each(function(d){
                    y.domain(selectPlay[0].value.zscoreExtent);
                });
-
            
            var initialbars = charGroups.selectAll("bar")
                .data(function (d) {
-                   //console.log(d.values);
                    return d.values;
                })
                .enter()
@@ -257,80 +272,17 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
                .on('mouseout', function(d){
                    tip.style("display","none");
                });
+               
+               var labels = d3.selectAll(".charGroups")
+                   .append("text")
+                   .attr("x",0)
+                   .attr("y",10)
+                   .text( function(d) {
+                       return d.key;
+                   })
+                   .attr("font-size","8px");
 
            }
            initialGraph("1H4", 0)                
     }
-);
-
-
-//      var charSVG = playGroups.selectAll("svg")
-//          .data(function(d){
-//              return d.values;
-//          })
-//          .enter().append("svg:svg")
-//          .attr("width", width + margin.left + margin.right)
-//          .attr("height", height + margin.top + margin.bottom);
-//   
-//      charSVG.append('title')
-//          .text(function(d) {
-//              return d.key;
-//          });    
-//  
-//      var g = charSVG.append("g")
-//          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-//       
-// 
-//      x.domain(data.map(function(d){ 
-//          return d.phoneme; 
-//      }));
-//
-//      x.domain(phonemeOrder)
-//          .range([0,width]);
-//        
-//      y.domain(d3.extent(playGroups, function(d) {
-//          return d.values[0].zscore; 
-//      }));
-//     
-//          
-//      g.selectAll(".bar")
-//          .data(function(d){
-//              return d.values;
-//          })
-//          .enter().append("rect")
-//          .attr("class", "bar")
-//          .attr("x", function(d){
-//             return x([d.phoneme]); 
-//          })
-//          .attr("y", function(d){ 
-//              if (d.zscore > 0) {
-//                  return y(d.zscore);
-//          } 
-//              else {
-//                  return y(0);
-//          } })
-//          .attr("width", width/phonemeOrder.length)
-//          .attr("height", function(d){
-//              return Math.abs(y(d.zscore)-y(0)); 
-//          })
-//          .attr("fill",function(d){
-//              var phoneme = d.phoneme; 
-//              return color(phonemes[phoneme]);
-//          })
-//          .on('mouseover', function(d) {  
-//              
-//              var charactertext = d.character
-//              var xPosition = parseFloat(d3.select(this).attr("x"));
-//              var yPosition = parseFloat(d3.select(this).attr("y"));
-//          
-//              d3.selectAll(".toolTip")
-//                .style("display","inherit")
-//                .style("left", xPosition+"px")
-//                .style("top", yPosition+"px")
-//                .text(charactertext);
-//          })
-//          .on('mouseout', function(d){
-//              tip.style("display","none");
-//          });
-//
-//})                   
+);     
