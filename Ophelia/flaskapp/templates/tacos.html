@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>example</title>
+      <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='style.css')}}">
+      <script type ="text/javascript" src="{{url_for('static',filename='d3.v4.js')}}"></script>
+      <link href="https://fonts.googleapis.com/css?family=Istok+Web|Ubuntu" rel="stylesheet">   
+   </head>
+   
+   <body>
+     <!-- <svg class="chart"></svg> -->
+     <!-- <svg width="120" height="100"></svg> -->
+     <!--  <script type="text/javascript" src="bar.js"></script> -->
+     
+     <div id = "header">
+     <h3>OPHELIA'S OH</h3>
+     </div>
+     
+     <div id = "navbar">
+        <div id = "rangeSliderGroup"> 
+            <label for = "rangeSlider">Filter by Number of Lines</label>
+            <input type = "range" min = "0" max = "20000" value = "0" id ="rangeSlider"
+             oninput="outputUpdate(value)">
+            <output for = "rangeSlider" id = "numlines">0</output>
+        </div>
+     </div>
+     
+     <div id="sideleft">
+        <fieldset id = "characterChecklist">
+            <legend>Filter Characters</legend>
+        </fieldset>
+        <div id="sidebar-btn">
+            <span></span>   
+            <span></span>
+            <span></span>
+        </div>
+     </div>
+     
+     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+     <script src = "{{url_for('static',filename='doublenestFinalStages.js')}}">
+     <script>
+         $(document).ready(function(){
+             $('#sidebar-btn').click(function(){
+                 $('#sideleft').toggleClass('visible');
+             });
+         });
+     </script>
+    
+     
+     <div class="sideright">
+         
+         <h2>About</h2>
+         
+         <p> Sounds have an inherent emotional quality, and vowels
+         and consonants convey meaning beyond the words in which they find themselves,
+         according to the theory of "sound symbolism." </p>
+         
+         <p> We analyzed the sounds that make up shakespeare characters' lines to see
+         how characters compare to each other purely in terms of the sounds their lines
+         consist of.</p>
+          
+         <p> Each bar represents a vowel; the color of the bar indicates how "light"
+         or "dark" the vowel is. From light sounding to dark sounding, the vowels are
+         "IH", "IY", "EY", "AY", "AE", "UW", "UH", "AA", "AO".</p>
+         
+         <p> Bars above the line mean that the character uses more of that vowel than the 
+         average character. Bars below the line mean that the character uses less of that
+         vowel than the average character.</p>
+         
+         <p> Hopefully, you can see which characters are "bright"-sounding, "dark"-sounding,
+         and which are somewhere in the middle. Use this tool to analyze your favorite characters.</p>
+         
+         <p> <b>Note:</b> Characters with fewer lines will distort the scales of major
+         characters. Filter by number of lines, or uncheck characters using the sidebar.
+         </p>
+     </div>
+     
+     <div class = "main">
+         
+         <p>
+            Use the slider and dropdown to adjust and filter the data.
+         </p>
+         
+     </div>
+     
+    
+   </body>
+      <script type = "text/javascript">
+          var DATA_URL = "{{url_for('static',filename='charPhoneZScoresNumlines.csv')}}";
+      </script>
+      <script type="text/javascript" src="{{url_for('static',filename='doublenestFinalStages.js')}}"></script>
+</html>

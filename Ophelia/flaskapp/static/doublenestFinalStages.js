@@ -38,7 +38,8 @@ function outputUpdate(numlines) {
 }
 
 //open csv for processing
-d3.csv("../data/charPhoneZScoresNumlines.csv",
+//d3.csv("../data/charPhoneZScoresNumlines.csv",
+d3.csv(DATA_URL,
     function(d) {
         //parse numbers as numbers not strings
         d.zscore = parseFloat(d.zscore);
