@@ -99,5 +99,6 @@ def list_options(play):
     character_list.sort()
     return flask.jsonify(character_list)
 
+#testing port is 5100
 if __name__ == "__main__":
     app.run(debug=True)

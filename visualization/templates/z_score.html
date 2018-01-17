@@ -43,34 +43,36 @@
   }
   </style>
   <header>
-    <h1>
-      Better to Remain Silent and Be Thought a Fool
-    </h1>
+    <div id = "title">
+      <h1>
+        Better to Remain Silent and Be Thought a Fool
+      </h1>
+    </div>
+    <div id = "toggle", onclick="hideInfo()">
+      Hide Info
+    </div>
+    <div id = "info", class = "info">
+      <h3>
+        A Tool for Comparing Speech Attribute Divergence
+      </h3>
+        <p>
+          What aspects of a character's speech give them their distinctive voice? Are there any common
+          features among characters who share an archetype?
+        </p>
+        <p>
+          This visual tool looks at the statistical z-scores for Shakespearean characters. For every feature or phoneme that can be used to characterize speech,
+          the mean percentage of occurrence across all characters in all plays is represented by the central vertical line. The distance from this line to the end of a hoizontal bar
+          is proportional to how many standard deviations from the mean a given archetypical role's average percentage occurrence of the attribute is.
+        </p>
+        <p>
+          Individual character's comparison values will appear as colored, semi-translucent horizontal bars.
+        </p>
+        <p>
+          Features and phonemes are depicted separately, with separate constraint settings.
+        </p>
+    </div>
   </header>
-    <ul style = "width:20%;">
-      <div id = "toggle", onclick="hideInfo()">
-        Hide Info
-      </div>
-      <div id = "info", class = "info">
-        <h3>
-          A Tool for Comparing Speech Attribute Divergence
-        </h3>
-          <p>
-            What aspects of a character's speech give them their distinctive voice? Are there any common
-            features among characters who share an archetype?
-          </p>
-          <p>
-            This visual tool looks at the statistical z-scores for Shakespearean characters. For every feature or phoneme that can be used to characterize speech,
-            the mean percentage of occurrence across all characters in all plays is represented by the central vertical line. The distance from this line to the end of a hoizontal bar
-            is proportional to how many standard deviations from the mean a given archetypical role's average percentage occurrence of the attribute is.
-          </p>
-          <p>
-            Individual character's comparison values will appear as colored, semi-translucent horizontal bars.
-          </p>
-          <p>
-            Features and phonemes are depicted separately, with separate constraint settings.
-          </p>
-      </div>
+    <ul id = "feat", style = "width:15%; float:left">
       <div class = "features">
       <div>
         <div class = "tooltip">
@@ -153,92 +155,123 @@
           </select>
         </div>
       </div>
-        <div class="phonemes">
-          <div>
-            <div class = "tooltip">
-              Sort phonemes by
-              <span class = "tooltiptext">
-                Display phonemes from most (those with the highest magnitude of deviation from mean) to least distinctive for the chosen role
-              </span>
-            </div>
-            <form id="psort", onchange = "sortOrder()"> <br>
-              <input id = 'p_psort' name="role" type="radio"  value="protag"> Protagonist<br>
-              <input id = 'p_asort' name="role" type="radio"  value="antag"> Antagonist<br>
-              <input id = 'p_fsort' name="role" type="radio"  value="fool"> Fool
-            </form>
-          </div>
-
-          <br><div>
-            <div class = "tooltip">
-              Show phonemes for
-              <span class = "tooltiptext">
-                Display or hide any combination of roles
-              </span>
-            </div>
-            <form id = "pshow", onchange = "onLoad()">  <br>
-              <input type = "checkbox" value = "protag" checked> Protagonist<br>
-              <input type = "checkbox" value = "antag" checked> Antagonist<br>
-              <input type = "checkbox" value = "fool" checked> Fool
-            </form>
-          </div>
-          <br><div>
-            <div class = "tooltip">
-            Compare phonemes<br>
+      <!-- <div class = "key">
+        <p>
+          Comparison Scale
+        </p>
+        <svg width = "98%" height = "20px">
+          <defs>
+           <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+             <stop offset="0%" style="stop-color:#ffffd9;stop-opacity:1" />
+             <stop offset="12.5%" style="stop-color:#edf8b1;stop-opacity:1" />
+             <stop offset="25%" style="stop-color:#c7e9b4;stop-opacity:1" />
+             <stop offset="37.5%" style="stop-color:#7fcdbb;stop-opacity:1" />
+             <stop offset="50%" style="stop-color:#41b6c4;stop-opacity:1" />
+             <stop offset="62.5%" style="stop-color:#1d91c0;stop-opacity:1" />
+             <stop offset="75%" style="stop-color:#225ea8;stop-opacity:1" />
+             <stop offset="87.5%" style="stop-color:#0c2c84;stop-opacity:1" />
+             <stop offset="100%" style="stop-color:#0c2c84;stop-opacity:1" />
+           </linearGradient>
+         </defs>
+          <rect id = "gradient" height = '20px' width = '100%' x = '0%' y = '0%' fill="url(#grad1)">
+          </rect>
+        </svg>
+      </div> -->
+    </ul>
+  <div id = "labels">
+    <div id = "featLabel">
+      Features
+    </div>
+    <div id = "phonLabel">
+      Phonemes
+    </div>
+  </div>
+  <script type = "text/javascript" src="../static/z_score.js"> </script>
+  <ul id = "phon", style = "width:15%; float:right">
+      <div class="phonemes">
+        <div>
+          <div class = "tooltip">
+            Sort phonemes by
             <span class = "tooltiptext">
-              The larger the distance between a character's deviation from mean of a phoneme and the average deviation for a role, the bluer the resulting comparison bar.
-              Conversely, the smaller the distance, the more yellow the bar
+              Display phonemes from most (those with the highest magnitude of deviation from mean) to least distinctive for the chosen role
             </span>
           </div>
-            <select id="pPlay", onchange="onpSelect()">
-              <option value="default">Play</option>
-              <option value="AWW">All's Well That Ends Well</option>
-              <option value="Ant">Antony and Cleopatra</option>
-              <option value="AYL">As You Like It</option>
-              <option value="Err">The Comedy of Errors</option>
-              <option value="Cor">Coriolanus</option>
-              <option value="Cym">Cymbeline</option>
-              <option value="Ham">Hamlet</option>
-              <option value="1H4">Henry IV, Part 1</option>
-              <option value="2H4">Henry IV, Part 2</option>
-              <option value="H5">Henry V</option>
-              <option value="1H6">Henry VI, Part 1</option>
-              <option value="2H6">Henry VI, Part 2</option>
-              <option value="3H6">Henry VI, Part 3</option>
-              <option value="H8">Henry VIII</option>
-              <option value="JC">Julius Caesar</option>
-              <option value="Jn">King John</option>
-              <option value="Lr">King Lear</option>
-              <option value="LLL">Love's Labor's Lost</option>
-              <option value="Mac">Macbeth</option>
-              <option value="MM">Measure for Measure</option>
-              <option value="MV">The Merchant of Venice</option>
-              <option value="Wiv">The Merry Wives of Windsor</option>
-              <option value="MND">A Midsummer Night's Dream</option>
-              <option value="Ado">Much Ado About Nothing</option>
-              <option value="Oth">Othello</option>
-              <option value="Per">Pericles</option>
-              <option value="R2">Richard II</option>
-              <option value="R3">Richard III</option>
-              <option value="Rom">Romeo and Juliet</option>
-              <option value="Shr">The Taming of the Shrew</option>
-              <option value="Tmp">The Tempest</option>
-              <option value="Tim">Timon of Athens</option>
-              <option value="Tit">Titus Andronicus</option>
-              <option value="Tro">Troilus and Cressida</option>
-              <option value="TN">Twelfth Night</option>
-              <option value="TGV">The Two Gentlemen of Verona</option>
-              <option value="TNK">The Two Noble Kinsmen</option>
-              <option value="WT">The Winter's Tale</option>
-            </select>
-
-            <select id="pCharacter", onchange ="compare()">
-              <option value = "default">Character</option>
-            </select>
-          </div>
+          <form id="psort", onchange = "sortOrder()"> <br>
+            <input id = 'p_psort' name="role" type="radio"  value="protag"> Protagonist<br>
+            <input id = 'p_asort' name="role" type="radio"  value="antag"> Antagonist<br>
+            <input id = 'p_fsort' name="role" type="radio"  value="fool"> Fool
+          </form>
         </div>
-    </ul>
-  <script type = "text/javascript" src="../static/z_score.js"> </script>
 
+        <br><div>
+          <div class = "tooltip">
+            Show phonemes for
+            <span class = "tooltiptext">
+              Display or hide any combination of roles
+            </span>
+          </div>
+          <form id = "pshow", onchange = "onLoad()">  <br>
+            <input type = "checkbox" value = "protag" checked> Protagonist<br>
+            <input type = "checkbox" value = "antag" checked> Antagonist<br>
+            <input type = "checkbox" value = "fool" checked> Fool
+          </form>
+        </div>
+        <br><div>
+          <div class = "tooltip">
+          Compare phonemes<br>
+          <span class = "tooltiptext">
+            The larger the distance between a character's deviation from mean of a phoneme and the average deviation for a role, the bluer the resulting comparison bar.
+            Conversely, the smaller the distance, the more yellow the bar
+          </span>
+        </div>
+          <select id="pPlay", onchange="onpSelect()">
+            <option value="default">Play</option>
+            <option value="AWW">All's Well That Ends Well</option>
+            <option value="Ant">Antony and Cleopatra</option>
+            <option value="AYL">As You Like It</option>
+            <option value="Err">The Comedy of Errors</option>
+            <option value="Cor">Coriolanus</option>
+            <option value="Cym">Cymbeline</option>
+            <option value="Ham">Hamlet</option>
+            <option value="1H4">Henry IV, Part 1</option>
+            <option value="2H4">Henry IV, Part 2</option>
+            <option value="H5">Henry V</option>
+            <option value="1H6">Henry VI, Part 1</option>
+            <option value="2H6">Henry VI, Part 2</option>
+            <option value="3H6">Henry VI, Part 3</option>
+            <option value="H8">Henry VIII</option>
+            <option value="JC">Julius Caesar</option>
+            <option value="Jn">King John</option>
+            <option value="Lr">King Lear</option>
+            <option value="LLL">Love's Labor's Lost</option>
+            <option value="Mac">Macbeth</option>
+            <option value="MM">Measure for Measure</option>
+            <option value="MV">The Merchant of Venice</option>
+            <option value="Wiv">The Merry Wives of Windsor</option>
+            <option value="MND">A Midsummer Night's Dream</option>
+            <option value="Ado">Much Ado About Nothing</option>
+            <option value="Oth">Othello</option>
+            <option value="Per">Pericles</option>
+            <option value="R2">Richard II</option>
+            <option value="R3">Richard III</option>
+            <option value="Rom">Romeo and Juliet</option>
+            <option value="Shr">The Taming of the Shrew</option>
+            <option value="Tmp">The Tempest</option>
+            <option value="Tim">Timon of Athens</option>
+            <option value="Tit">Titus Andronicus</option>
+            <option value="Tro">Troilus and Cressida</option>
+            <option value="TN">Twelfth Night</option>
+            <option value="TGV">The Two Gentlemen of Verona</option>
+            <option value="TNK">The Two Noble Kinsmen</option>
+            <option value="WT">The Winter's Tale</option>
+          </select>
+
+          <select id="pCharacter", onchange ="compare()">
+            <option value = "default">Character</option>
+          </select>
+        </div>
+      </div>
+  </ul>
 </body>
 
 

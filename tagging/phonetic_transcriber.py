@@ -7,6 +7,7 @@ import json
 from bs4 import BeautifulSoup #toggle comment for this line if bs4 not installed
 import string
 import unicodedata
+import ../original_pronunciation/converter
 
 
 
@@ -23,6 +24,9 @@ class Transcriber:
 
     def __init__(self):
         self.transcr = cmudict.dict() #import cmudict
+
+        conv = converter.Converter()
+        self.or_transcr = conv.getDict()
 
         self.play_code_list = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4',
                                 'H5', '1H6', '2H6', '3H6', 'H8', 'JC', 'Jn', 'Lr', 'LLL', 'Mac',
@@ -108,7 +112,13 @@ class Transcriber:
                     self.word_count +=1
                     # for char in string.punctuation:
 #                         word = word.replace(char,"")
-                    if word in self.transcr: #TODO find a better way to resolve non-standard words
+                    if word in self.or_transcr: #TODO find a better way to resolve non-standard words
+                        phonetic_list = self.or_transcr[word][0]
+                        phonetic_string=""
+                        for sound in phonetic_list: #this is inefficient
+                            phonetic_string = phonetic_string+sound+" "
+                        dest_file.write(phonetic_string+", ")
+                    elif word in self.transcr: #TODO find a better way to resolve non-standard words
                         phonetic_list = self.transcr[word][0]
                         phonetic_string=""
                         for sound in phonetic_list: #this is inefficient
