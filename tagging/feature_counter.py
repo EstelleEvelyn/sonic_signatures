@@ -7,7 +7,7 @@ from operator import itemgetter
 feature_counter.py
 @authors Estelle Bayer, Liz Nichols, Summer 2017
 A program that generates csv files enumerating the phonemic and feature frequencies
-for all ARPAbet source files
+for all CMUDict source files
 '''
 
 class Counter:

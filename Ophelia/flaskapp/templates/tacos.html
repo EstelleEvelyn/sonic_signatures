@@ -5,7 +5,11 @@
       <title>example</title>
       <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='style.css')}}">
       <script type ="text/javascript" src="{{url_for('static',filename='d3.v4.js')}}"></script>
-      <link href="https://fonts.googleapis.com/css?family=Istok+Web|Ubuntu" rel="stylesheet">   
+      <link href="https://fonts.googleapis.com/css?family=Istok+Web|Ubuntu" rel="stylesheet">
+      <!-- trying moving DATA_URL to the top of the page to make it accessible?? hey it worked-->
+      <script type = "text/javascript">
+          var DATA_URL = "{{url_for('static',filename='charPhoneZScoresNumlines.csv')}}";
+      </script>   
    </head>
    
    <body>
@@ -38,6 +42,9 @@
      </div>
      
      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+     <script>window.jQuery || document.write('<script src="{{
+     url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
      <script src = "{{url_for('static',filename='doublenestFinalStages.js')}}">
      <script>
          $(document).ready(function(){
@@ -86,6 +93,7 @@
      
     
    </body>
+      <!-- this is also listed at the top of the page -->
       <script type = "text/javascript">
           var DATA_URL = "{{url_for('static',filename='charPhoneZScoresNumlines.csv')}}";
       </script>
