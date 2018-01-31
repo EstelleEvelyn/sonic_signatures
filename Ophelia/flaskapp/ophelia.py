@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify
 import random
+import sys
 app = Flask(__name__)
 
 @app.route('/')
@@ -24,4 +25,9 @@ def test_html():
     return htmlStr
 
 if __name__=='__main__':
-    app.run(debug=True)
+    if len(sys.argv) != 3:
+        app.run(debug=True)
+    else:
+        host = sys.argv[1]
+        port = sys.argv[2]
+        app.run(host=host, port=port)
