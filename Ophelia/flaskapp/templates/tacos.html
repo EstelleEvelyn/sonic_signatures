@@ -43,13 +43,15 @@
      
      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-     <script>window.jQuery || document.write('<script src="{{
-     url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
-     <script src = "{{url_for('static',filename='doublenestFinalStages.js')}}">
+     <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+     <!-- <script src = "{{url_for('static',filename='doublenestFinalStages.js')}}"> -->
      <script>
          $(document).ready(function(){
+             console.log( "ready!" );
              $('#sidebar-btn').click(function(){
                  $('#sideleft').toggleClass('visible');
+                 console.log("clicked!");
+                 // alert( "Handler for .click() called." );
              });
          });
      </script>

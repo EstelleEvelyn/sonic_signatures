@@ -106,7 +106,7 @@ d3.csv(DATA_URL,
             .enter()
             .append("option")
             .text(function (d) {
-                console.log(playDict[d.key]);
+                //console.log(playDict[d.key]);
                 return playDict[d.key];
             })
             .attr("value", function (d) {
@@ -296,6 +296,7 @@ d3.csv(DATA_URL,
                    .attr("font-size","8px");
                
                charGroups.exit().remove();
+               d3.selectAll("text").remove();
                
                
 
