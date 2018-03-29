@@ -222,8 +222,11 @@ d3.csv(DATA_URL,
            //d3.selectAll(".charGroups").exit().remove();
            //create an svg for each character    
            var charGroups = d3.select(".main").selectAll("svg")
-               .data(selectPlay[0].value.character);
-               
+               .data(selectPlay[0].value.character, 
+                   function (d){
+                       return d.key;
+                   }
+               );
            var cgEnter = charGroups.enter()
                .append("svg:svg")
                .attr("width", width + margin.left + margin.right)
@@ -287,6 +290,7 @@ d3.csv(DATA_URL,
                        } 
                    });
                var labels = d3.selectAll(".charGroups")
+                   // .enter()
                    .append("text")
                    .attr("x",0)
                    .attr("y",10)
@@ -296,7 +300,7 @@ d3.csv(DATA_URL,
                    .attr("font-size","8px");
                
                charGroups.exit().remove();
-               d3.selectAll("text").remove();
+               // d3.selectAll("text").exit().remove();
                
                
 
