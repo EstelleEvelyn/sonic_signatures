@@ -10,12 +10,12 @@ altpronunciationscount = 0
 mlines=0
 abbrlines = []
 
-tagdict = {' abbr ':0,' adj ':0,' adv ':0,' aux ':0,' det ':0,' emend ':0,' Eng ':0,' Epil ':0,' f(f) ':0,' F ':0,
+tagdict = {' abbr ':0, 'abbr ':0, ' abbr':0,  'adj':0,' adv ':0,' aux ':0,' det ':0,' emend ':0,' Eng ':0,' Epil ':0,' f(f) ':0,' F ':0,
            ' interj ':0, ' Fr ':0, ' Ital ':0, ' Lat ':0, ' Luc ':0, ' m ':0, ' malap ':0, ' n ':0, ' prep ':0, ' pro ':0,
            ' Prol ':0, ' pron ':0, ' Q ':0, ' rh ':0,' s.d. ':0, ' sp ':0, ' Sp ':0, ' str ':0, ' unstr ':0, ' usu ':0,
            ' v ':0 }
 
-taglist = [' abbr ', ' adj ', ' adv ', ' aux ', ' det ', ' emend ', ' Eng ', ' Epil ', ' f(f) ', ' F ', ' interj ',
+taglist = [' abbr ', 'abbr ', ' abbr', ' adj ', ' adv ', ' aux ', ' det ', ' emend ', ' Eng ', ' Epil ', ' f(f) ', ' F ', ' interj ',
            ' Fr ', ' Ital ', ' Lat ', ' Luc ', ' m ', ' malap ', ' n ', ' prep ', ' pro ', ' Prol ', ' pron ', ' Q ',
            ' rh ', ' s.d. ', ' sp ', ' Sp ', ' str ', ' unstr ',
            ' usu ', ' v ']
@@ -63,17 +63,23 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
                         bracketTags[matchedpattern] +=1
                     else:
                         bracketTags[matchedpattern] = 1
-                    print ("prebracketremoval",word[i])
+                    # print ("prebracketremoval",word[i])
                     word[i] = re.sub(bracketregex, '', word[i])
-                    print("post", word[i])
+                    # print("post", word[i])
 
                 # if re.search(wordplayregex, word[i])
                 #     word[i] = re.sub(wordplayregex, '', word[i])
 
+                if "," in word[i]:
+                    altwordssplit = word[i].split(",")
+                    word[i] = altwordssplit[0]
+
                 for item in taglist:
                     if item in word[i]:
+                        print("prestrip",word[i])
                         tagdict[item] += 1
                         word[i] = word[i].strip(item)
+                        print("poststrip", word[i])
 
 
 
@@ -96,9 +102,9 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
 
                         for alt in altpronunciationssplit:
                             if re.search(playCharPattern,alt):
-                                print("preplayremoval",alt)
+                                # print("preplayremoval",alt)
                                 alt = re.sub(playCharPattern,'',alt)
-                                print("postplayremoval",alt)
+                                # print("postplayremoval",alt)
                                 alt = alt.strip(' ')
 
                         if not(len(altpronunciationssplit[0]) == 0):
@@ -123,9 +129,9 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
                             bracketTags[matchedpattern] += 1
                         else:
                             bracketTags[matchedpattern] = 1
-                        print("prebracketremoval", pronounce[i])
+                        # print("prebracketremoval", pronounce[i])
                         pronounce[i] = re.sub(bracketregex, '', pronounce[i])
-                        print("post", pronounce[i])
+                        # print("post", pronounce[i])
 
                     # eliminate stress tags from everything
                     if "str" in pronounce[i]:
@@ -167,6 +173,10 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
                 word[0] = root + ending
 
                 for i in range(1,len(word)):
+                    word[i] = word[i].strip(" ")
+                    word[i] = word[i].strip("~")
+                    word[i] = word[i].strip("-")
+                    word[i] = word[i].strip(" ")
                     word[i] = root+word[i]
 
                 # print("postdotprocessing", word, pronounce)
@@ -191,15 +201,19 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
           
             # deal with all tilde words
             hyphenfound = False
+            hyphenending = re.compile("\A[^\w]*[-][\w]+")
             for i in range(len(pronounce)):
-                if " -" in pronounce[i]:
+                # if "-" in pronounce[i]:
+                #     print(pronounce[i])
+                if re.search(hyphenending,pronounce[i]):
                     hyphenfound = True
-                    endingwithouthyphen = pronounce[i].strip(" ")
-                    endingwithouthyphen = endingwithouthyphen.strip("-")
+                    print(pronounce[i])
+                    endingwithouthyphen = re.sub("[-]",'',pronounce[i])
                     endingwithouthyphen = endingwithouthyphen.strip(" ")
+                    pronounce[0] = pronounce[0].strip(" ")
                     pronounce[i] = pronounce[0]+endingwithouthyphen
-                # if hyphenfound:
-                    # print("hyphenfound", word, pronounce)
+                if hyphenfound:
+                    print("hyphenfound", word, pronounce[i])
 
             hyphentildeinprev = False
             indexofmostrecentfullword = 0
@@ -207,21 +221,24 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
             if not dotline:
                 for i in range(1,len(word)):
 
-                    if "~" in word[i]:
+                    tildeending = re.compile("\A[^\w]*[~][\w]+")
+                    if re.search(tildeending, word[i]):
 
                         hyphentildeinprev = True
                         endingwithouttilde = word[i]
                         endingwithouttilde = endingwithouttilde.strip(" ")
                         endingwithouttilde = endingwithouttilde.strip("~")
                         endingwithouttilde = endingwithouttilde.strip(" ")
+                        endingwithouttilde = re.sub("[~]",'',endingwithouttilde)
                         # print("ending without tilde should be",endingwithouttilde)
                         word[i] = word[indexofmostrecentfullword]+endingwithouttilde
 
-                    elif " -" in word[i]:
+                    elif re.search(hyphenending,word[i]):
                         hyphentildeinprev = True
                         endingwithouthyphen = word[i].strip(" ")
                         endingwithouthyphen = endingwithouthyphen.strip("-")
                         endingwithouthyphen = endingwithouthyphen.strip(" ")
+                        endingwithouthyphen = re.sub("[-]",'',endingwithouthyphen)
                         word[i] = word[indexofmostrecentfullword]+endingwithouthyphen
 
                     elif re.match("\s[\w]\s", word[i]):
@@ -277,119 +294,12 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
                     item = item.strip(" ")
                     item = item.strip("-")
                     item = item.strip(" ")
-
-
-            # #dot words
-            # elif "·" in word[0]:
-            #     #print("Hello ", word[0])
-            #     dotwordcount = dotwordcount + 1
-            #
-            #     #split the word at the dot
-            #     wordSplit = word[0].split("·")
-            #     if "·" in pronounce[0]:
-            #         pronounceSplit = pronounce[0].split("·")
-            #         pronounceRoot = pronounceSplit[0]
-            #         ending = pronounceSplit[1]
-            #         pronounce[0] = pronounceRoot + ending
-            #         if "," in pronounce[0]:
-            #             pronounce[0]=pronounce[0].split(",")
-            #             pronounce[0]=pronounce[0][0]
-            #     else:
-            #         pronounceRoot = pronounce[0]
-            #
-            #     root = wordSplit[0]
-            #     ending = wordSplit[1]
-            #
-            #     word[0]= root+ending
-            #     pronounce_dict[word[0]]= pronounce[0]
-            #
-            #
-            #     if len(word) == len(pronounce) and len(word)>1:
-            #         for i in range(1, len(word)):
-            #             #print (root+word[i], "   ", pronounceRoot+pronounce[i])
-            #             wordVariant = root+word[i]
-            #             #print(pronounceRoot, pronounce[i])
-            #             pronounceVariant = pronounceRoot+pronounce[i]
-            #             wordPronounceMatcher(wordVariant.strip(' '),pronounceVariant.strip(' '),line)
-            #             pronounce_dict[wordVariant.strip(' ')] = pronounceVariant.strip(' ')
-            #     else:
-            #         mismatchcount +=1
-          
-            # elif "-" in pronounce[0]:
-            #     if not "-" in word[0]:
-            #         #print(line)
-            #         #print("word",len(word),"pronounce",len(pronounce))
-            #
-            #         pronounce[0].strip(' m ')
-            #
-            #     if len(word) == len(pronounce):
-            #         for i in range(len(word)):
-            #             pronounce[i].strip(' ')
-            #             #print(word[i], pronounce[i])
-            #             wordPronounceMatcher(word[i],pronounce[i],line)
-            #
-            #
-            #
-            #     if len(word) > len(pronounce):
-            #         #print(line)
-            #         mismatchcount +=1
-            #
-            #
-            #
-            #     if len(word) < len(pronounce):
-            #         #print(line)
-            #         mismatchcount+=1
-            #
-            #
-            #
-            #
-            #     altpronunciationlist = pronounce[0].split(",")
-            #     pronounce[0]=altpronunciationlist[0]
-            #     wordPronounceMatcher(word[0],pronounce[0],line)
-            #     #print (word[0],pronounce[0])
-            #     altpronunciationscount +=1
                  
             for i in range(len(word)):
                 if len(word) == len(pronounce):
                     wordPronounceMatcher(word[i],pronounce[i])
                 else:
                     mismatchcount+=1
-
-
-               
-          
-         
-            
-
-                     
-          
-#             else:
-#                 #print ("no dot!")
-#                 #print("word is ", word)
-#                 #print("pronounce is ", pronounce)
-#                 for i in range(len(word)):
-#                     #print("word is ", word)
-#                     rootword = word[0]
-#                     #print("variation is", variation)
-#                 if pronounce[0] == '=':
-#                     # some words don't have pronunciations they just have equals signs
-#                     pronunciation = wordPlusVariation
-#                 else:
-#                     pronunciation = pronounce[0]
-#                 if i != 0:
-#                     wordPlusVariation = (rootword + word[i][1:])
-#                     # print("variation is", wordPlusVariation)
-#                     if len(pronounce) > i:
-#                         pronunciation = (pronunciation + pronounce[i][1:])
-#                     elif pronounce[0] == '=':
-#                         pronunciation = wordPlusVariation
-#                     else:
-#                         pronunciation = pronounce[0]
-#                     # wordPlusVariation = map(lambda x : unicodedata.decimal(x), wordPlusVariation)
-#                     #pronunciation = map(lambda x : unicodedata.decimal(x), pronunciation)
-#                     pronounce_dict[wordPlusVariation.strip(' ')] = pronunciation.strip(' ')
-#           # for item in pronounce_dict:
-# #              print(item," ::: " ,pronounce_dict[item])
 
 
 # step 2: create mapping from IPA to CMU
@@ -412,13 +322,16 @@ def ipaMap(c):
         return c
 
 for word in word_list:
-    with open('newdict8.txt','a') as outfile:
-        x=list(map(ipaMap, pronounce_dict[word]))
-    #step 4: return resulting dict to use in initial processing for all files
-        print(word, "    ",''.join(x))
-        astring = word+ "    "+''.join(x)
-        outfile.write(word + "    "+''.join(x))
-        outfile.write('\n')
+    # with open('newdict12.txt','a') as outfile:
+    #     x=list(map(ipaMap, pronounce_dict[word]))
+    # #step 4: return resulting dict to use in initial processing for all files
+    #     # print(word, "    ",''.join(x))
+    #     astring = word+ "    "+''.join(x)
+    #     outfile.write(word + "    "+''.join(x))
+    #     outfile.write('\n')
+    with open('wordlist.txt', 'a') as wordlistfile:
+        wordlistfile.write(word)
+        wordlistfile.write('\n')
 
 print ("dotwordcount is",dotwordcount)
 print ("mismatchcount is", mismatchcount)
