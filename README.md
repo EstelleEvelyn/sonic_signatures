@@ -73,10 +73,10 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* **Eric Alexander** - *Initial work* - [EAlexander](https://github.com/EAlexander)
+* **Eric Alexander** - *Supervision* - [EAlexander](https://github.com/EAlexander)
 
-* **Estelle Bayer** - *Initial work* - [EstelleEvelyn](https://github.com/EstelleEvelyn)
-* **Liz Nichols** - *Initial work* - [nicholsl](https://github.com/nicholsl)
+* **Estelle Bayer** - [EstelleEvelyn](https://github.com/EstelleEvelyn)
+* **Liz Nichols** - [nicholsl](https://github.com/nicholsl)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
