@@ -2,7 +2,7 @@ import csv
 
 def combine():
     with open('combinedData.csv', 'w') as destfile:
-        with open("features/percentData.csv", 'r') as featfile:
+        with open("features/percentDataOrig.csv", 'r') as featfile:
             feat_reader = csv.reader(featfile)
             for frow in feat_reader:
                 filename = frow[0]

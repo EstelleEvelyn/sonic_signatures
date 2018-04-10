@@ -129,20 +129,21 @@ class Counter:
 
             presort_list = []
             for filename in os.listdir("dest"):
-                temp_list = []
-                filename = filename[:-4]
-                # play, character = filename.split("_")
-                # result.write(play+','+character + ',')
-                temp_list.append(filename)
-                #print(filename,end='')
+                if "_orig" in filename:
+                    temp_list = []
+                    filename = filename[:-4]
+                    # play, character = filename.split("_")
+                    # result.write(play+','+character + ',')
+                    temp_list.append(filename)
+                    #print(filename,end='')
 
-                phonemeFreq = self.phoneme_frequency(filename)[0]
-                for item in consistentOrderList:
-                    temp_list.append(str(phonemeFreq[item]))
-                #print(str(phonemeFreq[item]), end= ',')
+                    phonemeFreq = self.phoneme_frequency(filename)[0]
+                    for item in consistentOrderList:
+                        temp_list.append(str(phonemeFreq[item]))
+                    #print(str(phonemeFreq[item]), end= ',')
 
-                #print('\n')
-                presort_list.append(temp_list)
+                    #print('\n')
+                    presort_list.append(temp_list)
 
             presort_list.sort(key = itemgetter(0))
             data = presort_list
@@ -159,7 +160,7 @@ class Counter:
 
 
 
-        with open("phonemefreq/masterCounts.csv", 'w') as result:
+        with open("phonemefreq/masterCountsOrig.csv", 'w') as result:
 
             result.write('filename')
             for item in consistentOrderList:
@@ -168,20 +169,21 @@ class Counter:
 
             presort_list = []
             for filename in os.listdir("dest"):
-                temp_list = []
-                filename = filename[:-4]
-                # play, character = filename.split("_")
-                # result.write(play+','+character + ',')
-                temp_list.append(filename)
-                #print(filename,end='')
+                if "_orig" in filename:
+                    temp_list = []
+                    filename = filename[:-4]
+                    # play, character = filename.split("_")
+                    # result.write(play+','+character + ',')
+                    temp_list.append(filename)
+                    #print(filename,end='')
 
-                phonemeFreq = self.phoneme_frequency(filename)[1]
-                for item in consistentOrderList:
-                    temp_list.append(str(phonemeFreq[item]))
-                   #print(str(phonemeFreq[item]), end= ',')
+                    phonemeFreq = self.phoneme_frequency(filename)[1]
+                    for item in consistentOrderList:
+                        temp_list.append(str(phonemeFreq[item]))
+                       #print(str(phonemeFreq[item]), end= ',')
 
-                #print('\n')
-                presort_list.append(temp_list)
+                    #print('\n')
+                    presort_list.append(temp_list)
 
             presort_list.sort(key = itemgetter(0))
             data = presort_list
@@ -297,10 +299,10 @@ class Counter:
         Given a file, returns a dictionary whose keys are features and whose values
         are the tally count of that feature in the given file
         '''
-        with open("dest/{}.txt".format(read_file), 'r') as source:
+        with open("dest/{}_orig.txt".format(read_file), 'r') as source:
             vowel_count_dict = self.vowel_counts(source)[0]
 
-        with open("dest/{}.txt".format(read_file), 'r') as source:
+        with open("dest/{}_orig.txt".format(read_file), 'r') as source:
             consonant_count_dict = self.consonant_counts(source)[0]
 
         consonant_count_dict.update(vowel_count_dict)
@@ -312,10 +314,10 @@ class Counter:
         Given a file, returns a dictionary whose keys are features and whose values
         are the percentageof the given file that feature comprises
         '''
-        with open("dest/{}.txt".format(read_file), 'r') as source:
+        with open("dest/{}_orig.txt".format(read_file), 'r') as source:
             cons_counts = self.consonant_counts(source)
             cons_pct_dict = self.consonant_percentages(cons_counts[0], cons_counts[1])
-        with open("dest/{}.txt".format(read_file), 'r') as source:
+        with open("dest/{}_orig.txt".format(read_file), 'r') as source:
             vow_counts = self.vowel_counts(source)
             vow_pct_dict = self.vowel_percentages(vow_counts[0], vow_counts[1])
 
@@ -329,7 +331,7 @@ class Counter:
         counts csv file and writes the percents of all the features of every file
         to its own line in  a percents csv file
         '''
-        with open ('features/percentData.csv', 'w') as result:
+        with open ('features/percentDataOrig.csv', 'w') as result:
             result.write('filename')
             for item in self.feature_ordered_list:
                 result.write(','+item)
@@ -337,24 +339,25 @@ class Counter:
 
             presort_list = []
             for filename in os.listdir("dest"):
-                temp_list = []
-                filename = filename[:-4]
-                # play, character = filename.split("_")
-                # result.write(play+','+character + ',')
-                temp_list.append(filename)
+                if "_orig" in filename:
+                    temp_list = []
+                    filename = filename[:-9]
+                    # play, character = filename.split("_")
+                    # result.write(play+','+character + ',')
+                    temp_list.append(filename)
 
-                pct_dict = self.percent_text(filename)
-                for item in self.feature_ordered_list:
-                    temp_list.append(str(pct_dict[item]))
+                    pct_dict = self.percent_text(filename)
+                    for item in self.feature_ordered_list:
+                        temp_list.append(str(pct_dict[item]))
 
-                presort_list.append(temp_list)
+                    presort_list.append(temp_list)
 
             presort_list.sort(key = itemgetter(0))
             data = presort_list
             csv.writer(result).writerows(data)
 
 
-        with open ('features/countData.csv', 'w') as result:
+        with open ('features/countDataOrig.csv', 'w') as result:
             result.write('filename')
             for item in self.feature_ordered_list:
                 result.write(','+item)
@@ -362,17 +365,18 @@ class Counter:
 
             presort_list = []
             for filename in os.listdir("dest"):
-                temp_list = []
-                filename = filename[:-4]
-                # play, character = filename.split("_")
-                # result.write(play+','+character + ',')
-                temp_list.append(filename)
+                if "_orig" in filename:
+                    temp_list = []
+                    filename = filename[:-9]
+                    # play, character = filename.split("_")
+                    # result.write(play+','+character + ',')
+                    temp_list.append(filename)
 
-                count_dict = self.count_text(filename)
-                for item in self.feature_ordered_list:
-                    temp_list.append(str(count_dict[item]))
+                    count_dict = self.count_text(filename)
+                    for item in self.feature_ordered_list:
+                        temp_list.append(str(count_dict[item]))
 
-                presort_list.append(temp_list)
+                    presort_list.append(temp_list)
 
             presort_list.sort(key = itemgetter(0))
             data = presort_list

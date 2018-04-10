@@ -2,6 +2,10 @@ import unicodedata
 import re
 
 #step 1: make dict of words:pronunciations (possibly tuple values if more than one possibility)
+
+
+
+
 pronounce_dict = {}
 dotwordcount = 0
 mismatchcount = 0
@@ -22,6 +26,8 @@ taglist = [' abbr ', 'abbr ', ' abbr', ' adj ', ' adv ', ' aux ', ' det ', ' eme
 
 bracketTags = {}
 
+converter = {}
+
 def wordPronounceMatcher(singleword,singlepronounce):
     # if "," in pronounce:
     #     singlepronounce = singlepronounce.split(',')
@@ -29,7 +35,7 @@ def wordPronounceMatcher(singleword,singlepronounce):
     #     #print(singleword, singlepronounce)
     # if "~" in word:
     #     print(singleword, singlepronounce, "UNCAUGHT LINE", theline)
-        
+
     pronounce_dict[singleword] = singlepronounce
 
 with open('crystal_text.txt', encoding='UTF-8') as infile:
@@ -38,7 +44,7 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
         line = line.rstrip('\n')
         line = list(line.split("|"))
         if len(line) > 1:
-       
+
             word = line[0]
             pronounce = line[1]
             word = list(word.split("/"))# some words have a slash in them e.g. (a/an) and then some have variations denoted with a tilde ~
@@ -83,7 +89,7 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
 
 
 
-          
+
 
             altpronunciationsfound = False
             for i in range(len(pronounce)):
@@ -144,7 +150,7 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
                         pronounce[i] = pronounce[i].strip(" m ")
                         # print("postMprocessing", pronounce[i])
 
-         
+
             # deal with all dot words
             numdots = 0
             for i in range(len(word)):
@@ -197,8 +203,8 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
                     pronounce[i] = pronounceRoot + pronounce[i]
 
                 # print("postdotprocessing", word, pronounce)
-          
-          
+
+
             # deal with all tilde words
             hyphenfound = False
             hyphenending = re.compile("\A[^\w]*[-][\w]+")
@@ -207,13 +213,13 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
                 #     print(pronounce[i])
                 if re.search(hyphenending,pronounce[i]):
                     hyphenfound = True
-                    print(pronounce[i])
+                    # print(pronounce[i])
                     endingwithouthyphen = re.sub("[-]",'',pronounce[i])
                     endingwithouthyphen = endingwithouthyphen.strip(" ")
                     pronounce[0] = pronounce[0].strip(" ")
                     pronounce[i] = pronounce[0]+endingwithouthyphen
-                if hyphenfound:
-                    print("hyphenfound", word, pronounce[i])
+                # if hyphenfound:
+                #     print("hyphenfound", word, pronounce[i])
 
             hyphentildeinprev = False
             indexofmostrecentfullword = 0
@@ -294,7 +300,7 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
                     item = item.strip(" ")
                     item = item.strip("-")
                     item = item.strip(" ")
-                 
+
             for i in range(len(word)):
                 if len(word) == len(pronounce):
                     wordPronounceMatcher(word[i],pronounce[i])
@@ -322,21 +328,23 @@ def ipaMap(c):
         return c
 
 for word in word_list:
-    # with open('newdict12.txt','a') as outfile:
-    #     x=list(map(ipaMap, pronounce_dict[word]))
-    # #step 4: return resulting dict to use in initial processing for all files
-    #     # print(word, "    ",''.join(x))
-    #     astring = word+ "    "+''.join(x)
-    #     outfile.write(word + "    "+''.join(x))
-    #     outfile.write('\n')
-    with open('wordlist.txt', 'a') as wordlistfile:
-        wordlistfile.write(word)
-        wordlistfile.write('\n')
+    with open('newdict17.txt','a') as outfile:
+        x=list(map(ipaMap, pronounce_dict[word]))
+    #step 4: return resulting dict to use in initial processing for all files
+        # print(word, "    ",''.join(x))
+        astring = word+ "    "+' '.join(x)
+        capsword = word.upper()
+        outfile.write(capsword + " ; "+' '.join(x))
+        outfile.write('\n')
+        converter[capsword] = ' '.join(x)
+    # with open('wordlist.txt', 'a') as wordlistfile:
+    #     wordlistfile.write(word)
+    #     wordlistfile.write('\n')
 
-print ("dotwordcount is",dotwordcount)
-print ("mismatchcount is", mismatchcount)
-print ("abbrcount is", abbrcount)
-print ("altpronunciationscount is", altpronunciationscount)
-print (mlines)
-print (tagdict)
-print (bracketTags)
+# print ("dotwordcount is",dotwordcount)
+# print ("mismatchcount is", mismatchcount)
+# print ("abbrcount is", abbrcount)
+# print ("altpronunciationscount is", altpronunciationscount)
+# print (mlines)
+# print (tagdict)
+# print (bracketTags)

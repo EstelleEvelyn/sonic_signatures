@@ -91,7 +91,7 @@ class Distinct:
 
         Also tracks the total number of vowels and consonants said by every archetype
         '''
-        with open("../tagging/phonemefreq/masterCounts.csv", 'r') as csvfile:
+        with open("../tagging/phonemefreq/masterCountsOrig.csv", 'r') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 if row.get('filename') in self.protag_list:
@@ -125,7 +125,7 @@ class Distinct:
         Sums the total number of each feature said by each protagonist, antagonist,
         and fool, updating the respective dictionaries
         '''
-        with open("../tagging/features/countData.csv", 'r') as csvfile:
+        with open("../tagging/features/countDataOrig.csv", 'r') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 if row.get('filename') in self.protag_list:
@@ -267,12 +267,12 @@ class Distinct:
         phonemes = self.z_phonemes()
         features = self.z_features()
 
-        with open("feature_z_scores.csv", 'w') as z_file:
+        with open("feature_z_scores_orig.csv", 'w') as z_file:
             z_file.write("feature,protag,antag,fool\n")
             for feature in features:
                 z_file.write(str(feature)+","+str(features[feature]['protag'])+","+str(features[feature]['antag'])+","+str(features[feature]['fool'])+"\n")
 
-        with open("phoneme_z_scores.csv", 'w') as z_file:
+        with open("phoneme_z_scores_orig.csv", 'w') as z_file:
             z_file.write("phoneme,protag,antag,fool\n")
             for phoneme in phonemes:
                 z_file.write(str(phoneme)+","+str(phonemes[phoneme]['protag'])+","+str(phonemes[phoneme]['antag'])+","+str(phonemes[phoneme]['fool'])+"\n")

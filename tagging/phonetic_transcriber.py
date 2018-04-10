@@ -1,3 +1,4 @@
+import sys
 import nltk
 from nltk.corpus import cmudict
 import sys
@@ -7,7 +8,7 @@ import json
 from bs4 import BeautifulSoup #toggle comment for this line if bs4 not installed
 import string
 import unicodedata
-import ../original_pronunciation/converter
+# import ../original_pronunciation/converter
 
 
 
@@ -25,8 +26,10 @@ class Transcriber:
     def __init__(self):
         self.transcr = cmudict.dict() #import cmudict
 
-        conv = converter.Converter()
-        self.or_transcr = conv.getDict()
+        self.OP = {}
+
+        # conv = converter.Converter()
+        # self.or_transcr = conv.getDict()
 
         self.play_code_list = ['AWW', 'Ant', 'AYL', 'Err', 'Cor', 'Cym', 'Ham', '1H4', '2H4',
                                 'H5', '1H6', '2H6', '3H6', 'H8', 'JC', 'Jn', 'Lr', 'LLL', 'Mac',
@@ -34,6 +37,18 @@ class Transcriber:
                                 'Shr', 'Tmp', 'Tim', 'Tit', 'Tro', 'TN', 'TGV', 'TNK', 'WT']
         self.omission_dict = {}
         self.word_count = 0
+
+    def get_OP(self):
+        with open ('../original_pronunciation/newdict17.txt','r') as opfile:
+            for line in opfile:
+                worddef = line.split(';',1)
+                # print(worddef[0].lower())
+                if len(worddef) > 1:
+                    self.OP[worddef[0].lower().strip()] = worddef[1].strip().strip('\n')
+                else:
+                    print("length was too long" + ''.join(worddef))
+        print(self.OP)
+
 
     def get_play_code_list(self):
         return self.play_code_list
@@ -106,18 +121,30 @@ class Transcriber:
         '''
         root = nltk.data.find('/')
         with open('res/{}.txt'.format(file_name), 'r') as corpus: #source file
-            with open('dest/{}.txt'.format(file_name), 'w') as dest_file: #destination
+            with open('dest/{}_orig.txt'.format(file_name), 'w') as dest_file: #destination
                 corpus_text = corpus.read().lower().split() #normalize
                 for word in corpus_text:
-                    self.word_count +=1
+                    self.word_count += 1
                     # for char in string.punctuation:
 #                         word = word.replace(char,"")
-                    if word in self.or_transcr: #TODO find a better way to resolve non-standard words
-                        phonetic_list = self.or_transcr[word][0]
-                        phonetic_string=""
-                        for sound in phonetic_list: #this is inefficient
-                            phonetic_string = phonetic_string+sound+" "
-                        dest_file.write(phonetic_string+", ")
+#                     print(self.OP)
+#                     print(self.OP[word])
+                    if word in self.OP: #TODO find a better way to resolve non-standard words
+                        # print("word in self.OP: ", word)
+                        if '=' in self.OP[word]:
+                            if word in self.transcr:  # TODO find a better way to resolve non-standard words
+                                phonetic_list = self.transcr[word][0]
+                                phonetic_string = ""
+                                for sound in phonetic_list:  # this is inefficient
+                                    phonetic_string = phonetic_string + sound + " "
+                                dest_file.write(phonetic_string + ", ")
+                        else:
+                            phonetic_list = self.OP[word]
+                            # print(phonetic_list)
+                            # phonetic_string=""
+                            # for sound in phonetic_list: #this is inefficient
+                            #     phonetic_string = phonetic_string+sound+" "
+                            dest_file.write(phonetic_list+", ")
                     elif word in self.transcr: #TODO find a better way to resolve non-standard words
                         phonetic_list = self.transcr[word][0]
                         phonetic_string=""
@@ -174,6 +201,7 @@ class Transcriber:
 
 def main():
     transcriber = Transcriber()
+    transcriber.get_OP()
     transcriber.get_all_character_texts()
     print(transcriber.word_count)
     #transcriber.omission_printer()
