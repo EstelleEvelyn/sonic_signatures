@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="37fba9a3-c5f1-4eab-9788-15c5585e0183" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Liz'sTableauMDSStuff/maleCharacters.csv" afterPath="$PROJECT_DIR$/Liz'sTableauMDSStuff/maleCharacters.csv" />
-      <change beforePath="$PROJECT_DIR$/Ophelia/flaskapp/.idea/workspace.xml" afterPath="$PROJECT_DIR$/Ophelia/flaskapp/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/classifier/role_classification.py" afterPath="$PROJECT_DIR$/classifier/role_classification.py" />
-      <change beforePath="$PROJECT_DIR$/original_pronunciation/.idea/workspace.xml" afterPath="$PROJECT_DIR$/original_pronunciation/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/original_pronunciation/converter.py" afterPath="$PROJECT_DIR$/original_pronunciation/converter.py" />
-      <change beforePath="$PROJECT_DIR$/original_pronunciation/wordlist.txt" afterPath="$PROJECT_DIR$/original_pronunciation/wordlist.txt" />
-      <change beforePath="$PROJECT_DIR$/tagging/feature_counter.py" afterPath="$PROJECT_DIR$/tagging/feature_counter.py" />
-      <change beforePath="$PROJECT_DIR$/tagging/phon_feat_combiner.py" afterPath="$PROJECT_DIR$/tagging/phon_feat_combiner.py" />
-      <change beforePath="$PROJECT_DIR$/tagging/phonemefreq/masterData.csv" afterPath="$PROJECT_DIR$/tagging/phonemefreq/masterData.csv" />
-      <change beforePath="$PROJECT_DIR$/tagging/phonetic_transcriber.py" afterPath="$PROJECT_DIR$/tagging/phonetic_transcriber.py" />
-    </list>
+    <list default="true" id="37fba9a3-c5f1-4eab-9788-15c5585e0183" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -193,64 +182,12 @@
             <path>
               <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
               <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="Ophelia" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="Ophelia" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="Ophelia" type="462c0819:PsiDirectoryNode" />
-              <item name="flaskapp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="Ophelia" type="462c0819:PsiDirectoryNode" />
-              <item name="html" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="Ophelia" type="462c0819:PsiDirectoryNode" />
-              <item name="JavaScript" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
               <item name="research_sources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
               <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="stats" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
               <item name="tagging" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="tagging" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="tagging" type="462c0819:PsiDirectoryNode" />
-              <item name="features" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sonic_signatures" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sonic_signatures" type="462c0819:PsiDirectoryNode" />
-              <item name="tagging" type="462c0819:PsiDirectoryNode" />
-              <item name="phonemefreq" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
