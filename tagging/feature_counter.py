@@ -121,7 +121,7 @@ class Counter:
 
 
 
-        with open("phonemefreq/masterData.csv", 'w') as result:
+        with open("phonemefreq/masterDataOrig.csv", 'w') as result:
             result.write('filename')
             for item in consistentOrderList:
                 result.write(','+item)
@@ -299,10 +299,10 @@ class Counter:
         Given a file, returns a dictionary whose keys are features and whose values
         are the tally count of that feature in the given file
         '''
-        with open("dest/{}_orig.txt".format(read_file), 'r') as source:
+        with open("dest/{}.txt".format(read_file), 'r') as source:
             vowel_count_dict = self.vowel_counts(source)[0]
 
-        with open("dest/{}_orig.txt".format(read_file), 'r') as source:
+        with open("dest/{}.txt".format(read_file), 'r') as source:
             consonant_count_dict = self.consonant_counts(source)[0]
 
         consonant_count_dict.update(vowel_count_dict)
@@ -314,10 +314,10 @@ class Counter:
         Given a file, returns a dictionary whose keys are features and whose values
         are the percentageof the given file that feature comprises
         '''
-        with open("dest/{}_orig.txt".format(read_file), 'r') as source:
+        with open("dest/{}.txt".format(read_file), 'r') as source:
             cons_counts = self.consonant_counts(source)
             cons_pct_dict = self.consonant_percentages(cons_counts[0], cons_counts[1])
-        with open("dest/{}_orig.txt".format(read_file), 'r') as source:
+        with open("dest/{}.txt".format(read_file), 'r') as source:
             vow_counts = self.vowel_counts(source)
             vow_pct_dict = self.vowel_percentages(vow_counts[0], vow_counts[1])
 

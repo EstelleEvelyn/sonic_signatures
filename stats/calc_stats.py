@@ -35,10 +35,10 @@ class StatCounter:
         order_list = ['AA','AE','AH','AO','AW','AY','B','CH','D','DH','EH','ER','EY',
             'F','G','HH','IH','IY','JH','K','L','M','N','NG','OW','OY','P','R','S',
             'SH','T','TH', 'UH','UW','V','W','Y','Z','ZH']
-        with open("../tagging/phonemefreq/masterData.csv") as csvfile:
+        with open("../tagging/phonemefreq/masterDataOrig.csv") as csvfile:
             file_reader = csv.reader(csvfile)
             for row in file_reader:
-                with open("../tagging/phonemefreq/masterCounts.csv") as checkfile:
+                with open("../tagging/phonemefreq/masterCountsOrig.csv") as checkfile:
                     checker = csv.reader(checkfile)
                     for char in checker:
                         if char[0] == row[0] != 'filename' and sum(map(lambda x: int(x),
@@ -62,10 +62,10 @@ class StatCounter:
             'noncoronal', 'monophthong', 'diphthong', 'central', 'front', 'back',
             'tense', 'lax', 'rounded','unrounded']
 
-        with open("../tagging/features/percentData.csv") as csvfile:
+        with open("../tagging/features/percentDataOrig.csv") as csvfile:
             file_reader = csv.reader(csvfile)
             for row in file_reader:
-                with open("../tagging/phonemefreq/masterCounts.csv") as checkfile:
+                with open("../tagging/phonemefreq/masterCountsOrig.csv") as checkfile:
                     checker = csv.reader(checkfile)
                     for char in checker:
                         if char[0] == row[0] != 'filename' and sum(map(lambda x: int(x),
@@ -82,14 +82,17 @@ class StatCounter:
         self.accumuate_phonemes()
         self.accumulate_features()
 
-        with open('feature_statistics.csv', 'w') as out_file:
-            out_file.write('feature,mean,stdev,variance\n')
-            for feature in self.feature_dict:
-                feature_mean = statistics.mean(self.feature_dict[feature])
-                feature_std_dev = statistics.stdev(self.feature_dict[feature])
-                feature_var = statistics.variance(self.feature_dict[feature])
-                out_file.write(feature+","+str(feature_mean)+","+str(feature_std_dev)+","+str(feature_var)+"\n")
-        with open('phoneme_statistics.csv', 'w') as out_file:
+        print(self.phoneme_dict)
+        print(self.feature_dict)
+
+        # with open('feature_statistics_orig.csv', 'w') as out_file:
+        #     out_file.write('feature,mean,stdev,variance\n')
+        #     for feature in self.feature_dict:
+        #         feature_mean = statistics.mean(self.feature_dict[feature])
+        #         feature_std_dev = statistics.stdev(self.feature_dict[feature])
+        #         feature_var = statistics.variance(self.feature_dict[feature])
+        #         out_file.write(feature+","+str(feature_mean)+","+str(feature_std_dev)+","+str(feature_var)+"\n")
+        with open('phoneme_statistics_orig.csv', 'w') as out_file:
             out_file.write('phoneme,mean,stdev,variance\n')
             for phoneme in self.phoneme_dict:
                 phoneme_mean = statistics.mean(self.phoneme_dict[phoneme])
