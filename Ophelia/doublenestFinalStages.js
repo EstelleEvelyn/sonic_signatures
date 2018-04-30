@@ -209,7 +209,8 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
                .attr("class","charGroups")
                .each(function(d){
                    y.domain(selectPlay[0].value.zscoreExtent);
-               });
+               })
+               .attr("onclick", function(d){console.log("hello")});
 
            
            var initialbars = charGroups.selectAll("bar")

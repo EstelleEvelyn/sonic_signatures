@@ -180,8 +180,29 @@ d3.csv(DATA_URL,
                 initialGraph(selectedPlay, numlines, checked);
             }
                 
-        };    
-        
+        };
+
+        function zoom(d){
+                console.log(d)
+//                toggleHidden(true)
+//
+//                detailView = d3.select("#detail_view")
+//                detailView.selectAll('.zoom').remove()
+//
+//                detailG = detailView.selectAll('g')
+//                    .data(d).enter()
+//
+//
+//                zoom = detailG.append("g")
+//                    .attr("class", "zoom")
+
+        }
+
+        function toggleHidden(show){
+            d3.select("#previews").classed("hidden", show).classed("visible", !show)
+            d3.select("#detail").classed("hidden", !show).classed("visible", show)
+        }
+
         //graph
         var initialGraph = function(play,numlines,checked) {
            //if no checkboxes due to recent change of play
@@ -227,6 +248,8 @@ d3.csv(DATA_URL,
                        return d.key;
                    }
                );
+
+
            var cgEnter = charGroups.enter()
                .append("svg:svg")
                .attr("width", width + margin.left + margin.right)
@@ -235,6 +258,7 @@ d3.csv(DATA_URL,
                /*.each(function(d){
                    y.domain(selectPlay[0].value.zscoreExtent);
                });*/
+               .on('click', function(d){zoom(d)});
             
            y.domain(selectPlay[0].value.zscoreExtent); 
            
