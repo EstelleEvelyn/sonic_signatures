@@ -38,6 +38,8 @@ class Tagtext:
         self.vowels = ['AA', 'AE', 'AH', 'AO', 'AW', 'AY', 'EH', 'ER', 'EY', 'IH', 'IY', 'OW', 'OY', 'UH', 'UW']
         self.omission_dict = {}
         self.word_count = 0
+        self.misses = 0
+        self.correct = 0
 
     def get_character_list(self, play):
         '''
@@ -81,47 +83,127 @@ class Tagtext:
         word_split_on_vowels =[]
         tba = ''
         prevWasVowel = False
+        prevWasT = False
+        prevWasS = False
+        prev = None
         for i in range(len(word)):
             # print(word[i])
             if word[i] in vowel_letters:
                 # print("is in vowel letters")
+
                 if not prevWasVowel and tba != '':
-                    word_split_on_vowels.append(tba)
-                    # print("added ", tba)
-                    tba = ''
+                    if (i == len(word) - 1) and word[i] == 'e':
+                        if len(word_split_on_vowels) < 1:
+                            word_split_on_vowels.append(tba)
+                            tba = ''
+                        else:
+                            # print(word_split_on_vowels)
+                            word_split_on_vowels[-1] = prev+'e'
+                            continue
+                    else:
+                        word_split_on_vowels.append(tba)
+                        # print("didn't add in the vowel loop", tba)
+                        tba = ''
                 tba += word[i]
                 # print("tba now equals",tba)
+
                 prevWasVowel = True
+                prev = word[i]
             else:
                 if prevWasVowel:
                     word_split_on_vowels.append(tba)
-                    # print("added ", tba)
                     tba = ''
-                tba += word[i]
-                # print("tba is now", tba)
+                    prev = None
+
+                # if (i != len(word)-1) and word[i] == 't':
+                #     tba += word[i]
+                #     continue
+                #
+                # if (i != len(word)-1) and word[i] == 's':
+                #     tba += word[i]
+                #     continue
+
+
+
+                if prev == 'c' and word[i] == 'k':
+                    # print("appending ck")
+                    word_split_on_vowels.append('ck')
+                    tba = ''
+
+                elif prev == 's' and word[i] == 'h':
+                    # print("appending sh")
+                    word_split_on_vowels.append('sh')
+                    tba = ''
+
+                elif prev == 'c' and word[i] == 'h':
+                    # print("appending ch")
+                    word_split_on_vowels.append('ch')
+                    tba = ''
+
+                elif prev == 't' and word[i] == 'h':
+                    # print("appending th")
+                    word_split_on_vowels.append('th')
+                    tba = ''
+
+                elif prev == 's' and word[i] == 'c':
+                    # print("appending sc")
+                    word_split_on_vowels.append('sc')
+                    tba = ''
+
+                elif prev == 'q' and word[i] == 'u':
+                    # print("appending qu")
+                    word_split_on_vowels.append('qu')
+                    tba = ''
+
+                elif prev == 'w' and word[i] == 'h':
+                    # print("appending wh")
+                    word_split_on_vowels.append('wh')
+                    tba = ''
+
+                elif prev == word[i]:
+                    # print("appending prev plus word[i]")
+                    word_split_on_vowels.append(prev+word[i])
+                    tba = ''
+
+                elif prev is None:
+                   tba+= word[i]
+                   pass
+
+                else:
+                    word_split_on_vowels.append(prev)
+                    tba = ''
+                    tba += word[i]
+
                 prevWasVowel = False
+
+                if word[i] == 't':
+                    prevWasT = True
+                elif word[i] == 's':
+                    prevWasS = True
+                prev = word[i]
+
             # print(i, len(word)-1)
-            if i == len(word)-1:
+            if (i == len(word)-1) and (tba != ''):
                 word_split_on_vowels.append(tba)
-                # print("added", tba)
+                # print("added at the end", tba)
 
         # print(word, word_split_on_vowels)
 
         return word_split_on_vowels
 
     def matchVowelsWithTokens(self, word, tokenizedWord):
-        split_pronunciation = tokenizedWord.split(' ')
+        split_pronunciation = tokenizedWord.strip().split(' ')
         if len(word) == len(split_pronunciation):
-            for i in range(len(word)):
-                print(word[i], split_pronunciation[i])
+            # print("SAME", word, split_pronunciation)
+            self.correct +=1
 
         elif len(word) < len(split_pronunciation):
             print("MORE TOKENS IN PRONUNCIATION", word, split_pronunciation)
+            self.misses += 1
 
         else:
             print("FEWER TOKENS IN PRONUNCIATION", word, split_pronunciation)
-
-
+            self.misses += 1
 
 
     def phonetic_transcript(self, file_name):
@@ -140,33 +222,40 @@ class Tagtext:
                     #                     print(self.OP)
                     #                     print(self.OP[word])
                     if word in self.OP:  # TODO find a better way to resolve non-standard words
-                        print("word in self.OP: ", word)
+                        # print("word in self.OP: ", word)
                         if '=' in self.OP[word]:
                             if word in self.transcr:  # TODO find a better way to resolve non-standard words
                                 phonetic_list = self.transcr[word][0]
                                 phonetic_string = ""
                                 for sound in phonetic_list:  # this is inefficient
-                                    sound = sound.strip(":")
-                                    sound = sound.strip("'")
-                                    if ":" not in sound and "'" not in sound:
+                                    if (not sound == ":") and (not sound == ":") and (not sound == "ˈ") and (not sound == "ˈ"):
+                                        sound = sound.strip(":")
+                                        sound = sound.strip("'")
+                                        sound = sound.strip("0123456789")
                                         phonetic_string = phonetic_string + sound + " "
                                 phonetic_string = phonetic_string.strip()
+                                # print("phonetic string:", phonetic_string, "phonetic list:", phonetic_list)
                                 split_word = self.split_along_consonants_and_vowels(word)
                                 self.matchVowelsWithTokens(split_word, phonetic_string)
                                 # dest_file.write(word + ", " + phonetic_string + ", " + "s"+", " + "\n")
                         else:
                             phonetic_list = self.OP[word].split(" ")
                             # print(phonetic_list)
+                            # print(phonetic_list)
                             # phonetic_string=""
                             # for sound in phonetic_list: #this is inefficient
                             #     phonetic_string = phonetic_string+sound+" "
                             phonetic_string = ""
                             for sound in phonetic_list:  # this is inefficient
-                                sound = sound.strip(":")
-                                sound = sound.strip("'")
-                                if ":" not in sound and "'" not in sound:
+                                if (not sound == ":") and (not sound == ":") and (not sound == "ˈ") and (not sound == "ˈ"):
+                                    sound = sound.strip(":")
+                                    sound = sound.strip("'")
+                                    sound = sound.strip("1234567890")
                                     phonetic_string = phonetic_string + sound + " "
-                            phonetic_string = phonetic_string.join("").strip()
+                                # else:
+                                #     print(sound)
+                            # phonetic_string = (" ").join(phonetic_list).strip()
+                            # print(phonetic_string)
                             split_word = self.split_along_consonants_and_vowels(word)
                             self.matchVowelsWithTokens(split_word,phonetic_string)
                             # dest_file.write(word + ", " + phonetic_list + ", " + "s"+", " + "\n")
@@ -174,6 +263,7 @@ class Tagtext:
                         phonetic_list = self.transcr[word][0]
                         phonetic_string = ""
                         for sound in phonetic_list:  # this is inefficient
+                            sound = sound.strip("1234567890")
                             phonetic_string = phonetic_string + sound + " "
                         split_word = self.split_along_consonants_and_vowels(word)
                         phonetic_string = phonetic_string.strip()
@@ -203,9 +293,12 @@ class Tagtext:
 def main():
 
     tagtext = Tagtext()
-    # tagtext.split_along_consonants_and_vowels("corbo")
+    # tagtext.split_along_consonants_and_vowels("access")
+
     tagtext.get_OP()
     tagtext.get_all_character_texts()
+    print("misses: ", tagtext.misses, "correct: ", tagtext.correct)
+
     #transcriber.omission_printer()
 
 if __name__ == "__main__":
