@@ -36,6 +36,7 @@ class Tagtext:
                                'MM', 'MV', 'Wiv', 'MND', 'Ado', 'Oth', 'Per', 'R2', 'R3', 'Rom',
                                'Shr', 'Tmp', 'Tim', 'Tit', 'Tro', 'TN', 'TGV', 'TNK', 'WT']
         self.vowels = ['AA', 'AE', 'AH', 'AO', 'AW', 'AY', 'EH', 'ER', 'EY', 'IH', 'IY', 'OW', 'OY', 'UH', 'UW']
+        self.OpheliaVowels = ['IH', 'IY', 'EY', 'AY','AE','UW','UH','AA','AO']
         self.omission_dict = {}
         self.word_count = 0
         self.misses = 0
@@ -160,6 +161,11 @@ class Tagtext:
                     word_split_on_vowels.append('wh')
                     tba = ''
 
+                elif prev == 'w' and word[i] == 'r':
+                    # print("appending wh")
+                    word_split_on_vowels.append('wr')
+                    tba = ''
+
                 elif prev == word[i]:
                     # print("appending prev plus word[i]")
                     word_split_on_vowels.append(prev+word[i])
@@ -194,15 +200,23 @@ class Tagtext:
     def matchVowelsWithTokens(self, word, tokenizedWord):
         split_pronunciation = tokenizedWord.strip().split(' ')
         if len(word) == len(split_pronunciation):
-            # print("SAME", word, split_pronunciation)
+            # print("SAME", word, split_pronunciation, word.append(split_pronunciation))
+            topics = []
+            for phoneme in split_pronunciation:
+                if phoneme in self.OpheliaVowels:
+                    topics.append(phoneme)
+            returnobject = [word,split_pronunciation,topics]
+            print(returnobject)
             self.correct +=1
+            # print([word.append(split_pronunciation)])
+            return returnobject
 
         elif len(word) < len(split_pronunciation):
-            print("MORE TOKENS IN PRONUNCIATION", word, split_pronunciation)
+            # print("MORE TOKENS IN PRONUNCIATION", word, split_pronunciation)
             self.misses += 1
 
         else:
-            print("FEWER TOKENS IN PRONUNCIATION", word, split_pronunciation)
+            # print("FEWER TOKENS IN PRONUNCIATION", word, split_pronunciation)
             self.misses += 1
 
 
@@ -213,7 +227,7 @@ class Tagtext:
         '''
         root = nltk.data.find('/')
         with open('res/{}.txt'.format(file_name), 'r') as corpus:  # source file
-            with open('tagtext/{}_orig.csv'.format(file_name), 'a') as dest_file:  # destination
+            with open('tagtext/{}_orig1.csv'.format(file_name), 'a') as dest_file:  # destination
                 corpus_text = corpus.read().lower().split()  # normalize
                 for word in corpus_text:
                     self.word_count += 1
@@ -236,8 +250,10 @@ class Tagtext:
                                 phonetic_string = phonetic_string.strip()
                                 # print("phonetic string:", phonetic_string, "phonetic list:", phonetic_list)
                                 split_word = self.split_along_consonants_and_vowels(word)
-                                self.matchVowelsWithTokens(split_word, phonetic_string)
-                                # dest_file.write(word + ", " + phonetic_string + ", " + "s"+", " + "\n")
+                                taco = (self.matchVowelsWithTokens(split_word, phonetic_string))
+                                if taco is not None and taco[0] is not None:
+                                    dest_file.write(
+                                        "".join(taco[0]) + "," + "'" + ",".join(taco[1]) + "'" + ", " + "s" + ", " +",".join(taco[2])+ "\n")
                         else:
                             phonetic_list = self.OP[word].split(" ")
                             # print(phonetic_list)
@@ -257,8 +273,11 @@ class Tagtext:
                             # phonetic_string = (" ").join(phonetic_list).strip()
                             # print(phonetic_string)
                             split_word = self.split_along_consonants_and_vowels(word)
-                            self.matchVowelsWithTokens(split_word,phonetic_string)
-                            # dest_file.write(word + ", " + phonetic_list + ", " + "s"+", " + "\n")
+
+                            taco = (self.matchVowelsWithTokens(split_word, phonetic_string))
+                            if taco is not None and taco[0] is not None:
+                                dest_file.write(
+                                    "".join(taco[0]) + "," + "'" + ",".join(taco[1]) + "'" + ", " + "s" + ", " +",".join(taco[2])+ "\n")
                     elif word in self.transcr:  # TODO find a better way to resolve non-standard words
                         phonetic_list = self.transcr[word][0]
                         phonetic_string = ""
@@ -267,8 +286,11 @@ class Tagtext:
                             phonetic_string = phonetic_string + sound + " "
                         split_word = self.split_along_consonants_and_vowels(word)
                         phonetic_string = phonetic_string.strip()
-                        self.matchVowelsWithTokens(split_word, phonetic_string)
-                        # dest_file.write(word+", "+ phonetic_string + ", " + "s" + ", " + "\n")
+                        taco = (self.matchVowelsWithTokens(split_word, phonetic_string))
+                        print(taco, type(taco))
+                        if taco is not None and taco[0] is not None:
+                            dest_file.write(
+                                "".join(taco[0]) + "," + "'" + ",".join(taco[1]) + "'" + ", " + "s" + ", " +",".join(taco[2])+ "\n")
                     # this was for omission finder testing
                     else:
                         word = self.normalize_caseless(word)

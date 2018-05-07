@@ -30,7 +30,7 @@ var x = d3.scaleBand(),
 //tooltip displaying character name
 var tip = d3.select("body").append("div").attr("class", "toolTip");
 
-var currentPlay = ""
+var currentPlay = "";
 
 //update sliderbar value (function not called by its name but by queryselector)
 function outputUpdate(numlines) {
@@ -92,7 +92,7 @@ d3.csv(DATA_URL,
         
         //create the range slider
         var rangeSlider = d3.select("#rangeSlider")
-            .on("change", onchange)
+            .on("change", onchange);
         
         //create the play dropdown
         var playMenu = d3.select("#navbar")
@@ -111,7 +111,7 @@ d3.csv(DATA_URL,
             })
             .attr("value", function (d) {
                 return d.key;
-            })
+            });
         
         //create a checklist for the play options
         function characterChecklist(selectPlay) {
@@ -182,153 +182,256 @@ d3.csv(DATA_URL,
                 
         };
 
-        function zoom(d){
-                console.log(d)
-//                toggleHidden(true)
-//
-//                detailView = d3.select("#detail_view")
-//                detailView.selectAll('.zoom').remove()
-//
-//                detailG = detailView.selectAll('g')
-//                    .data(d).enter()
-//
-//
-//                zoom = detailG.append("g")
-//                    .attr("class", "zoom")
+        function zoom(d) {
+            console.log(d)
+            toggleHidden(true)
 
-        }
+            details = d3.select("#detailView").selectAll("svg")
+                .data([d])
+
+            var charGroups = details.enter()
+                .append("svg:svg")
+                .attr("width", "100%")
+                .attr("height","100%")
+                .attr("class","charGroups")
+
+
+            // detailView = d3.select("#detail_view")
+            // detailView.selectAll('.zoom').remove()
+            //
+            // detailG = detailView.data(d).enter()
+            //     .append("svg:svg")
+            //     .attr("width", "100%")
+            //     .attr("height","100%")
+            //     .attr("class", "charGroups")
+
+            details.each(draw)
+
+
+            // var zoom = detailG.append("g")
+            //     .attr("class", "zoom")
+            //
+            // var charGroups = d3.select(".zoom").selectAll("svg")
+            //     .data(d);
+            //
+            //
+            // var cgEnter = charGroups.enter()
+            //     .append("svg:svg")
+            //     .attr("width", "100%")
+            //     .attr("height","100%")
+            //     .attr("class", "charGroups")
+            //
+            // cgEnter.each(draw)
+        };
+
+
+
+
 
         function toggleHidden(show){
-            d3.select("#previews").classed("hidden", show).classed("visible", !show)
-            d3.select("#detail").classed("hidden", !show).classed("visible", show)
+            d3.select("#detailView").classed("hidden", show).classed("visible", !show)
+            d3.select("#about").classed("hidden", !show).classed("visible", show)
+        }
+
+        function draw(d){
+            console.log(d)
+
+            var initialbars = d3.select(this).selectAll("bar")
+                .data(d.values
+                );
+
+            initialbars.enter()
+                .append("rect")
+                .attr("class", "zBar")
+                .attr("x", function (d) {
+                    return x([d.phoneme]);
+                })
+
+                .attr("width", width / phonemeOrder.length)
+                // .attr("height", function(d){
+                //                    return Math.abs(y(d.zscore)-y(0));
+                //                })
+                .attr("fill", function (d) {
+                    var phoneme = d.phoneme;
+                    return color(phonemes[phoneme]);
+                })
+                .attr("title", function (d) {
+                    return d.phoneme;
+                })
+                .on('mouseover', function (d) {
+
+                    var charactertext = d.character
+                    var xPosition = parseFloat(d3.select(this).attr("x"));
+                    var yPosition = parseFloat(d3.select(this).attr("y"));
+
+                    d3.selectAll(".toolTip")
+                        .style("display", "inherit")
+                        .style("left", xPosition + "px")
+                        .style("top", yPosition + "px")
+                        .text(charactertext);
+                })
+                .on('mouseout', function (d) {
+                    tip.style("display", "none");
+                });
+
+            d3.selectAll('.zBar')
+                .attr("height", function (d) {
+                    return Math.abs(y(d.zscore) - y(0));
+                })
+                .attr("y", function (d) {
+                    if (d.zscore > 0) {
+                        return y(d.zscore);
+                    }
+                    else {
+                        return y(0);
+                    }
+                });
+            var labels = d3.select(this)
+            // .enter()
+                .append("text")
+                .attr("x", 0)
+                .attr("y", 10)
+                .text(function (d) {
+                    return d.key;
+                })
+                .attr("font-size", "8px");
+
+
+
         }
 
         //graph
-        var initialGraph = function(play,numlines,checked) {
-           //if no checkboxes due to recent change of play
-           if (typeof checked === 'undefined'){
-               filteredData = data.filter(function (d){
-                   return (d.numlines >= numlines);
-               })
-           }
-           else{
-              filteredData = data.filter(function (d){
-                  if (checked.indexOf(d.character) != -1){
-                      return (d.numlines >= numlines);
-                  }
-              });
-           }
-           //create a nest
-           playCharNest = calculateNest(filteredData);
-           
-           //filter by selected play
-           var selectPlay = playCharNest.filter(function(d){
-               return (d.key == play);
-           })
-           
-           //sort play characters by number of lines
-           selectPlay[0].value.character.sort(function(a, b){
-               return b.values[0].numlines-a.values[0].numlines;
-           });
-           
-           //set the maximum value of the slider bar to the max numlines for a char of that play
-           var sliderBarMax = d3.select("#rangeSlider")
-               .attr("max", selectPlay[0].value.maxNumlines);
-           
-           if (currentPlay != play){
-               var checkBoxes = characterChecklist(selectPlay[0].value.character)
-               currentPlay = play;
-           }
-           
-           //d3.selectAll(".charGroups").exit().remove();
-           //create an svg for each character    
-           var charGroups = d3.select(".main").selectAll("svg")
-               .data(selectPlay[0].value.character, 
-                   function (d){
-                       return d.key;
-                   }
-               );
+        var initialGraph;
+        initialGraph = function (play, numlines, checked) {
+            //if no checkboxes due to recent change of play
+            if (typeof checked === 'undefined') {
+                filteredData = data.filter(function (d) {
+                    return (d.numlines >= numlines);
+                })
+            }
+            else {
+                filteredData = data.filter(function (d) {
+                    if (checked.indexOf(d.character) != -1) {
+                        return (d.numlines >= numlines);
+                    }
+                });
+            }
+            //create a nest
+            playCharNest = calculateNest(filteredData);
+
+            //filter by selected play
+            var selectPlay = playCharNest.filter(function (d) {
+                return (d.key == play);
+            })
+
+            //sort play characters by number of lines
+            selectPlay[0].value.character.sort(function (a, b) {
+                return b.values[0].numlines - a.values[0].numlines;
+            });
+
+            //set the maximum value of the slider bar to the max numlines for a char of that play
+            var sliderBarMax = d3.select("#rangeSlider")
+                .attr("max", selectPlay[0].value.maxNumlines);
+
+            if (currentPlay != play) {
+                var checkBoxes = characterChecklist(selectPlay[0].value.character)
+                currentPlay = play;
+            }
+
+            //d3.selectAll(".charGroups").exit().remove();
+            //create an svg for each character
+            var charGroups = d3.select(".main").selectAll("svg")
+                .data(selectPlay[0].value.character,
+                    function (d) {
+                        return d.key;
+                    }
+                );
 
 
-           var cgEnter = charGroups.enter()
-               .append("svg:svg")
-               .attr("width", width + margin.left + margin.right)
-               .attr("height", height + margin.top + margin.bottom)
-               .attr("class","charGroups")
-               /*.each(function(d){
-                   y.domain(selectPlay[0].value.zscoreExtent);
-               });*/
-               .on('click', function(d){zoom(d)});
-            
-           y.domain(selectPlay[0].value.zscoreExtent); 
-           
-           var initialbars = cgEnter.selectAll("bar")
-               .data(function (d) {
-                   return d.values;
-               });
-               
-           initialbars.enter()
-               .append("rect")
-               .attr("class", "zBar")
-               .attr("x", function(d){
-                  return x([d.phoneme]); 
-               })
-               
-               .attr("width", width/phonemeOrder.length)
-               // .attr("height", function(d){
-//                    return Math.abs(y(d.zscore)-y(0)); 
-//                })
-               .attr("fill",function(d){
-                   var phoneme = d.phoneme; 
-                   return color(phonemes[phoneme]);
-               })
-               .attr("title", function(d) {
-                   return d.phoneme;
-               })
-               .on('mouseover', function(d) {  
-             
-                   var charactertext = d.character
-                   var xPosition = parseFloat(d3.select(this).attr("x"));
-                   var yPosition = parseFloat(d3.select(this).attr("y"));
-         
-                   d3.selectAll(".toolTip")
-                     .style("display","inherit")
-                     .style("left", xPosition+"px")
-                     .style("top", yPosition+"px")
-                     .text(charactertext);
-               })
-               .on('mouseout', function(d){
-                   tip.style("display","none");
-               });
-               
-               d3.selectAll('.zBar')
-                   .attr("height", function(d){
-                       return Math.abs(y(d.zscore)-y(0)); 
-                   })
-                   .attr("y", function(d){ 
-                      if (d.zscore > 0) {
-                          return y(d.zscore);
-                       } 
-                       else {
-                          return y(0);
-                       } 
-                   });
-               var labels = d3.selectAll(".charGroups")
-                   // .enter()
-                   .append("text")
-                   .attr("x",0)
-                   .attr("y",10)
-                   .text( function(d) {
-                       return d.key;
-                   })
-                   .attr("font-size","8px");
-               
-               charGroups.exit().remove();
-               // d3.selectAll("text").exit().remove();
-               
-               
+            var cgEnter = charGroups.enter()
+                .append("svg:svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("class", "charGroups")
+                /*.each(function(d){
+                    y.domain(selectPlay[0].value.zscoreExtent);
+                });*/
+                .on('click', function (d) {
+                    zoom(d)
+                });
 
-           }
+
+
+            y.domain(selectPlay[0].value.zscoreExtent);
+
+            cgEnter.each(draw)
+
+            // var initialbars = cgEnter.selectAll("bar")
+            //     .data(function (d) {
+            //         return d.values;
+            //     });
+            //
+            // initialbars.enter()
+            //     .append("rect")
+            //     .attr("class", "zBar")
+            //     .attr("x", function (d) {
+            //         return x([d.phoneme]);
+            //     })
+            //
+            //     .attr("width", width / phonemeOrder.length)
+            //     // .attr("height", function(d){
+            //     //                    return Math.abs(y(d.zscore)-y(0));
+            //     //                })
+            //     .attr("fill", function (d) {
+            //         var phoneme = d.phoneme;
+            //         return color(phonemes[phoneme]);
+            //     })
+            //     .attr("title", function (d) {
+            //         return d.phoneme;
+            //     })
+            //     .on('mouseover', function (d) {
+            //
+            //         var charactertext = d.character
+            //         var xPosition = parseFloat(d3.select(this).attr("x"));
+            //         var yPosition = parseFloat(d3.select(this).attr("y"));
+            //
+            //         d3.selectAll(".toolTip")
+            //             .style("display", "inherit")
+            //             .style("left", xPosition + "px")
+            //             .style("top", yPosition + "px")
+            //             .text(charactertext);
+            //     })
+            //     .on('mouseout', function (d) {
+            //         tip.style("display", "none");
+            //     });
+            //
+            // d3.selectAll('.zBar')
+            //     .attr("height", function (d) {
+            //         return Math.abs(y(d.zscore) - y(0));
+            //     })
+            //     .attr("y", function (d) {
+            //         if (d.zscore > 0) {
+            //             return y(d.zscore);
+            //         }
+            //         else {
+            //             return y(0);
+            //         }
+            //     });
+            // var labels = d3.selectAll(".charGroups")
+            // // .enter()
+            //     .append("text")
+            //     .attr("x", 0)
+            //     .attr("y", 10)
+            //     .text(function (d) {
+            //         return d.key;
+            //     })
+            //     .attr("font-size", "8px");
+
+            charGroups.exit().remove();
+            // d3.selectAll("text").exit().remove();
+
+
+        };
            initialGraph("1H4", 0)                
     }
 );     
