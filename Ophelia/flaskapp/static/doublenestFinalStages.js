@@ -188,12 +188,12 @@ d3.csv(DATA_URL,
 
             details = d3.select("#detailView").selectAll("svg")
                 .data([d])
-
-            var charGroups = details.enter()
+                .enter()
                 .append("svg:svg")
                 .attr("width", "100%")
                 .attr("height","100%")
                 .attr("class","charGroups")
+                .each(draw)
 
 
             // detailView = d3.select("#detail_view")
@@ -205,7 +205,7 @@ d3.csv(DATA_URL,
             //     .attr("height","100%")
             //     .attr("class", "charGroups")
 
-            details.each(draw)
+
 
 
             // var zoom = detailG.append("g")
