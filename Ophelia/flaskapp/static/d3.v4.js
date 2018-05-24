@@ -5816,7 +5816,7 @@ treeProto.size = tree_size;
 treeProto.visit = tree_visit;
 treeProto.visitAfter = tree_visitAfter;
 treeProto.x = tree_x;
-treeProto.y = tree_y;
+treeProto.yOF = tree_y;
 
 function x(d) {
   return d.x + d.vx;
@@ -6459,7 +6459,7 @@ var formatTypes = {
   "x": function(x) { return Math.round(x).toString(16); }
 };
 
-// [[fill]align][sign][symbol][0][width][,][.precision][type]
+// [[fill]align][sign][symbol][0][smallWidth][,][.precision][type]
 var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
 
 function formatSpecifier(specifier) {
@@ -9618,15 +9618,15 @@ var cluster = function() {
     var previousNode,
         x = 0;
 
-    // First walk, computing the initial x & y values.
+    // First walk, computing the initial x & yOF values.
     root.eachAfter(function(node) {
       var children = node.children;
       if (children) {
         node.x = meanX(children);
-        node.y = maxY(children);
+        node.yOF = maxY(children);
       } else {
         node.x = previousNode ? x += separation(node, previousNode) : 0;
-        node.y = 0;
+        node.yOF = 0;
         previousNode = node;
       }
     });
@@ -9636,7 +9636,7 @@ var cluster = function() {
         x0 = left.x - separation(left, right) / 2,
         x1 = right.x + separation(right, left) / 2;
 
-    // Second walk, normalizing x & y to the desired size.
+    // Second walk, normalizing x & yOF to the desired size.
     return root.eachAfter(nodeSize ? function(node) {
       node.x = (node.x - root.x) * dx;
       node.y = (root.y - node.y) * dy;
@@ -10464,10 +10464,10 @@ var tree = function() {
     t.eachAfter(firstWalk), t.parent.m = -t.z;
     t.eachBefore(secondWalk);
 
-    // If a fixed node size is specified, scale x and y.
+    // If a fixed node size is specified, scale x and yOF.
     if (nodeSize) root.eachBefore(sizeNode);
 
-    // If a fixed tree size is specified, scale x and y based on the extent.
+    // If a fixed tree size is specified, scale x and yOF based on the extent.
     // Compute the left-most, right-most, and depth-most nodes for extents.
     else {
       var left = root,
@@ -10484,7 +10484,7 @@ var tree = function() {
           ky = dy / (bottom.depth || 1);
       root.eachBefore(function(node) {
         node.x = (node.x + tx) * kx;
-        node.y = node.depth * ky;
+        node.yOF = node.depth * ky;
       });
     }
 
@@ -10880,7 +10880,7 @@ var centroid$1 = function(polygon) {
 
 // Returns the 2D cross product of AB and AC vectors, i.e., the z-component of
 // the 3D cross product in a quadrant I Cartesian coordinate system (+x is
-// right, +y is up). Returns a positive value if ABC is counter-clockwise,
+// right, +yOF is up). Returns a positive value if ABC is counter-clockwise,
 // negative if clockwise, and zero if the points are collinear.
 var cross$1 = function(a, b, c) {
   return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
@@ -10891,7 +10891,7 @@ function lexicographicOrder(a, b) {
 }
 
 // Computes the upper convex hull per the monotone chain algorithm.
-// Assumes points.length >= 3, is sorted by x, unique in y.
+// Assumes points.length >= 3, is sorted by x, unique in yOF.
 // Returns an array of indices into points in left-to-right order.
 function computeUpperHullIndexes(points) {
   var n = points.length,
@@ -11128,7 +11128,7 @@ var normal = ((function sourceRandomNormal(source) {
       // If available, use the second previously-generated uniform random.
       if (x != null) y = x, x = null;
 
-      // Otherwise, generate a new x and y.
+      // Otherwise, generate a new x and yOF.
       else do {
         x = source() * 2 - 1;
         y = source() * 2 - 1;
@@ -15618,7 +15618,7 @@ function attachCircle(arc) {
   circle.arc = arc;
   circle.site = cSite;
   circle.x = x + bx;
-  circle.y = (circle.cy = y + by) + Math.sqrt(x * x + y * y); // y bottom
+  circle.y = (circle.cy = y + by) + Math.sqrt(x * x + y * y); // yOF bottom
 
   arc.circle = circle;
 

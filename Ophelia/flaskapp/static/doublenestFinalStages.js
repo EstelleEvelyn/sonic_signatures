@@ -21,11 +21,22 @@ var color = d3.scaleLinear().domain([0,1.7]).range([minimumColor, maximumColor])
 
 //margin
 var margin = {top: 10, right: 10, bottom: 15, left: 10},
-    width = 120 - margin.left - margin.right,
-    height = 100 - margin.top - margin.bottom;
+    smallWidth = 120 - margin.left - margin.right,
+    smallHeight = 100 - margin.top - margin.bottom,
+    bigWidth = 200,
+    bigHeight = 200;
 
-var x = d3.scaleBand(),         
-    y = d3.scaleLinear().rangeRound([height, 0]);
+var domains = {
+    maindomain:[],
+    detaildomain:[]
+
+}
+
+var numberOfSVGsinDisplayDiv = 0;
+
+var xOF = d3.scaleBand(),
+    yOF = d3.scaleLinear();
+    // yOF = d3.scaleLinear().rangeRound([smallHeight, 0]);
 
 //tooltip displaying character name
 var tip = d3.select("body").append("div").attr("class", "toolTip");
@@ -87,9 +98,7 @@ d3.csv(DATA_URL,
         
         playCharNest = calculateNest(data);
         
-        //set up x axis scaling using array of phonemes
-        x.domain(phonemeOrder).range([0,width]);
-        
+
         //create the range slider
         var rangeSlider = d3.select("#rangeSlider")
             .on("change", onchange);
@@ -182,59 +191,76 @@ d3.csv(DATA_URL,
                 
         };
 
+        function close(){
+           this.parentElement.remove()
+        }
+
         function zoom(d) {
             console.log(d)
             toggleHidden(true)
 
-            details = d3.select("#detailView").selectAll("svg")
+            d3.select("#detailView").append("div").attr("class",'emptyDetail')
+
+            details = d3.selectAll(".emptyDetail").selectAll("svg")
                 .data([d])
                 .enter()
                 .append("svg:svg")
                 .attr("width", "100%")
-                .attr("height","100%")
-                .attr("class","charGroups")
+                .attr("height","200px")
+                .attr("class","detailCharGroups")
                 .each(draw)
+                .each(drawDetails)
+
+            d3.selectAll(".emptyDetail").classed("emptyDetail",false);
+
+            d3.selectAll(".detailCharGroups")
+                .classed("closeable",true)
+                .on("click",close);
 
 
-            // detailView = d3.select("#detail_view")
-            // detailView.selectAll('.zoom').remove()
-            //
-            // detailG = detailView.data(d).enter()
-            //     .append("svg:svg")
+
+            // details.enter().append("svg:svg")
             //     .attr("width", "100%")
-            //     .attr("height","100%")
-            //     .attr("class", "charGroups")
-
-
-
-
-            // var zoom = detailG.append("g")
-            //     .attr("class", "zoom")
-            //
-            // var charGroups = d3.select(".zoom").selectAll("svg")
-            //     .data(d);
-            //
-            //
-            // var cgEnter = charGroups.enter()
-            //     .append("svg:svg")
-            //     .attr("width", "100%")
-            //     .attr("height","100%")
-            //     .attr("class", "charGroups")
-            //
-            // cgEnter.each(draw)
+            //     .attr("height","200px")
+            //     .attr("class","detailCharGroups")
+            //     .each(draw)
+            // details.exit().remove();
         };
 
 
-
-
-
         function toggleHidden(show){
-            d3.select("#detailView").classed("hidden", show).classed("visible", !show)
-            d3.select("#about").classed("hidden", !show).classed("visible", show)
+            d3.select("#detailView").classed("hidden", !show).classed("visible", show)
+            d3.select("#about").classed("hidden", show).classed("visible", show)
+        }
+
+        function drawDetails(d){
+            d3.selectAll(".detailCharGroups").selectAll("rect")
+                .append("g")
+                .append("text")
+                .attr("x",this.x.baseVal.value).attr("y",this.y.baseVal.value)
+                .text(function(d){return d.phoneme;})
+
         }
 
         function draw(d){
-            console.log(d)
+            // console.log(d)
+
+            //set up x axis scaling using array of phonemes
+
+            if(this.className.baseVal == "charGroups"){
+                targetWidth = smallWidth;
+                targetHeight = smallHeight;
+                targetYDomain = domains.maindomain
+            }else if(this.className.baseVal == "detailCharGroups"){
+                targetWidth = bigWidth;
+                targetHeight = bigHeight;
+                domains.detaildomain = d3.extent(d.values, function(element){return(element.zscore);});
+                targetYDomain = domains.detaildomain;
+            }
+
+
+            xOF.domain(phonemeOrder).range([0,targetWidth]);
+            yOF.rangeRound([targetHeight, 0]).domain(targetYDomain);
 
             var initialbars = d3.select(this).selectAll("bar")
                 .data(d.values
@@ -244,12 +270,12 @@ d3.csv(DATA_URL,
                 .append("rect")
                 .attr("class", "zBar")
                 .attr("x", function (d) {
-                    return x([d.phoneme]);
+                    return xOF([d.phoneme]);
                 })
 
-                .attr("width", width / phonemeOrder.length)
+                .attr("width", targetWidth / phonemeOrder.length)
                 // .attr("height", function(d){
-                //                    return Math.abs(y(d.zscore)-y(0));
+                //                    return Math.abs(yOF(d.zscore)-yOF(0));
                 //                })
                 .attr("fill", function (d) {
                     var phoneme = d.phoneme;
@@ -274,16 +300,16 @@ d3.csv(DATA_URL,
                     tip.style("display", "none");
                 });
 
-            d3.selectAll('.zBar')
+            d3.select(this).selectAll('.zBar')
                 .attr("height", function (d) {
-                    return Math.abs(y(d.zscore) - y(0));
+                    return Math.abs(yOF(d.zscore) - yOF(0));
                 })
                 .attr("y", function (d) {
                     if (d.zscore > 0) {
-                        return y(d.zscore);
+                        return yOF(d.zscore);
                     }
                     else {
-                        return y(0);
+                        return yOF(0);
                     }
                 });
             var labels = d3.select(this)
@@ -295,6 +321,19 @@ d3.csv(DATA_URL,
                     return d.key;
                 })
                 .attr("font-size", "8px");
+
+            if(this.className.baseVal == "detailCharGroups"){
+                var details = d3.select(this).selectAll('.zBar').append("text")
+                    .attr("x",0)
+                    .attr("y",10)
+                    .text(function(d){
+                        return d.phoneme;
+                    })
+                    .attr("font-size","12px")
+
+
+            }
+
 
 
 
@@ -338,7 +377,6 @@ d3.csv(DATA_URL,
                 currentPlay = play;
             }
 
-            //d3.selectAll(".charGroups").exit().remove();
             //create an svg for each character
             var charGroups = d3.select(".main").selectAll("svg")
                 .data(selectPlay[0].value.character,
@@ -347,89 +385,26 @@ d3.csv(DATA_URL,
                     }
                 );
 
+            domains.maindomain = selectPlay[0].value.zscoreExtent;
 
             var cgEnter = charGroups.enter()
                 .append("svg:svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
+                .attr("width", smallWidth + margin.left + margin.right)
+                .attr("height", smallHeight + margin.top + margin.bottom)
                 .attr("class", "charGroups")
-                /*.each(function(d){
-                    y.domain(selectPlay[0].value.zscoreExtent);
-                });*/
                 .on('click', function (d) {
                     zoom(d)
-                });
+                })
+            ;
+
+            d3.selectAll(".charGroups").each(draw)
+            // var desiredYDomain = selectPlay[0].value.zscoreExtent;
 
 
+            // yOF.domain(selectPlay[0].value.zscoreExtent);
 
-            y.domain(selectPlay[0].value.zscoreExtent);
-
-            cgEnter.each(draw)
-
-            // var initialbars = cgEnter.selectAll("bar")
-            //     .data(function (d) {
-            //         return d.values;
-            //     });
-            //
-            // initialbars.enter()
-            //     .append("rect")
-            //     .attr("class", "zBar")
-            //     .attr("x", function (d) {
-            //         return x([d.phoneme]);
-            //     })
-            //
-            //     .attr("width", width / phonemeOrder.length)
-            //     // .attr("height", function(d){
-            //     //                    return Math.abs(y(d.zscore)-y(0));
-            //     //                })
-            //     .attr("fill", function (d) {
-            //         var phoneme = d.phoneme;
-            //         return color(phonemes[phoneme]);
-            //     })
-            //     .attr("title", function (d) {
-            //         return d.phoneme;
-            //     })
-            //     .on('mouseover', function (d) {
-            //
-            //         var charactertext = d.character
-            //         var xPosition = parseFloat(d3.select(this).attr("x"));
-            //         var yPosition = parseFloat(d3.select(this).attr("y"));
-            //
-            //         d3.selectAll(".toolTip")
-            //             .style("display", "inherit")
-            //             .style("left", xPosition + "px")
-            //             .style("top", yPosition + "px")
-            //             .text(charactertext);
-            //     })
-            //     .on('mouseout', function (d) {
-            //         tip.style("display", "none");
-            //     });
-            //
-            // d3.selectAll('.zBar')
-            //     .attr("height", function (d) {
-            //         return Math.abs(y(d.zscore) - y(0));
-            //     })
-            //     .attr("y", function (d) {
-            //         if (d.zscore > 0) {
-            //             return y(d.zscore);
-            //         }
-            //         else {
-            //             return y(0);
-            //         }
-            //     });
-            // var labels = d3.selectAll(".charGroups")
-            // // .enter()
-            //     .append("text")
-            //     .attr("x", 0)
-            //     .attr("y", 10)
-            //     .text(function (d) {
-            //         return d.key;
-            //     })
-            //     .attr("font-size", "8px");
 
             charGroups.exit().remove();
-            // d3.selectAll("text").exit().remove();
-
 
         };
            initialGraph("1H4", 0)                
