@@ -229,7 +229,7 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
                .attr("height", height + margin.top + margin.bottom)
                .attr("class","charGroups")
                /*.each(function(d){
-                   y.domain(selectPlay[0].value.zscoreExtent);
+                   yOF.domain(selectPlay[0].value.zscoreExtent);
                });*/
             
            y.domain(selectPlay[0].value.zscoreExtent); 
@@ -247,8 +247,8 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
                })
                
                .attr("width", width/phonemeOrder.length)
-               // .attr("height", function(d){
-//                    return Math.abs(y(d.zscore)-y(0)); 
+               // .attr("smallHeight", function(d){
+//                    return Math.abs(yOF(d.zscore)-yOF(0));
 //                })
                .attr("fill",function(d){
                    var phoneme = d.phoneme; 

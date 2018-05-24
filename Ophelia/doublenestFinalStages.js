@@ -270,8 +270,8 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
 //              return d.values;
 //          })
 //          .enter().append("svg:svg")
-//          .attr("width", width + margin.left + margin.right)
-//          .attr("height", height + margin.top + margin.bottom);
+//          .attr("smallWidth", smallWidth + margin.left + margin.right)
+//          .attr("smallHeight", smallHeight + margin.top + margin.bottom);
 //   
 //      charSVG.append('title')
 //          .text(function(d) {
@@ -287,9 +287,9 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
 //      }));
 //
 //      x.domain(phonemeOrder)
-//          .range([0,width]);
+//          .range([0,smallWidth]);
 //        
-//      y.domain(d3.extent(playGroups, function(d) {
+//      yOF.domain(d3.extent(playGroups, function(d) {
 //          return d.values[0].zscore; 
 //      }));
 //     
@@ -303,16 +303,16 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
 //          .attr("x", function(d){
 //             return x([d.phoneme]); 
 //          })
-//          .attr("y", function(d){ 
+//          .attr("yOF", function(d){
 //              if (d.zscore > 0) {
-//                  return y(d.zscore);
+//                  return yOF(d.zscore);
 //          } 
 //              else {
-//                  return y(0);
+//                  return yOF(0);
 //          } })
-//          .attr("width", width/phonemeOrder.length)
-//          .attr("height", function(d){
-//              return Math.abs(y(d.zscore)-y(0)); 
+//          .attr("smallWidth", smallWidth/phonemeOrder.length)
+//          .attr("smallHeight", function(d){
+//              return Math.abs(yOF(d.zscore)-yOF(0));
 //          })
 //          .attr("fill",function(d){
 //              var phoneme = d.phoneme; 
@@ -322,7 +322,7 @@ d3.csv("../data/charPhoneZScoresNumlines.csv",
 //              
 //              var charactertext = d.character
 //              var xPosition = parseFloat(d3.select(this).attr("x"));
-//              var yPosition = parseFloat(d3.select(this).attr("y"));
+//              var yPosition = parseFloat(d3.select(this).attr("yOF"));
 //          
 //              d3.selectAll(".toolTip")
 //                .style("display","inherit")

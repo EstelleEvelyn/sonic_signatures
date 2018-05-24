@@ -35,9 +35,9 @@ var midBar = svg.append('rect')
 
 // var topBar = svg.append('rect')
 //             .attr('x', 0)
-//             .attr('y', 0)
-//             .attr('height', buffer)
-//             .attr('width', '100%')
+//             .attr('yOF', 0)
+//             .attr('smallHeight', buffer)
+//             .attr('smallWidth', '100%')
 //             .style('fill','#7fcdbb')
 
 var features = ['fricative', 'affricate', 'glide', 'nasal', 'liquid',
@@ -422,9 +422,9 @@ function loadData() {
 // //                        return raw_val+'%';
 // //                      })
 //                       .attr('x', '25.5%')
-//                       .attr('y', function() {
+//                       .attr('yOF', function() {
 //                         bar = d3.select('#'+features[i]+'_prot');
-//                         raw_val = parseFloat(bar.attr('y')) + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         raw_val = parseFloat(bar.attr('yOF')) + 0.5 * parseFloat(bar.attr('smallHeight')) + 5;
 //                         return raw_val;
 //                       })
 //                       .text('Protagonists')
@@ -441,9 +441,9 @@ function loadData() {
 // //                        raw_val = parseFloat(bar.attr('x')) + .5
 // //                        return raw_val+'%'
 // //                      })
-//                       .attr('y', function() {
+//                       .attr('yOF', function() {
 //                         bar = d3.select('#'+features[i]+'_ant')
-//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         raw_val = parseFloat(bar.attr('yOF'))  + 0.5 * parseFloat(bar.attr('smallHeight')) + 5;
 //                         return raw_val
 //                       })
 //                       .text('Antagonists')
@@ -459,9 +459,9 @@ function loadData() {
 // //                        raw_val = parseFloat(bar.attr('x')) + .5
 // //                        return raw_val+'%'
 // //                      })
-//                       .attr('y', function() {
+//                       .attr('yOF', function() {
 //                         bar = d3.select('#'+features[i]+'_fool')
-//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         raw_val = parseFloat(bar.attr('yOF'))  + 0.5 * parseFloat(bar.attr('smallHeight')) + 5;
 //                         return raw_val
 //                       })
 //                       .text('Fools')
@@ -644,9 +644,9 @@ function loadData() {
 // //                        raw_val = parseFloat(bar.attr('x')) + .5;
 // //                        return raw_val+'%';
 // //                      })
-//                       .attr('y', function() {
+//                       .attr('yOF', function() {
 //                         bar = d3.select('#'+phonemes[i]+'_prot');
-//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         raw_val = parseFloat(bar.attr('yOF'))  + 0.5 * parseFloat(bar.attr('smallHeight')) + 5;
 //                         return raw_val;
 //                       })
 //                       .text('Protagonists')
@@ -662,9 +662,9 @@ function loadData() {
 // //                        raw_val = parseFloat(bar.attr('x')) + .5
 // //                        return raw_val+'%'
 // //                      })
-//                       .attr('y', function() {
+//                       .attr('yOF', function() {
 //                         bar = d3.select('#'+phonemes[i]+'_ant')
-//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         raw_val = parseFloat(bar.attr('yOF'))  + 0.5 * parseFloat(bar.attr('smallHeight')) + 5;
 //                         return raw_val
 //                       })
 //                       .text('Antagonists')
@@ -680,9 +680,9 @@ function loadData() {
 // //                        raw_val = parseFloat(bar.attr('x')) + .5
 // //                        return raw_val+'%'
 // //                      })
-//                       .attr('y', function() {
+//                       .attr('yOF', function() {
 //                         bar = d3.select('#'+phonemes[i]+'_fool')
-//                         raw_val = parseFloat(bar.attr('y'))  + 0.5 * parseFloat(bar.attr('height')) + 5;
+//                         raw_val = parseFloat(bar.attr('yOF'))  + 0.5 * parseFloat(bar.attr('smallHeight')) + 5;
 //                         return raw_val
 //                       })
 //                       .text('Fools')
@@ -751,9 +751,9 @@ function compare() {
                                 start = fpos; //char
                               }
                             } else { //bar positive
-                              width = parseFloat(document.getElementById(features[i]+'_prot').getAttribute('width'))
+                              smallWidth = parseFloat(document.getElementById(features[i]+'_prot').getAttribute('width'))
                               if (fpos - (fprot_pos + width) > 0) { //char > bar
-                                start = fprot_pos + width; //bar + width
+                                start = fprot_pos + width; //bar + smallWidth
                               } else { //char < bar
                                 start = fpos; //char
                               }
@@ -767,7 +767,7 @@ function compare() {
                             fprotextra = parseFloat(document.getElementById(features[i]+'_prot').getAttribute('width'))
                             if (fprot_pos == 25) { //bar pos
                               if (fpos > 25 + fprotextra) { //char > bar
-                                fprot_width = fpos - (25  + fprotextra) //char - (bar+width)
+                                fprot_width = fpos - (25  + fprotextra) //char - (bar+smallWidth)
                               } else { //bar > char
                                 fprot_width = 25 + fprotextra - fpos
                               }
@@ -847,9 +847,9 @@ function compare() {
                               start = fpos; //char
                             }
                           } else { //bar positive
-                            width = parseFloat(document.getElementById(features[i]+'_ant').getAttribute('width'))
+                            smallWidth = parseFloat(document.getElementById(features[i]+'_ant').getAttribute('width'))
                             if (fpos - (fant_pos + width) > 0) { //char > bar
-                              start = fant_pos + width; //bar + width
+                              start = fant_pos + width; //bar + smallWidth
                             } else { //char < bar
                               start = fpos; //char
                             }
@@ -863,7 +863,7 @@ function compare() {
                           fantextra = parseFloat(document.getElementById(features[i]+'_ant').getAttribute('width'))
                           if (fant_pos == 25) { //bar pos
                             if (fpos > 25 + fantextra) { //char > bar
-                              fant_width = fpos - (25  + fantextra) //char - (bar+width)
+                              fant_width = fpos - (25  + fantextra) //char - (bar+smallWidth)
                             } else { //bar > char
                               fant_width = 25 + fantextra - fpos
                             }
@@ -921,9 +921,9 @@ function compare() {
                               start = fpos; //char
                             }
                           } else { //bar positive
-                            width = parseFloat(document.getElementById(features[i]+'_fool').getAttribute('width'))
+                            smallWidth = parseFloat(document.getElementById(features[i]+'_fool').getAttribute('width'))
                             if (fpos - (ffool_pos + width) > 0) { //char > bar
-                              start = ffool_pos + width; //bar + width
+                              start = ffool_pos + width; //bar + smallWidth
                             } else { //char < bar
                               start = fpos; //char
                             }
@@ -937,7 +937,7 @@ function compare() {
                           ffoolextra = parseFloat(document.getElementById(features[i]+'_fool').getAttribute('width'))
                           if (ffool_pos == 25) { //bar pos
                             if (fpos > 25 + ffoolextra) { //char > bar
-                              ffool_width = fpos - (25  + ffoolextra) //char - (bar+width)
+                              ffool_width = fpos - (25  + ffoolextra) //char - (bar+smallWidth)
                             } else { //bar > char
                               ffool_width = 25 + ffoolextra - fpos
                             }
@@ -1035,9 +1035,9 @@ function compare() {
                                 start = ppos; //char
                               }
                             } else { //bar positive
-                              width = parseFloat(document.getElementById(phonemes[i]+'_prot').getAttribute('width'))
+                              smallWidth = parseFloat(document.getElementById(phonemes[i]+'_prot').getAttribute('width'))
                               if (ppos - (pprot_pos + width) > 0) { //char > bar
-                                start = pprot_pos + width; //bar + width
+                                start = pprot_pos + width; //bar + smallWidth
                               } else { //char < bar
                                 start = ppos; //char
                               }
@@ -1051,7 +1051,7 @@ function compare() {
                             pprotextra = parseFloat(document.getElementById(phonemes[i]+'_prot').getAttribute('width'))
                             if (pprot_pos == 75.5) { //bar pos
                               if (ppos > 75.5 + pprotextra) { //char > bar
-                                pprot_width = ppos - (75.5  + pprotextra) //char - (bar+width)
+                                pprot_width = ppos - (75.5  + pprotextra) //char - (bar+smallWidth)
                               } else { //bar > char
                                 pprot_width = 75.5 + pprotextra - ppos
                               }
@@ -1131,9 +1131,9 @@ function compare() {
                               start = ppos; //char
                             }
                           } else { //bar positive
-                            width = parseFloat(document.getElementById(phonemes[i]+'_ant').getAttribute('width'))
+                            smallWidth = parseFloat(document.getElementById(phonemes[i]+'_ant').getAttribute('width'))
                             if (ppos - (pant_pos + width) > 0) { //char > bar
-                              start = pant_pos + width; //bar + width
+                              start = pant_pos + width; //bar + smallWidth
                             } else { //char < bar
                               start = ppos; //char
                             }
@@ -1147,7 +1147,7 @@ function compare() {
                           pantextra = parseFloat(document.getElementById(phonemes[i]+'_ant').getAttribute('width'))
                           if (pant_pos == 75.5) { //bar pos
                             if (ppos > 75.5 + pantextra) { //char > bar
-                              pant_width = ppos - (75.5  + pantextra) //char - (bar+width)
+                              pant_width = ppos - (75.5  + pantextra) //char - (bar+smallWidth)
                             } else { //bar > char
                               pant_width = 75.5 + pantextra - ppos
                             }
@@ -1205,9 +1205,9 @@ function compare() {
                               start = ppos; //char
                             }
                           } else { //bar positive
-                            width = parseFloat(document.getElementById(phonemes[i]+'_fool').getAttribute('width'))
+                            smallWidth = parseFloat(document.getElementById(phonemes[i]+'_fool').getAttribute('width'))
                             if (ppos - (pfool_pos + width) > 0) { //char > bar
-                              start = pfool_pos + width; //bar + width
+                              start = pfool_pos + width; //bar + smallWidth
                             } else { //char < bar
                               start = ppos; //char
                             }
@@ -1221,7 +1221,7 @@ function compare() {
                           pfoolextra = parseFloat(document.getElementById(phonemes[i]+'_fool').getAttribute('width'))
                           if (pfool_pos == 75.5) { //bar pos
                             if (ppos > 75.5 + pfoolextra) { //char > bar
-                              pfool_width = ppos - (75.5  + pfoolextra) //char - (bar+width)
+                              pfool_width = ppos - (75.5  + pfoolextra) //char - (bar+smallWidth)
                             } else { //bar > char
                               pfool_width = 75.5 + pfoolextra - ppos
                             }

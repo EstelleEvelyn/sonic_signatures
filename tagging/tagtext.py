@@ -227,7 +227,7 @@ class Tagtext:
         '''
         root = nltk.data.find('/')
         with open('res/{}.txt'.format(file_name), 'r') as corpus:  # source file
-            with open('tagtext/{}_orig1.csv'.format(file_name), 'a') as dest_file:  # destination
+            with open('tagtext/{}_orig3.csv'.format(file_name), 'a') as dest_file:  # destination
                 corpus_text = corpus.read().lower().split()  # normalize
                 for word in corpus_text:
                     self.word_count += 1
@@ -253,7 +253,7 @@ class Tagtext:
                                 taco = (self.matchVowelsWithTokens(split_word, phonetic_string))
                                 if taco is not None and taco[0] is not None:
                                     dest_file.write(
-                                        "".join(taco[0]) + "," + "'" + ",".join(taco[1]) + "'" + ", " + "s" + ", " +",".join(taco[2])+ "\n")
+                                        "".join(taco[0]) + "," + "'" + " ".join(taco[1]) + "'" + "," + "s" + "," + "'"+ " ".join(taco[2]) + "'" + "\n")
                         else:
                             phonetic_list = self.OP[word].split(" ")
                             # print(phonetic_list)
@@ -277,7 +277,7 @@ class Tagtext:
                             taco = (self.matchVowelsWithTokens(split_word, phonetic_string))
                             if taco is not None and taco[0] is not None:
                                 dest_file.write(
-                                    "".join(taco[0]) + "," + "'" + ",".join(taco[1]) + "'" + ", " + "s" + ", " +",".join(taco[2])+ "\n")
+                                    "".join(taco[0]) + "," + "'" + " ".join(taco[1]) + "'" + "," + "s" + "," +"'"+" ".join(taco[2])+"'"+ "\n")
                     elif word in self.transcr:  # TODO find a better way to resolve non-standard words
                         phonetic_list = self.transcr[word][0]
                         phonetic_string = ""
@@ -290,7 +290,7 @@ class Tagtext:
                         print(taco, type(taco))
                         if taco is not None and taco[0] is not None:
                             dest_file.write(
-                                "".join(taco[0]) + "," + "'" + ",".join(taco[1]) + "'" + ", " + "s" + ", " +",".join(taco[2])+ "\n")
+                                "".join(taco[0]) + "," + "'" + " ".join(taco[1]) + "'" + "," + "s" + "," +"'"+" ".join(taco[2])+"'"+ "\n")
                     # this was for omission finder testing
                     else:
                         word = self.normalize_caseless(word)
