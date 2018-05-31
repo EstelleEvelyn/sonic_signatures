@@ -234,11 +234,17 @@ d3.csv(DATA_URL,
         }
 
         function drawDetails(d){
-            d3.selectAll(".detailCharGroups").selectAll("rect")
-                .append("g")
+            d3.selectAll(".detailCharGroups").selectAll(".bar")
                 .append("text")
-                .attr("x",this.x.baseVal.value).attr("y",this.y.baseVal.value)
+                .attr("x",function(d,i){return this.parentElement.childNodes[0].getAttribute("x");})
+                .attr("y",function(d,i){return this.parentElement.childNodes[0].getAttribute("y");})
                 .text(function(d){return d.phoneme;})
+
+            LeftAxis = d3.axisLeft(d3.scaleLinear().domain(domains.detaildomain).range([0,200]))
+            d3.selectAll(".detailCharGroups").append("g")
+                .attr("transform", "translate(20,0)")
+                .call(LeftAxis)
+
 
         }
 
@@ -252,28 +258,52 @@ d3.csv(DATA_URL,
                 targetHeight = smallHeight;
                 targetYDomain = domains.maindomain
             }else if(this.className.baseVal == "detailCharGroups"){
-                targetWidth = bigWidth;
+                targetWidth = document.getElementById('detailView').offsetWidth - 30;
                 targetHeight = bigHeight;
                 domains.detaildomain = d3.extent(d.values, function(element){return(element.zscore);});
                 targetYDomain = domains.detaildomain;
             }
 
+            if(this.className.baseVal == "detailCharGroups"){
+               d3.select(this).append('svg:foreignObject')
+                   .attr("x","300px")
+                   .html('<i class="fas fa-times"></i>')
+            }
 
-            xOF.domain(phonemeOrder).range([0,targetWidth]);
+            if(this.className.baseVal == "detailCharGroups"){
+                xOF.domain(phonemeOrder).range([20,targetWidth]);
+            }
+
+            else{
+                xOF.domain(phonemeOrder).range([0,targetWidth]);
+            }
+
+
+
+            // xOF.domain(phonemeOrder).range([0,targetWidth]);
             yOF.rangeRound([targetHeight, 0]).domain(targetYDomain);
 
-            var initialbars = d3.select(this).selectAll("bar")
+            var initialbars = d3.select(this).selectAll(".bar")
                 .data(d.values
                 );
 
-            initialbars.enter()
+            initialbars.enter().append("g").attr("class","bar")
                 .append("rect")
                 .attr("class", "zBar")
                 .attr("x", function (d) {
                     return xOF([d.phoneme]);
                 })
+                .attr("width",function(){return targetWidth/phonemeOrder.length})
 
-                .attr("width", targetWidth / phonemeOrder.length)
+                // .attr("width", function(){if(this.parentElement.parentElement.className.baseVal == "detailCharGroups") {
+                //     console.log(this.className.baseVal)
+                //     return 80 / phonemeOrder.length + "%";
+                //
+                // } else if(this.parentElement.parentElement.className.baseVal == "charGroups"){
+                //    return targetWidth / phonemeOrder.length;
+                // }})
+
+
                 // .attr("height", function(d){
                 //                    return Math.abs(yOF(d.zscore)-yOF(0));
                 //                })
@@ -330,6 +360,7 @@ d3.csv(DATA_URL,
                         return d.phoneme;
                     })
                     .attr("font-size","12px")
+
 
 
             }

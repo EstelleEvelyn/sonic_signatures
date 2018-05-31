@@ -14,35 +14,36 @@ altpronunciationscount = 0
 mlines=0
 abbrlines = []
 
+
+#dictionary of tags
 tagdict = {' abbr ':0, 'abbr ':0, ' abbr':0,  'adj':0,' adv ':0,' aux ':0,' det ':0,' emend ':0,' Eng ':0,' Epil ':0,' f(f) ':0,' F ':0,
            ' interj ':0, ' Fr ':0, ' Ital ':0, ' Lat ':0, ' Luc ':0, ' m ':0, ' malap ':0, ' n ':0, ' prep ':0, ' pro ':0,
            ' Prol ':0, ' pron ':0, ' Q ':0, ' rh ':0,' s.d. ':0, ' sp ':0, ' Sp ':0, ' str ':0, ' unstr ':0, ' usu ':0,
            ' v ':0 }
 
+#list of tags
 taglist = [' abbr ', 'abbr ', ' abbr', ' adj ', ' adv ', ' aux ', ' det ', ' emend ', ' Eng ', ' Epil ', ' f(f) ', ' F ', ' interj ',
            ' Fr ', ' Ital ', ' Lat ', ' Luc ', ' m ', ' malap ', ' n ', ' prep ', ' pro ', ' Prol ', ' pron ', ' Q ',
            ' rh ', ' s.d. ', ' sp ', ' Sp ', ' str ', ' unstr ',
            ' usu ', ' v ']
 
+#TODO what is this???
 bracketTags = {}
 
+#TODO also what is this???
 converter = {}
 
+#TODO does this get used? And for what?
 def wordPronounceMatcher(singleword,singlepronounce):
-    # if "," in pronounce:
-    #     singlepronounce = singlepronounce.split(',')
-    #     singlepronounce = singlepronounce[0]
-    #     #print(singleword, singlepronounce)
-    # if "~" in word:
-    #     print(singleword, singlepronounce, "UNCAUGHT LINE", theline)
-
     pronounce_dict[singleword] = singlepronounce
+
 
 with open('crystal_text.txt', encoding='UTF-8') as infile:
     for line in infile:
         line = infile.readline()
         line = line.rstrip('\n')
-        line = list(line.split("|"))
+        line = list(line.split("|")) # split the word on the bar
+
         if len(line) > 1:
 
             word = line[0]
@@ -57,21 +58,17 @@ with open('crystal_text.txt', encoding='UTF-8') as infile:
             for i in range(len(word)):
                 word[i] = word[i].strip(" ")
 
-                # wordplayregex = re.compile("[\[][\s\S^[]]*.*[\d]+[.][\d]+[.][\d]+[\]]")
-
-                # bracketregex = re.compile("[\[][\w\s]+[\]]")
                 bracketregex = re.compile("[\[][^\[\]]*[\]]")
 
-                if re.search(bracketregex,word[i]):
-                    bracketpattern = re.search(bracketregex,word[i])
+                if re.search(bracketregex, word[i]):
+                    bracketpattern = re.search(bracketregex, word[i])
                     matchedpattern = bracketpattern.group(0)
                     if matchedpattern in bracketTags:
                         bracketTags[matchedpattern] +=1
                     else:
                         bracketTags[matchedpattern] = 1
-                    # print ("prebracketremoval",word[i])
+
                     word[i] = re.sub(bracketregex, '', word[i])
-                    # print("post", word[i])
 
                 # if re.search(wordplayregex, word[i])
                 #     word[i] = re.sub(wordplayregex, '', word[i])

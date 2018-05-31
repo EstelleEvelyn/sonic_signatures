@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import random
 import sys
 app = Flask(__name__)
@@ -7,9 +7,12 @@ app = Flask(__name__)
 def tacos():
     return render_template("tacos.html")
 
-@app.route('/testText/')
-def test_text():
-    return 'Testing 1 2 4. "Three sir!" 3!'
+@app.route('/pronunciationData/')
+def pronunciation_data():
+    if request.method == 'POST':
+        return redirect(url_for('pronunciation_data'))
+
+    return render_template("aboutdata.html")
 
 @app.route('/testHTML/')
 def test_html():

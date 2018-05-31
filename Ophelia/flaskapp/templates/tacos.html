@@ -2,10 +2,12 @@
 <html lang="en">
    <head>
       <meta charset="utf-8">
-      <title>example</title>
+      <title>Ophelia's OH</title>
       <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='style.css')}}">
       <script type ="text/javascript" src="{{url_for('static',filename='d3.v4.js')}}"></script>
       <link href="https://fonts.googleapis.com/css?family=Istok+Web|Ubuntu" rel="stylesheet">
+      <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"
+              integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
       <!-- trying moving DATA_URL to the top of the page to make it accessible?? hey it worked-->
       <script type = "text/javascript">
           <!--this doesn't get used???-->
@@ -28,7 +30,9 @@
             <input type = "range" min = "0" max = "20000" value = "0" id ="rangeSlider"
              oninput="outputUpdate(value)">
             <output for = "rangeSlider" id = "numlines">0</output>
+
         </div>
+         <a href=""{{ url_for('pronunciation_data') }}" class="button">About the Data</a>
      </div>
      
      <div id="sideleft">
