@@ -192,7 +192,11 @@ d3.csv(DATA_URL,
         };
 
         function close(){
-           this.parentElement.remove()
+           //this.parentElement.remove()
+        }
+
+        function doEricsThing(){
+
         }
 
         function zoom(d) {
@@ -215,7 +219,7 @@ d3.csv(DATA_URL,
 
             d3.selectAll(".detailCharGroups")
                 .classed("closeable",true)
-                .on("click",close);
+                .on("click",doEricsThing());
 
 
 
@@ -268,6 +272,7 @@ d3.csv(DATA_URL,
                d3.select(this).append('svg:foreignObject')
                    .attr("x","300px")
                    .html('<i class="fas fa-times"></i>')
+                   .on("click",close())
             }
 
             if(this.className.baseVal == "detailCharGroups"){
