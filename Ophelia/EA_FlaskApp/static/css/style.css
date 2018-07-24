@@ -1,0 +1,238 @@
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background-color: #E9E9E9;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 14px
+} 
+
+#header {
+  background-color: #88BBD6;
+  margin: 10px;
+  height: 90px;
+  border-radius: 5px;
+} 
+
+#navbar {
+  background-color: white;
+  margin: 10px;
+  height: 35px;
+  border-radius: 5px;
+} 
+
+#playMenu {
+  display: inline;
+  padding: 20px;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+#rangeSliderGroup {
+  display: inline;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.main {
+background-color: white;
+margin-left:10px;
+margin-right: 32%;
+margin-top: 10px;
+margin bottom: 10px;
+border-radius: 5px;
+padding: 20px;
+font-size: 110%;
+display: block;
+}
+
+#about.sideright{
+background-color: white;
+margin-left:10px;
+margin-right: 10px;
+margin-top: 0px;
+margin bottom: 10px;
+border-radius: 5px;
+padding: 20px;
+font-size: 105%;
+float: right;
+width: 25%;
+display: block;
+}
+
+#about.sideright.hidden{
+    display: none;
+}
+
+#sideleft{
+    background: #e9e9e9;
+    width: 200px;
+    height: 100%
+    display: block;
+    position: absolute;
+    left: -200px;
+    top: 0px;
+    transition: left 0.3s linear;
+}
+
+#sideleft.visible{
+    left: 0px;
+    transition: left 0.3s linear;
+}
+#sidebar-btn{
+    display:inline-block;
+    vertical-align: middle;
+    width:20px;
+    height:15px;
+    cursor:pointer;
+    margin:20px;
+    position:absolute;
+    top:0px;
+    right:-60px;
+}
+
+#sidebar-btn span{
+    height:1px;
+    background:#111;
+    margin-bottom:5px;
+    display:block;
+}
+
+#sidebar-btn span:nth-child(2){
+    width:75%;
+}
+
+#sidebar-btn span:nth-child(3){
+    width:50%;
+}
+
+#detailView{
+    background-color: white;
+    margin-left:10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin bottom: 10px;
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 105%;
+    float: right;
+    width: 25%;
+    display: block;
+
+}
+
+
+h1 {
+font-size: 120%;
+color: #88BBD6;
+font-family: 'Ubuntu', sans-serif;
+
+}
+
+h2 {
+font-size: 120%;
+color: #88BBD6;
+font-family: 'Ubuntu', sans-serif;
+}
+
+h3{
+font-size: 250%;
+text-align: center;
+color: #E9E9E9;
+margin:0px;
+font-family: 'Istok Web', sans-serif;
+
+
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.chart rect {
+  fill: lightcoral;
+}
+
+.chart text {
+  fill: cornflowerblue;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.chart rect:hover {
+  fill: coral;
+}
+
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 14px;
+  text-align: center;
+}
+
+input[type=range]{
+    -webkit-appearance: none;
+    
+}
+
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 4px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: goldenrod;
+    margin-top: -4px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+}
+
+label{   
+    display: inline-block;
+}
+
+output{
+    display: inline-block;
+}
+
+/* 
+line{
+  stroke: red;
+}
+
+g.tick line {
+  stroke: blue;
+}
+
+g.hidden line,
+g.hidden path{
+display: none;
+}
+ */

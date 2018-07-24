@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Ophelia's OH</title>
+    <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='css/style.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Istok+Web|Ubuntu" rel="stylesheet">
+    <script type ="text/javascript" src="{{url_for('static',filename='js/d3.v4.js')}}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"
+            integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+    <!-- trying moving DATA_URL to the top of the page to make it accessible?? hey it worked-->
+    <script type = "text/javascript">
+        <!--this doesn't get used???-->
+            var DATA_URL = "{{url_for('static', filename='data/characterPhonemeZScoresNumlinesOrig.csv')}}";
+    </script>
+</head>
+
+<body>
+<div id = "header">
+    <h3>OPHELIA'S OH</h3>
+</div>
+
+<div id = "navbar">
+    <div id = "rangeSliderGroup">
+        <label for = "rangeSlider">Filter by Number of Lines</label>
+        <input type = "range" min = "0" max = "20000" value = "0" id ="rangeSlider"
+               oninput="outputUpdate(value)">
+        <output for = "rangeSlider" id = "numlines">0</output>
+
+    </div>
+    <a href="{{ url_for('pronunciation_data') }}" class="button">About the Data</a>
+</div>
+
+<div id="sideleft">
+    <fieldset id = "characterChecklist">
+        <legend>Filter Characters</legend>
+    </fieldset>
+    <div id="sidebar-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+<!-- <script src = "{{url_for('static',filename='doublenestFinalStages.js')}}"> -->
+<script>
+    $(document).ready(function(){
+        console.log( "ready!" );
+        $('#sidebar-btn').click(function(){
+            $('#sideleft').toggleClass('visible');
+            console.log("clicked!");
+            // alert( "Handler for .click() called." );
+        });
+    });
+</script>
+
+
+<div id = "about" class="sideright" class = "visible">
+
+    <h2>About</h2>
+
+    <p> Sounds have an inherent emotional quality, and vowels
+        and consonants convey meaning beyond the words in which they find themselves,
+        according to the theory of "sound symbolism." </p>
+
+    <p> We analyzed the sounds that make up Shakespeare characters' lines to see
+        how characters compare to each other purely in terms of the sounds their lines
+        consist of.</p>
+
+    <img src="{{url_for('static', filename='img/data_illustration.svg')}}" />
+    <p> Each bar represents a vowel; the color of the bar indicates how "light"
+        or "dark" the vowel is. From light sounding to dark sounding, the vowels are
+        "IH", "IY", "EY", "AY", "AE", "UW", "UH", "AA", "AO".</p>
+
+    <p> Bars above the line mean that the character uses more of that vowel than the
+        average character. Bars below the line mean that the character uses less of that
+        vowel than the average character.</p>
+
+    <p> Hopefully, you can see which characters are "bright"-sounding, "dark"-sounding,
+        and which are somewhere in the middle. Use this tool to analyze your favorite characters.</p>
+
+    <p> <b>Note:</b> Characters with fewer lines will distort the scales of major
+                     characters. Filter by number of lines, or uncheck characters using the sidebar.
+    </p>
+</div>
+
+<div id = "detailView" class = "hidden">
+
+</div>
+
+<div class = "main">
+
+    <p>
+        Use the slider and dropdown to adjust and filter the data.
+    </p>
+
+</div>
+
+</body>
+<!-- this is also listed at the top of the page -->
+<script type = "text/javascript">
+    var DATA_URL = "{{url_for('static',filename='data/characterPhonemeZScoresNumlinesOrig.csv')}}";
+</script>
+<script type="text/javascript" src="{{url_for('static',filename='js/ophelia.js')}}"></script>
+</html>

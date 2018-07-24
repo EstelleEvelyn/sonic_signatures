@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Pronunciation Data</title>
+    <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='style.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Istok+Web|Ubuntu" rel="stylesheet">
+</head>
+<body marginleft="20px">
+
+
+<h2>Going from Modern Pronunciation to Shakespeare:</h2>
+
+<p>This project uses data from The Oxford Dictionary of Original Shakespearean Pronunciation by David Crystal.</p>
+
+
+<p>The dictionary was originally published in print as a guide for actors to the original pronunciation
+    of Shakespeare. In order to make it usable for this project, the text file that is used as the backing
+    for the online hosted version of this project,
+    hosted at http://www.oxfordreference.com/view/10.1093/acref/9780199668427.001.0001/acref-9780199668427
+
+
+was significantly modified and reduced in complexity.</p>
+
+
+<p>For example, a line from the original dictionary might look like:<p></p>
+
+
+<p>abhor / ~s / ~ring / ~red / ~redst | ǝˈbɔ:ɹ / -z / -ɪn, -ɪŋ / -d / -st</p>
+
+
+<p>Which lists several variants of the word “abhor” and then their variant pronunciations. This line could be read as:</p>
+
+
+<p>
+Abhor = ǝˈbɔ:ɹ
+Abhors = ǝˈbɔ:ɹz
+Abhorring = abhorɪn (or) abhorɪŋ
+Abhorred = ǝˈbɔ:ɹd
+Abhorredst = ǝˈbɔ:ɹst
+</p>
+
+<p>My goal was to put each word variant on a single line with a single pronunciation.
+    To that end, word variants with multiple pronunciations, such as “abhorring,” above,
+    had their complexity cut.
+</p>
+
+<p>
+
+Post-processing, 2,796 words from the initial dictionary do not appear in Shakespeare’s folio. That’s a bug rate of 14%.
+</p>
+
+<p>Here are the changes I made and their estimated impact.</p>
+
+
+<h2> Ing </h2>
+
+
+<p>All words ending in ing had both an “in” pronunciation and an “ing” pronunciation. For the case of abhorring, above, abhorring could be pronounced “abhorrin,” or “abhorring.” For the sake of simplicity, I always took the first variant. Thus, “abhorring” is always transcribed as abhorɪn phonemically.
+</p>
+
+<p>Estimated impact:
+335 instances in a 20041 line file. ~ 1.67%
+</p>
+
+<h2> Stress Tags  </h2>
+<p>
+art | str ɑ:ɹt, unstr ǝɹt, abbr ɹt</p>
+<p>The dictionary includes information about the stress placed on a word when pronounced, and a stressed pronunciation as well as an unstressed pronunciation. Stressed was always listed first and so the stressed pronunciation was always used.
+</p>
+
+<p>Estimated Impact:
+157 instances/ 20041 lines
+</p>
+
+<h2> Extra Information in Brackets </h2>
+
+
+<p>    Sometimes pronunciations included extra information within brackets, such as [later] or [2 sylls]
+
+
+    All of this information was eliminated.</p>
+
+
+    Impact: 335 lines/ 20041 lines
+
+
+    <h2> Play-specific Pronunciation Information </h2>
+
+
+    <p>Ex:</p>
+
+
+    <h2> Pronunciation Same as Modern Day </h2>
+
+
+    <p>Words in the dictionary with pronunciation that is the same as modern-day English were listed with an equals sign. This accounted for 21% of the words. The words without a listed pronunciation were given a pronunciation using the CMU Pronouncing Dictionary in NLTK
+    </p>
+
+    <p>Impact: 4234 / 20041</p>
+</body>
+</html>
