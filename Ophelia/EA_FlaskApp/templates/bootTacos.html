@@ -15,6 +15,7 @@
     <!-- D3 -->
     <script type ="text/javascript" src="{{url_for('static',filename='js/d3.v4.js')}}"></script>
 
+    <!-- Flask util in JS: https://github.com/dantezhu/flask_util_js -->
     <script type="text/javascript" src="{{ url_for('flask_util_js') }}"></script>
 
     <!-- Ophelia style -->
@@ -45,7 +46,8 @@
                                     Change play
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="playDropdown">
-                                    <!--<a class="dropdown-item" href="#">Hamlet</a>
+                                    <!-- EXAMPLE:
+                                    <a class="dropdown-item" href="#">Hamlet</a>
                                     <a class="dropdown-item" href="#">Othello</a>
                                     <a class="dropdown-item" href="#">Romeo and Juliet</a>-->
                                 </div>
@@ -64,7 +66,8 @@
 
                 <!-- Character checkboxes -->
                 <div class="btn-group-vertical" data-toggle="buttons" id="characterCheckboxes">
-                    <!--<label class="btn btn-primary active">
+                    <!-- EXAMPLE:
+                    <label class="btn btn-primary active">
                         <input type="checkbox" checked>
                         <strong>Othello</strong>
                         <span>500 lines</span>
@@ -80,10 +83,17 @@
 
             <!-- Column containing small multiples visualizations -->
             <div class="col-6" id="visCol">
+                <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                    Bar heights are normalized based on the characters currently being displayed. <br>
+                    Filter character display with controls to the left.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Column containing about info, single vis, etc. -->
-            <div class="col-3" id="rightCol">
+            <div class="col" id="rightCol">
                 <ul class="nav nav-tabs" id="aboutTab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="aboutTool-tab" data-toggle="tab" href="#aboutTool" role="tab" aria-controls="aboutTool" aria-selected="true">About the tool</a>

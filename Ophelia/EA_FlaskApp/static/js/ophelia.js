@@ -139,17 +139,23 @@ function updateSmallMultiples() {
     var charGroup = d3.select('#visCol').selectAll('svg')
         .data(filteredCharData, function(d) { return d.key; });
 
+    // Update all visualizations (scales may have changed)
+    charGroup
+        .each(drawSig);
+
     // Enter: create the SVGs
     charGroup.enter()
         .append('svg')
         .attr('width', smallWidth + margin.left + margin.right)
         .attr('height', smallHeight + margin.top + margin.bottom)
-        .attr('class', 'charGroup');
+        .attr('class', 'charGroup')
         //.on('click', zoom);
-
-    // Update all visualizations (scales may have changed)
-    //charGroup
-    //    .each(drawSig);
+        .on('click', function(d) {
+            var tvUrl = 'https://vep.cs.wisc.edu/slimTV/fromURL.html?tokens_url=https://vep.cs.wisc.edu/VEPCorporaRelease/opheliaTagText/';
+            tvUrl += CURR_PLAY + '_' + d.key + '_orig3.csv';
+            window.open(tvUrl);
+        })
+        .each(drawSig);
 
     // Remove characters that are no longer selected
     charGroup.exit()
@@ -157,8 +163,8 @@ function updateSmallMultiples() {
 
     // Had to put this down here to avoid some race condition where
     // enter() wasn't having drawSig called on it...
-    d3.select('#visCol').selectAll('svg')
-        .each(drawSig);
+    //d3.select('#visCol').selectAll('svg')
+    //    .each(drawSig);
 }
 
 // Function called on small multiple SVGs
@@ -180,7 +186,7 @@ function drawSig(d) {
 
     // Create a bar for each z-value
     var zBar = d3.select(this).selectAll('.zBar')
-        .data(d.values);
+        .data(d.values, function(d) { return d.character + '_' + d.phoneme; });
 
     // Create the new bars
     zBar.enter()
@@ -193,6 +199,7 @@ function drawSig(d) {
         .attr('fill', function(d) { return color(phonemes[d.phoneme]); })
         // Highlight corresponding phoneme bars on mouseover
         .on('mouseover', function(d) {
+            console.log(d);
             d3.selectAll('.zBar_' + d.phoneme)
                 .raise() // Pulls selection to top--nifty!
                 .style('stroke-width', 3)
