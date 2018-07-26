@@ -26,10 +26,8 @@ var margin = {top: 10, right: 10, bottom: 15, left: 10},
     bigWidth = 200,
     bigHeight = 200;
 
-var domains = {
-    maindomain:[],
-    detaildomain:[]
-};
+// z-score domain
+var selectionZDomain;
 
 var numberOfSVGsinDisplayDiv = 0;
 
@@ -79,7 +77,6 @@ function initPlayControls() {
     playData.character.forEach(function(d) {
         charsChecked[d.key] = true;
     })
-    domains.maindomain = playData.zscoreExtent;
 
     var characterCheckboxLabels = d3.select('#characterCheckboxes').selectAll('label')
         .data(playData.character)
@@ -130,6 +127,14 @@ function updateSmallMultiples() {
         //return d3.select('#checkbox_' + d.key.replace(/\./g, '_')).classed('active');
     })
 
+    // Update the z-score domain to only include filtered characters
+    var zExtents = playData.charZscoreExtents.filter(function(item) {
+        return charsChecked[item.key];
+    });
+    var minZ = d3.min([0, d3.min(zExtents, function(item) { return item.value[0]; })]);
+    var maxZ = d3.max([0, d3.max(zExtents, function(item) { return item.value[1]; })]);
+    selectionZDomain = [minZ, maxZ];
+
     // Create SVGs for each character
     var charGroup = d3.select('#visCol').selectAll('svg')
         .data(filteredCharData, function(d) { return d.key; });
@@ -159,37 +164,51 @@ function updateSmallMultiples() {
 // Function called on small multiple SVGs
 // Draws signature in the calling SVG, using data bound to it
 function drawSig(d) {
+    // Set up the dimensions of the visualization
+    var targetWidth, targetHeight, targetYDomain;
+    if (this.className.baseVal == 'charGroup') {    // If we're drawing a small one, set up accordingly
+        targetWidth = smallWidth;
+        targetHeight = smallHeight;
+        targetYDomain = selectionZDomain;
+    } else {                                        // If we're drawing a big one, use the available space
+        targetWidth = 500;
+        targetHeight = bigHeight;
+        targetYDomain = d3.extent(d.values, function(item) { return item.zscore; });
+    }
+    xOF.domain(phonemeOrder).range([2,targetWidth-2]);
+    yOF.domain(targetYDomain).rangeRound([targetHeight, 0]);
 
-
-    // TODO: GET RID OF THESE
-    var targetWidth = smallWidth;
-    var targetHeight = smallHeight;
-    var targetYDomain = domains.maindomain
-    xOF.domain(phonemeOrder).range([0,targetWidth]);
-    yOF.rangeRound([targetHeight, 0]).domain(targetYDomain);
-
-    // Determine y domain using z-scores of filtered characters
-    // TODO: shouldn't recalculate this for each character
-    var zExtents = playData.charZscoreExtents.filter(function(item) {
-        return charsChecked[item.key];
-    });
-    var minZ = d3.min([0, d3.min(zExtents, function(item) { return item.value[0]; })]);
-    var maxZ = d3.max([0, d3.max(zExtents, function(item) { return item.value[1]; })]);
-    yOF.domain([minZ, maxZ]);
-
+    // Create a bar for each z-value
     var zBar = d3.select(this).selectAll('.zBar')
         .data(d.values);
 
+    // Create the new bars
     zBar.enter()
         .append('rect')
-        .attr('class', 'zBar')
+        .attr('class', function(d) {
+            return "zBar zBar_" + d.phoneme;
+        })
         .attr('x', function(d) { return xOF([d.phoneme]); })
         .attr('width', targetWidth / phonemeOrder.length)
         .attr('fill', function(d) { return color(phonemes[d.phoneme]); })
-        .attr('title', function(d) { return d.phoneme; })
-        // .on('mouseover', function(d) { })
-        // .on('mouseout', function(d) { tip.style("display", "none"); })
+        // Highlight corresponding phoneme bars on mouseover
+        .on('mouseover', function(d) {
+            d3.selectAll('.zBar_' + d.phoneme)
+                .raise() // Pulls selection to top--nifty!
+                .style('stroke-width', 3)
+                .style('stroke', 'black');
+        })
+        .on('mouseout', function(d) {
+            d3.selectAll('.zBar_' + d.phoneme)
+                .style('stroke', '');
+        })
+        // Add title tooltip, too
+        .append('svg:title')
+        .text(function(d) {
+            return d.phoneme + "\nz: " + d.zscore.toFixed(3);
+        });
 
+    // Heights might have changed if scale changes (i.e., normalizing by different characters)
     d3.select(this).selectAll('.zBar')
         .attr('height', function(d) {
             return Math.abs(yOF(d.zscore) - yOF(0));
