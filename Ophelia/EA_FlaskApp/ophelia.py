@@ -1,11 +1,26 @@
 from flask import Flask, render_template, jsonify, request
+from flask_util_js import FlaskUtilJs
 import sys
 
 app = Flask(__name__)
 
+# For flask_util.url_for() in JavaScript: https://github.com/dantezhu/flask_util_js
+app.config['WEB_ROOT'] = '/'
+fujs = FlaskUtilJs(app)
+
 @app.route('/')
 def tacos():
     return render_template("tacos.html")
+
+@app.route('/boot/')
+def bootTacosDefault():
+    return render_template("bootTacos.html",
+                           play="Oth")
+
+@app.route('/boot/<play>')
+def bootTacos(play):
+    return render_template("bootTacos.html",
+                           play=play)
 
 @app.route('/pronunciationData/')
 def pronunciation_data():

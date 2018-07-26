@@ -1,0 +1,31 @@
+#characterCheckboxes {
+    width: 100%;
+}
+
+#characterCheckboxes .btn-primary {
+  color: #000;
+  background-color: #88BBD6;
+  border-color: #88BBD6;
+}
+
+#characterCheckboxes .btn-primary:hover {
+  box-shadow: 0 0 0 0.2rem rgba(134, 142, 150, 0.5);
+}
+
+#characterCheckboxes .btn-primary.active {
+  color: #fff;
+  background-color: MidnightBlue;
+  border-color: MidnightBlue;
+}
+
+#characterCheckboxes .btn-primary:focus, .btn-primary.focus {
+  box-shadow: none;
+}
+
+#characterCheckboxes .btn-primary:not([disabled]):not(.disabled):active, .btn-primary:not([disabled]):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: MidnightBlue;
+  border-color: MidnightBlue;
+  box-shadow: none;
+}

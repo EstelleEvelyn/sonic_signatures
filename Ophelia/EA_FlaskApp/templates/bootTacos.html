@@ -4,18 +4,214 @@
     <meta charset="UTF-8">
     <title>Ophelia's OH</title>
 
+    <!-- Bootstrap -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-4.0.0-beta.2-dist/css/bootstrap.css') }}">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>-->
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-4.0.0-beta.2-dist/js/bootstrap.js') }}"></script>
+
+    <!-- D3 -->
+    <script type ="text/javascript" src="{{url_for('static',filename='js/d3.v4.js')}}"></script>
+
+    <script type="text/javascript" src="{{ url_for('flask_util_js') }}"></script>
+
+    <!-- Ophelia style -->
+    <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='css/eaStyle.css')}}">
 </head>
 <body>
-    <div id="header">
+    <div class="container-fluid">
+        <div class="row" id="header">
+            <h1 class="display-1">Ophelia's OH</h1>
+        </div>
+        <p class="lead">An exploration of sonic signatures in the works of William Shakespeare. Created by Liz Nichols and Eric Alexander.</p>
 
-    </div>
+        <div class="row">
+            <!-- Col containing play-specific controls-->
+            <div class="col" id="leftCol">
+                <!-- Navbar controls -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#" id="currPlayBrand"></a>
 
-    <div id="navbar">
+                    <!-- Play dropdown -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Change play
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="playDropdown">
+                                    <!--<a class="dropdown-item" href="#">Hamlet</a>
+                                    <a class="dropdown-item" href="#">Othello</a>
+                                    <a class="dropdown-item" href="#">Romeo and Juliet</a>-->
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
 
-    </div>
+                    <!-- Num-lines slider -->
+                    <div id = "rangeSliderGroup">
+                        <label for="rangeSlider">Filter by Number of Lines</label>
+                        <input type="range" min="0" max="20000" value="0" id="rangeSlider"
+                               oninput="outputUpdate(value)">
+                        <output for="rangeSlider" id="numlines">0</output> lines
+                    </div>
+                </nav>
 
-    <div id="sideleft">
+                <!-- Character checkboxes -->
+                <div class="btn-group-vertical" data-toggle="buttons" id="characterCheckboxes">
+                    <!--<label class="btn btn-primary active">
+                        <input type="checkbox" checked>
+                        <strong>Othello</strong>
+                        <span>500 lines</span>
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="checkbox"> Desdemona
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="checkbox"> Iago
+                    </label>-->
+                </div>
+            </div>
 
+            <!-- Column containing small multiples visualizations -->
+            <div class="col-6" id="visCol">
+            </div>
+
+            <!-- Column containing about info, single vis, etc. -->
+            <div class="col-3" id="rightCol">
+                <ul class="nav nav-tabs" id="aboutTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="aboutTool-tab" data-toggle="tab" href="#aboutTool" role="tab" aria-controls="aboutTool" aria-selected="true">About the tool</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="aboutData-tab" data-toggle="tab" href="#aboutData" role="tab" aria-controls="aboutData" aria-selected="false">About the data</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="aboutTabContent">
+                    <div class="tab-pane fade show active" id="aboutTool" role="tabpanel" aria-labelledby="aboutTool-tab">
+                        <p> Sounds have an inherent emotional quality, and vowels
+                            and consonants convey meaning beyond the words in which they find themselves,
+                            according to the theory of "sound symbolism." </p>
+
+                        <p> We analyzed the sounds that make up Shakespeare characters' lines to see
+                            how characters compare to each other purely in terms of the sounds their lines
+                            consist of.</p>
+
+                        <img src="{{url_for('static', filename='img/data_illustration.svg')}}" />
+
+                        <p> Each bar represents a vowel; the color of the bar indicates how "light"
+                            or "dark" the vowel is. From light sounding to dark sounding, the vowels are
+                            "IH", "IY", "EY", "AY", "AE", "UW", "UH", "AA", "AO".</p>
+
+                        <p> Bars above the line mean that the character uses more of that vowel than the
+                            average character. Bars below the line mean that the character uses less of that
+                            vowel than the average character.</p>
+
+                        <p> Hopefully, you can see which characters are "bright"-sounding, "dark"-sounding,
+                            and which are somewhere in the middle. Use this tool to analyze your favorite characters.</p>
+
+                        <p> <b>Note:</b> Characters with fewer lines will distort the scales of major
+                                         characters. Filter by number of lines, or uncheck characters using the sidebar.
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="aboutData" role="tabpanel" aria-labelledby="profile-tab">
+                        <h4>Going from Modern Pronunciation to Shakespeare:</h4>
+
+                        <p>This project uses data from The Oxford Dictionary of Original Shakespearean Pronunciation by David Crystal.</p>
+
+
+                        <p>The dictionary was originally published in print as a guide for actors to the original pronunciation
+                           of Shakespeare. In order to make it usable for this project, the text file that is used as the backing
+                           for the online hosted version of this project,
+                           hosted at http://www.oxfordreference.com/view/10.1093/acref/9780199668427.001.0001/acref-9780199668427
+                           was significantly modified and reduced in complexity.</p>
+
+
+                        <p>For example, a line from the original dictionary might look like:<p></p>
+
+
+                        <p>abhor / ~s / ~ring / ~red / ~redst | ǝˈbɔ:ɹ / -z / -ɪn, -ɪŋ / -d / -st</p>
+
+
+                        <p>Which lists several variants of the word “abhor” and then their variant pronunciations. This line could be read as:</p>
+
+
+                        <p>
+                            Abhor = ǝˈbɔ:ɹ
+                            Abhors = ǝˈbɔ:ɹz
+                            Abhorring = abhorɪn (or) abhorɪŋ
+                            Abhorred = ǝˈbɔ:ɹd
+                            Abhorredst = ǝˈbɔ:ɹst
+                        </p>
+
+                        <p>My goal was to put each word variant on a single line with a single pronunciation.
+                           To that end, word variants with multiple pronunciations, such as “abhorring,” above,
+                           had their complexity cut.
+                        </p>
+
+                        <p>Post-processing, 2,796 words from the initial dictionary do not appear in Shakespeare’s folio.
+                           That’s a bug rate of 14%.
+                        </p>
+
+                        <p>Here are the changes I made and their estimated impact.</p>
+
+                        <h4> Ing </h4>
+
+                        <p>All words ending in ing had both an “in” pronunciation and an “ing” pronunciation.
+                           For the case of abhorring, above, abhorring could be pronounced “abhorrin,” or “abhorring.”
+                           For the sake of simplicity, I always took the first variant.
+                           Thus, “abhorring” is always transcribed as abhorɪn phonemically.
+                        </p>
+
+                        <p>Estimated impact:
+                           335 instances in a 20041 line file. ~ 1.67%
+                        </p>
+
+                        <h4> Stress Tags  </h4>
+                        <p>art | str ɑ:ɹt, unstr ǝɹt, abbr ɹt</p>
+                        <p>The dictionary includes information about the stress placed on a word when pronounced, and a stressed pronunciation as well as an unstressed pronunciation.
+                           Stressed was always listed first and so the stressed pronunciation was always used.
+                        </p>
+
+                        <p>Estimated Impact:
+                           157 instances/ 20041 lines
+                        </p>
+
+                        <h4> Extra Information in Brackets </h4>
+
+                        <p>Sometimes pronunciations included extra information within brackets, such as [later] or [2 sylls].
+                           All of this information was eliminated.</p>
+
+                        Impact: 335 lines/ 20041 lines
+
+                        <h4> Play-specific Pronunciation Information </h4>
+
+                        <p>Ex:</p>
+
+                        <h4> Pronunciation Same as Modern Day </h4>
+
+                        <p>Words in the dictionary with pronunciation that is the same as modern-day English were listed with an equals sign.
+                           This accounted for 21% of the words.
+                           The words without a listed pronunciation were given a pronunciation using the CMU Pronouncing Dictionary in NLTK
+                        </p>
+
+                        <p>Impact: 4234 / 20041</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </body>
+
+<script type = "text/javascript">
+    var DATA_URL = "{{url_for('static',filename='data/characterPhonemeZScoresNumlinesOrig.csv')}}";
+    var CURR_PLAY = "{{ play }}";
+</script>
+<script type="text/javascript" src="{{url_for('static',filename='js/ophelia.js')}}"></script>
 </html>
